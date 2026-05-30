@@ -1,0 +1,55 @@
+events:
+  - name: "New Year Reset"
+    dates: ["01-01", "01-15"]
+    content_angle: >
+      New Year resolution content. "Make your resolution stick this time —
+      one teaspoon, every morning. That's it."
+    skus_to_feature: [moringa, wheatgrass]
+    ad_boost: true
+
+  - name: "Holi Skin Prep"
+    dates: ["03-10", "03-20"]
+    content_angle: >
+      "Protect your skin before the colour hits. Load up on Vitamin E."
+    skus_to_feature: [sunflower]
+    ad_boost: true
+
+  - name: "Pre-Summer Energy"
+    dates: ["04-01", "05-15"]
+    content_angle: >
+      "Bengaluru heat is one thing. Mumbai humidity is another. Both drain you.
+      Here's what we're adding to water bottles."
+    skus_to_feature: [wheatgrass, moringa]
+
+  - name: "Monsoon Immunity"
+    dates: ["06-01", "09-30"]
+    content_angle: >
+      "Monsoon means mango, chai, and — if you're smart — microgreens powder.
+      Your gut needs the most support right now."
+    skus_to_feature: [moringa, blueberry]
+    ad_boost: true
+
+  - name: "Navratri Fasting"
+    dates: ["10-01", "10-10"]
+    content_angle: >
+      "Fasting doesn't have to mean low energy. Moringa microgreens powder —
+      pure plant, no additives, Navratri-safe."
+    skus_to_feature: [moringa]
+    ad_boost: true
+
+  - name: "Diwali Health Gift"
+    dates: ["10-15", "11-05"]
+    content_angle: >
+      "Balance the mithai. Gift health this Diwali — a 4-pack bundle
+      for the family member who has everything."
+    skus_to_feature: [sunflower, moringa, wheatgrass, blueberry]
+    ad_boost: true
+    budget_multiplier: 1.5
+
+  - name: "Wedding Season Glow"
+    dates: ["11-01", "01-31"]
+    content_angle: >
+      "Shaadi season. Four months of functions. Your skin and energy
+      will need backup."
+    skus_to_feature: [sunflower, blueberry]
+    ad_boost: true

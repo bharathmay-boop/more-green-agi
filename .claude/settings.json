@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem *)",
+      "Bash(Get-Content *)",
+      "Bash(shopify theme list *)",
+      "Bash(shopify version *)",
+      "Bash(gh repo list *)"
+    ]
+  }
+}

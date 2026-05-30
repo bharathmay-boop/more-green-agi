@@ -1,0 +1,97 @@
+brand:
+  name: "More Green"
+  website: "https://moregreen.in"
+  instagram_handle: "@moregreen.in"
+  voice_brief: >
+    More Green sounds like a knowledgeable friend who happens to know a lot about
+    nutrition — warm, specific, never preachy. We never say "superfood." We never
+    say "morning ritual." We never use the word "journey." We cite real numbers
+    ("40x more nutrients than mature plants") not vague claims ("packed with
+    goodness"). We acknowledge scepticism rather than ignoring it. We are proud
+    of being Indian without leaning on nostalgia clichés.
+  banned_phrases:
+    - "morning ritual"
+    - "superfood"
+    - "packed with goodness"
+    - "your wellness journey"
+    - "unlock your potential"
+    - "dadi swore by"
+    - "transform your life"
+    - "natural glow"
+
+skus:
+  - id: sunflower
+    name: "Sunflower Microgreens Powder"
+    price_inr: 499
+    shopify_url: "https://moregreen.in/products/sunflower"
+    product_facts:
+      - "Contains up to 40x more Vitamin E than mature sunflower seeds"
+      - "Rich in zinc — 1 tsp = 15% daily zinc requirement"
+      - "Cold-pressed, no heat treatment, nutrients intact"
+    differentiation_angle: >
+      Sunflower microgreens are harvested at peak nutrient density — 7 days after
+      germination, when the plant has concentrated everything it needs to grow into
+      a full plant. Mature sunflower seeds don't come close.
+    image_prompt_base: >
+      The More Green Sunflower pouch sits on [SCENE]. Keep the product pouch,
+      label typography, and design completely unchanged. Add [LIGHTING]. [CAMERA].
+    video_prompt_base: >
+      The More Green Sunflower pouch is visible throughout. [ACTION]. Product
+      label remains sharp and fully readable throughout. [MOOD].
+
+  - id: blueberry
+    name: "Blueberry Microgreens Powder"
+    price_inr: 549
+    shopify_url: "https://moregreen.in/products/blueberry"
+    product_facts:
+      - "Blueberry microgreens contain 4-6x more anthocyanins than ripe blueberries"
+      - "One of the few Indian powders using microgreens, not dried fruit"
+      - "Purple pigment = pterostilbene, a compound linked to cognitive function"
+    differentiation_angle: >
+      There is no other blueberry microgreens powder widely available in India.
+      Dried blueberry powder is common. This is categorically different — the
+      plant at peak anthocyanin production, not the fruit after harvest decline.
+    image_prompt_base: >
+      The More Green Blueberry pouch sits on [SCENE]. Keep the product pouch,
+      label typography, and design completely unchanged. Add [LIGHTING]. [CAMERA].
+    video_prompt_base: >
+      The More Green Blueberry pouch is visible throughout. [ACTION]. Product
+      label remains sharp and fully readable throughout. [MOOD].
+
+  - id: moringa
+    name: "Moringa Microgreens Powder"
+    price_inr: 449
+    shopify_url: "https://moregreen.in/products/moringa"
+    product_facts:
+      - "Moringa microgreens: 3x more iron than mature moringa leaves"
+      - "More absorbable iron than spinach — no oxalate interference"
+      - "Suitable for Navratri fasting — pure plant, no additives"
+    differentiation_angle: >
+      Everyone knows moringa. Very few people know that moringa at the microgreens
+      stage has 3x more nutrients than the mature leaf that most powders use.
+      More Green is not a moringa powder. It is moringa at its peak.
+    image_prompt_base: >
+      The More Green Moringa pouch sits on [SCENE]. Keep the product pouch,
+      label typography, and design completely unchanged. Add [LIGHTING]. [CAMERA].
+    video_prompt_base: >
+      The More Green Moringa pouch is visible throughout. [ACTION]. Product
+      label remains sharp and fully readable throughout. [MOOD].
+
+  - id: wheatgrass
+    name: "Wheatgrass Microgreens Powder"
+    price_inr: 399
+    shopify_url: "https://moregreen.in/products/wheatgrass"
+    product_facts:
+      - "More chlorophyll per gram than any other green food"
+      - "70% chlorophyll by dry weight — pure plant energy"
+      - "Lowest price in the More Green range — best entry product"
+    differentiation_angle: >
+      Wheatgrass shots cost ₹150-200 at a juice bar. One pack of More Green
+      Wheatgrass Powder makes 30 shots at ₹13 each. Same chlorophyll, no queue,
+      no commute to Bandra.
+    image_prompt_base: >
+      The More Green Wheatgrass pouch sits on [SCENE]. Keep the product pouch,
+      label typography, and design completely unchanged. Add [LIGHTING]. [CAMERA].
+    video_prompt_base: >
+      The More Green Wheatgrass pouch is visible throughout. [ACTION]. Product
+      label remains sharp and fully readable throughout. [MOOD].

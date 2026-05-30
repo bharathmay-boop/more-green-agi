@@ -1,0 +1,30 @@
+branded:
+  - "#moregreenin"
+  - "#moregreen"
+
+by_sku:
+  moringa:    ["#moringa", "#moringapowder", "#moringhamicrogreens"]
+  sunflower:  ["#sunflowermicrogreens", "#vitamine", "#skinfood"]
+  blueberry:  ["#blueberrymicrogreens", "#anthocyanins", "#brainfood"]
+  wheatgrass: ["#wheatgrass", "#chlorophyll", "#greenjuice"]
+
+by_pillar:
+  educational:   ["#nutritionfacts", "#foodscience", "#healthtips"]
+  recipe:        ["#healthyrecipe", "#indianhealthyrecipe", "#smoothiebowl"]
+  product:       ["#superfoodpowder", "#cleaningredients", "#plantbased"]
+  social_proof:  ["#customerreview", "#healthtransformation"]
+  founder_bts:   ["#founderstory", "#smallbusiness", "#madeinindia"]
+
+by_city:
+  mumbai:     ["#mumbaifoodie", "#mumbaiwellness", "#bombayhealth"]
+  bengaluru:  ["#bangalorewellness", "#bangalorefitness", "#nammabengaluru"]
+  delhi:      ["#delhifoodie", "#delhihealth", "#ncrdiet"]
+  hyderabad:  ["#hyderabadfoodie", "#hyderabadwellness"]
+  pune:       ["#punefoodie", "#punewellness"]
+
+cultural:
+  navratri:   ["#navratri2026", "#fastingfood", "#navratridiet"]
+  monsoon:    ["#monsoonhealth", "#immunityboost", "#monsoonwellness"]
+  diwali:     ["#diwalihealth", "#giftsofhealth", "#diwali2026"]
+  holi:       ["#holihealth", "#holifestival"]
+  newyear:    ["#newyear2027", "#healthgoals", "#resolutions"]

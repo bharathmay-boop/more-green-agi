@@ -1,0 +1,16 @@
+.env
+.env.*
+*.env
+!.env.example
+db/pipeline.db
+db/*.db
+logs/
+service_account.json
+creatives/images/
+creatives/videos/
+pending_video_jobs.json
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
