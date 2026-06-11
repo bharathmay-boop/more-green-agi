@@ -21,7 +21,18 @@ def run(dry_run: bool = False, include_sundays: bool = False, sprint: str = None
         raise SystemExit("GOOGLE_SHEETS_ID not set in .env")
 
     gc = gspread.service_account(filename="service_account.json")
-    sheet = gc.open_by_key(sheets_id).sheet1
+    spreadsheet = gc.open_by_key(sheets_id)
+    try:
+        sheet = spreadsheet.worksheet("Content Calendar")
+    except gspread.exceptions.WorksheetNotFound:
+        sheet = spreadsheet.add_worksheet("Content Calendar", rows=200, cols=20)
+        sheet.append_row([
+            "post_id", "scheduled_date", "scheduled_time", "platform",
+            "post_type", "content_pillar", "sku", "topic", "theme", "tone",
+            "cultural_moment", "source_product_image", "source_lifestyle_image",
+            "reference_notes", "pipeline_status", "on_hold",
+        ])
+        log.info("Created 'Content Calendar' tab with headers.")
 
     existing_ids = set(sheet.col_values(1)[1:])
     posts = _deduplicate(posts, existing_ids)
@@ -38,7 +49,7 @@ def run(dry_run: bool = False, include_sundays: bool = False, sprint: str = None
 
     rows = [_build_row(p) for p in posts]
     sheet.append_rows(rows, value_input_option="USER_ENTERED")
-    log.info("✓ Added %d posts to Sheets. Review → approve → run generate-prompts.", len(rows))
+    log.info("Done. Added %d posts to Sheets. Review -> approve -> run generate-prompts.", len(rows))
 
 
 def _filter_posts(posts: list, include_sundays: bool, sprint: str = None) -> list:
