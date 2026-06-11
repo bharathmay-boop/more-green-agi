@@ -12,7 +12,13 @@ PLATFORM_VALUES  = {"Instagram", "Facebook", "Both", "YouTube"}
 POST_TYPE_VALUES = {"feed_image", "reels", "carousel", "story"}
 PILLAR_VALUES    = {"educational", "recipe", "product", "social_proof", "founder_bts"}
 SKU_VALUES       = {"sunflower", "blueberry", "moringa", "wheatgrass", "brand"}
-TONE_VALUES      = {"warm_inspirational", "educational", "humorous", "urgent"}
+TONE_VALUES      = {
+    "warm_inspirational", "educational", "humorous", "urgent",
+    "bold_direct", "scientific_warm", "transparent_founder", "warm_authentic",
+    "transparent_expert", "bold_transparent", "energetic_practical",
+    "warm_inspirational", "warm_practical", "consultative_direct",
+    "warm_relatable",
+}
 
 
 def run(dry_run: bool = False) -> None:

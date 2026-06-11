@@ -23,7 +23,7 @@ def run(dry_run: bool = False, include_sundays: bool = False, sprint: str = None
     gc = gspread.service_account(filename="service_account.json")
     sheet = gc.open_by_key(sheets_id).sheet1
 
-    existing_ids = set(sheet.col_values(1))
+    existing_ids = set(sheet.col_values(1)[1:])
     posts = _deduplicate(posts, existing_ids)
 
     if not posts:
