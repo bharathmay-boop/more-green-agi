@@ -95,3 +95,22 @@ skus:
     video_prompt_base: >
       The More Green Wheatgrass pouch is visible throughout. [ACTION]. Product
       label remains sharp and fully readable throughout. [MOOD].
+
+  - id: brand
+    name: "More Green"
+    price_inr: null
+    shopify_url: "https://moregreen.in"
+    product_facts:
+      - "FSSAI-approved, NABL-accredited lab testing on every batch"
+      - "Single-sourced, India-grown ingredients from Bangalore polyhouse"
+      - "No additives, no heat treatment — nothing on the label that isn't in the pouch"
+    differentiation_angle: >
+      More Green is built on one principle: honest nutrition. Every ingredient is
+      single-sourced, every batch is lab-tested, and nothing is added that isn't on
+      the label. Started in a Bangalore polyhouse in 2024, still grown the same way.
+    image_prompt_base: >
+      The More Green brand story is shown in [SCENE]. Clean, honest, India-grown.
+      Keep all brand elements completely unchanged. Add [LIGHTING]. [CAMERA].
+    video_prompt_base: >
+      The More Green brand identity is visible throughout. [ACTION]. Brand
+      elements remain sharp and fully readable throughout. [MOOD].

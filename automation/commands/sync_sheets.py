@@ -11,7 +11,7 @@ REQUIRED_COLUMNS = ["post_id", "scheduled_date", "sku", "topic", "source_product
 PLATFORM_VALUES  = {"Instagram", "Facebook", "Both", "YouTube"}
 POST_TYPE_VALUES = {"feed_image", "reels", "carousel", "story"}
 PILLAR_VALUES    = {"educational", "recipe", "product", "social_proof", "founder_bts"}
-SKU_VALUES       = {"sunflower", "blueberry", "moringa", "wheatgrass"}
+SKU_VALUES       = {"sunflower", "blueberry", "moringa", "wheatgrass", "brand"}
 TONE_VALUES      = {"warm_inspirational", "educational", "humorous", "urgent"}
 
 
