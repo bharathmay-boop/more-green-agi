@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:15:33.695430+00:00'
+  updated_at: '2026-06-17T18:15:34.836213+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -280,7 +280,7 @@ tasks:
   title: approval_queue table + producer helper (utils/approvals.py)
   depends_on:
   - E1-T5
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: propose() inserts pending row, dedupes identical pending
   verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.approvals import propose;
