@@ -10,3 +10,10 @@
 
 # Apply ad optimisation rules daily at 7pm
 0 19 * * * cd /home/user/automation && python main.py tune-ads --apply >> logs/cron.log 2>&1
+
+# ── Autonomous Build Engine ──────────────────────────────────────────────────
+# Self-continuing platform build: re-reads build/backlog.yaml each tick and works
+# the next ready task. resume.sh no-ops while a run holds the lock, and backs off
+# (2->4->8->16m) on usage-limit errors so the build resumes after the limit reset.
+# Adjust the repo path to your checkout.
+*/15 * * * * cd /path/to/more-green-agi && bash build/resume.sh >> build/logs/cron.log 2>&1

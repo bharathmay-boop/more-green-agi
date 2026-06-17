@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:08:56.037537+00:00'
+  updated_at: '2026-06-17T18:08:57.174425+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -71,7 +71,7 @@ tasks:
   title: Add resume.sh cron line to automation/crontab.example + build/README.md
   depends_on:
   - E0-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: crontab.example has */15 resume.sh line; README documents crontab -e install + sandbox fallback
   verify: grep -q resume.sh automation/crontab.example
