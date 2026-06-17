@@ -1,515 +1,551 @@
-# More Green Autonomous Build Engine — task DAG (single source of truth)
-# Worked top-to-bottom by build/orchestrate.py; resumed by build/resume.sh via cron.
-# status: todo | in_progress | done | blocked
-# Tasks in a parallel batch are file-disjoint; depends_on serializes overlaps.
-
 meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
-  autonomy_mode: propose            # propose | autonomous (locked: propose)
-  updated_at: null                  # set by orchestrator
-
+  autonomy_mode: propose
+  updated_at: '2026-06-17T18:08:49.737858+00:00'
 tasks:
-  # ── E0 Build Engine & cron ───────────────────────────────────────────────
-  - id: E0-T1
-    epic: E0 Build Engine
-    story: Backlog format
-    title: Seed build/backlog.yaml with full epic/task DAG
-    depends_on: []
-    status: done
-    agent: general-purpose
-    acceptance: "backlog.yaml parses; tasks have id/epic/depends_on/status/verify"
-    verify: "python build/orchestrate.py --dry-run"
-    artifacts: [build/backlog.yaml]
-    attempts: 0
-    last_error: null
-
-  - id: E0-T2
-    epic: E0 Build Engine
-    story: Orchestrator
-    title: Implement build/orchestrate.py (ready-set, dispatch, verify, commit, regen, lock)
-    depends_on: [E0-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "--dry-run lists ready tasks; --dispatch=mock runs a no-op task and commits"
-    verify: "python build/orchestrate.py --dry-run"
-    artifacts: [build/orchestrate.py]
-    attempts: 0
-    last_error: null
-
-  - id: E0-T3
-    epic: E0 Build Engine
-    story: Cron/resume
-    title: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff, WIP safeguard)
-    depends_on: [E0-T2]
-    status: todo
-    agent: general-purpose
-    acceptance: "resume.sh --once --dry-run exits 0; honors lock; backs off on rate-limit"
-    verify: "bash build/resume.sh --once --dry-run"
-    artifacts: [build/resume.sh]
-    attempts: 0
-    last_error: null
-
-  - id: E0-T4
-    epic: E0 Build Engine
-    story: Human view
-    title: BUILD_PLAN.md generator + state.json
-    depends_on: [E0-T2]
-    status: todo
-    agent: general-purpose
-    acceptance: "BUILD_PLAN.md regenerated from backlog after each task; state.json written"
-    verify: "test -f build/BUILD_PLAN.md"
-    artifacts: [build/BUILD_PLAN.md, build/state.json]
-    attempts: 0
-    last_error: null
-
-  - id: E0-T5
-    epic: E0 Build Engine
-    story: Cron install
-    title: Add resume.sh cron line to automation/crontab.example + build/README.md
-    depends_on: [E0-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "crontab.example has */15 resume.sh line; README documents crontab -e install + sandbox fallback"
-    verify: "grep -q resume.sh automation/crontab.example"
-    artifacts: [automation/crontab.example, build/README.md]
-    attempts: 0
-    last_error: null
-
-  # ── E1 Platform foundation ───────────────────────────────────────────────
-  - id: E1-T1
-    epic: E1 Platform foundation
-    story: Infra
-    title: platform/docker-compose.yml (postgres:16 + redis:7)
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "docker compose config validates"
-    verify: "test -f platform/docker-compose.yml"
-    artifacts: [platform/docker-compose.yml]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T2
-    epic: E1 Platform foundation
-    story: DB
-    title: platform/packages/db/schema.prisma (port existing + new tables per doc 01)
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "prisma validate passes"
-    verify: "cd platform/packages/db && npx --yes prisma validate"
-    artifacts: [platform/packages/db/schema.prisma]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T3
-    epic: E1 Platform foundation
-    story: DB
-    title: prisma migrations + lib/db.ts client
-    depends_on: [E1-T2]
-    status: todo
-    agent: general-purpose
-    acceptance: "migration dir created; client generated"
-    verify: "test -d platform/packages/db/migrations || cd platform/packages/db && npx --yes prisma validate"
-    artifacts: [platform/packages/db/migrations]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T4
-    epic: E1 Platform foundation
-    story: DB
-    title: seed_from_sqlite.py (idempotent import of automation/db/pipeline.db)
-    depends_on: [E1-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "re-running reports 0 inserts/N updates, no dupes"
-    verify: "python platform/packages/db/seed_from_sqlite.py --dry-run"
-    artifacts: [platform/packages/db/seed_from_sqlite.py]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T5
-    epic: E1 Platform foundation
-    story: CLI parity
-    title: automation/db/schema.sql new tables (creative, order, ad_spend_daily, attribution, approval_queue, build_task, audit_log)
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "fresh get_db() creates all new tables"
-    verify: "python -c \"import sys; sys.path.insert(0,'automation'); from utils.db import get_db; get_db()\""
-    artifacts: [automation/db/schema.sql]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T6
-    epic: E1 Platform foundation
-    story: Web
-    title: Next.js app skeleton + layout + lib/queue.ts
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "npm run build passes"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T7
-    epic: E1 Platform foundation
-    story: Web
-    title: Calendar screen + /api/posts CRUD
-    depends_on: [E1-T6, E1-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "posts list/create/update/archive; build passes"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web/app/(dash)/calendar]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T8
-    epic: E1 Platform foundation
-    story: Web
-    title: Creative Review screen + /api/creatives CRUD
-    depends_on: [E1-T6, E1-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "variant select/reject/regenerate; build passes"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web/app/(dash)/creatives]
-    attempts: 0
-    last_error: null
-
-  - id: E1-T9
-    epic: E1 Platform foundation
-    story: Workers
-    title: platform/workers/* wrapping automation/commands/*
-    depends_on: [E1-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "worker entrypoint dispatches a named command by job payload"
-    verify: "python platform/workers/run_job.py --help"
-    artifacts: [platform/workers]
-    attempts: 0
-    last_error: null
-
-  # ── E2 Profit loop ───────────────────────────────────────────────────────
-  - id: E2-T1
-    epic: E2 Profit loop
-    story: Orders
-    title: sync_orders.py + sync-orders CLI + order table upsert
-    depends_on: [E1-T5]
-    status: todo
-    agent: general-purpose
-    acceptance: "--dry-run prints N orders, writes none; real run upserts by order_id"
-    verify: "python automation/main.py --dry-run sync-orders"
-    artifacts: [automation/commands/sync_orders.py, automation/main.py]
-    attempts: 0
-    last_error: null
-
-  - id: E2-T2
-    epic: E2 Profit loop
-    story: Spend
-    title: extend monitor_ads.py to upsert ad_spend_daily (per-day, purchases+value)
-    depends_on: [E1-T5]
-    status: todo
-    agent: general-purpose
-    acceptance: "per-day rows upserted by (ad_id,date); lifetime cache untouched"
-    verify: "python -c \"import ast; ast.parse(open('automation/commands/monitor_ads.py').read())\""
-    artifacts: [automation/commands/monitor_ads.py]
-    attempts: 0
-    last_error: null
-
-  - id: E2-T3
-    epic: E2 Profit loop
-    story: Attribution
-    title: attribution.py + compute-attribution (blended/paid ROAS, div0/refund/split safe)
-    depends_on: [E2-T1, E2-T2]
-    status: todo
-    agent: general-purpose
-    acceptance: "rollups by sku/campaign/blended; ÷0 -> null; refunds honored"
-    verify: "python automation/main.py --dry-run compute-attribution"
-    artifacts: [automation/commands/attribution.py, automation/main.py]
-    attempts: 0
-    last_error: null
-
-  - id: E2-T4
-    epic: E2 Profit loop
-    story: Web
-    title: ROAS dashboard screen + /api/attribution
-    depends_on: [E2-T3, E1-T6]
-    status: todo
-    agent: general-purpose
-    acceptance: "blended vs paid ROAS by sku/campaign/range; build passes"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web/app/(dash)/roas]
-    attempts: 0
-    last_error: null
-
-  - id: E2-T5
-    epic: E2 Profit loop
-    story: Reporting
-    title: extend export_report.py with blended-ROAS section
-    depends_on: [E2-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "report shows blended ROAS by SKU 7/30d with trend"
-    verify: "python -c \"import ast; ast.parse(open('automation/commands/export_report.py').read())\""
-    artifacts: [automation/commands/export_report.py]
-    attempts: 0
-    last_error: null
-
-  # ── E3 Approval-gated spend ──────────────────────────────────────────────
-  - id: E3-T1
-    epic: E3 Approval-gated spend
-    story: Queue
-    title: approval_queue table + producer helper (utils/approvals.py)
-    depends_on: [E1-T5]
-    status: todo
-    agent: general-purpose
-    acceptance: "propose() inserts pending row, dedupes identical pending"
-    verify: "python -c \"import sys; sys.path.insert(0,'automation'); from utils.approvals import propose; print('ok')\""
-    artifacts: [automation/utils/approvals.py]
-    attempts: 0
-    last_error: null
-
-  - id: E3-T2
-    epic: E3 Approval-gated spend
-    story: Producer
-    title: refactor tune_ads.py (SCALE/activate -> proposal; PAUSE immediate)
-    depends_on: [E3-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "scale writes proposal, no Meta call; pause applies immediately"
-    verify: "python -c \"import ast; ast.parse(open('automation/commands/tune_ads.py').read())\""
-    artifacts: [automation/commands/tune_ads.py]
-    attempts: 0
-    last_error: null
-
-  - id: E3-T3
-    epic: E3 Approval-gated spend
-    story: Consumer
-    title: apply_approved.py + apply-approved CLI (cap re-check, idempotent)
-    depends_on: [E3-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "applies only approved rows; cap breach -> failed, no spend"
-    verify: "python automation/main.py --help"
-    artifacts: [automation/commands/apply_approved.py, automation/main.py]
-    attempts: 0
-    last_error: null
-
-  - id: E3-T4
-    epic: E3 Approval-gated spend
-    story: Web
-    title: Approvals screen + /api/approvals approve/reject/apply
-    depends_on: [E3-T1, E1-T6]
-    status: todo
-    agent: general-purpose
-    acceptance: "one-tap approve/reject; guarded transitions; build passes"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web/app/(dash)/approvals]
-    attempts: 0
-    last_error: null
-
-  - id: E3-T5
-    epic: E3 Approval-gated spend
-    story: Config
-    title: caps/config in config.py + email deep-link approve
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "MAX_DAILY_SPEND_INR, MAX_CAMPAIGN_BUDGET_INR, APPROVAL_TTL_HOURS, AUTONOMY_MODE present"
-    verify: "python -c \"import sys; sys.path.insert(0,'automation'); import config; config.MAX_DAILY_SPEND_INR\""
-    artifacts: [automation/config.py]
-    attempts: 0
-    last_error: null
-
-  # ── E4 Strategist (first cut) ────────────────────────────────────────────
-  - id: E4-T1
-    epic: E4 Strategist
-    story: Brain
-    title: strategize.py (Claude allocation -> draft posts + proposals)
-    depends_on: [E2-T3, E3-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "produces draft posts + approval proposals; no autonomous spend/publish"
-    verify: "python automation/main.py --dry-run strategize"
-    artifacts: [automation/commands/strategize.py, automation/main.py]
-    attempts: 0
-    last_error: null
-
-  - id: E4-T2
-    epic: E4 Strategist
-    story: Surface
-    title: strategize CLI registration + Build screen surfacing
-    depends_on: [E4-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "strategize command registered; proposals visible in web"
-    verify: "python automation/main.py --help"
-    artifacts: [automation/main.py]
-    attempts: 0
-    last_error: null
-
-  # ── E5 Creative Studio (autonomous continuation) ─────────────────────────
-  - id: E5-T1
-    epic: E5 Creative Studio
-    story: Variants
-    title: multi-variant generation (IMAGE_VARIANTS_PER_POST > 1) + creative table wiring
-    depends_on: [E1-T5, E1-T8]
-    status: todo
-    agent: general-purpose
-    acceptance: "N variants per post stored as creative rows"
-    verify: "python -c \"import ast; ast.parse(open('automation/commands/generate_images.py').read())\""
-    artifacts: [automation/commands/generate_images.py]
-    attempts: 0
-    last_error: null
-
-  - id: E5-T2
-    epic: E5 Creative Studio
-    story: Brand safety
-    title: banned-phrase lint + regenerate on caption/ad copy
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "captions containing brand banned_phrases are rejected + regenerated"
-    verify: "python -c \"import ast; ast.parse(open('automation/commands/generate_prompts.py').read())\""
-    artifacts: [automation/commands/generate_prompts.py]
-    attempts: 0
-    last_error: null
-
-  - id: E5-T3
-    epic: E5 Creative Studio
-    story: Scoring
-    title: CTR-fed variant scoring loop to pick promote-worthy creatives
-    depends_on: [E2-T2, E5-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "winning variant flagged from ad_spend_daily CTR"
-    verify: "python -c \"print('placeholder until implemented')\""
-    artifacts: [automation/commands/score_creatives.py]
-    attempts: 0
-    last_error: null
-
-  # ── E6 Calendar Autopilot ────────────────────────────────────────────────
-  - id: E6-T1
-    epic: E6 Calendar Autopilot
-    story: Autoseed
-    title: auto-seed posts from cultural_calendar + perf gaps + sku_split (dedupe by post_id)
-    depends_on: [E2-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "weekly calendar proposed honoring sku_split; founder approves"
-    verify: "python -c \"print('placeholder until implemented')\""
-    artifacts: [automation/commands/autopilot_calendar.py]
-    attempts: 0
-    last_error: null
-
-  # ── E7 Storefront / product-page loop ────────────────────────────────────
-  - id: E7-T1
-    epic: E7 Storefront loop
-    story: Read
-    title: read Shopify products + landing perf (orders by landing_ref)
-    depends_on: [E2-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "product pages + landing metrics fetched"
-    verify: "python -c \"print('placeholder until implemented')\""
-    artifacts: [automation/commands/storefront_audit.py]
-    attempts: 0
-    last_error: null
-
-  - id: E7-T2
-    epic: E7 Storefront loop
-    story: Propose
-    title: copy/price-test proposals (write-gated via approval_queue, margin guardrails)
-    depends_on: [E7-T1, E3-T1]
-    status: todo
-    agent: general-purpose
-    acceptance: "product_copy_change/price_test proposals; apply only after approval"
-    verify: "python -c \"print('placeholder until implemented')\""
-    artifacts: [automation/commands/storefront_propose.py]
-    attempts: 0
-    last_error: null
-
-  # ── E8 Channels ──────────────────────────────────────────────────────────
-  - id: E8-T1
-    epic: E8 Channels
-    story: Influencer CRM
-    title: surface influencer + conversations in web UI (CRUD)
-    depends_on: [E1-T6, E1-T3]
-    status: todo
-    agent: general-purpose
-    acceptance: "influencer list/detail/status update in web"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web/app/(dash)/influencers]
-    attempts: 0
-    last_error: null
-
-  - id: E8-T2
-    epic: E8 Channels
-    story: YouTube
-    title: auto cross-post Reels to YouTube Shorts in pipeline
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "approved reels auto-queued to post_youtube"
-    verify: "python -c \"import ast; ast.parse(open('automation/commands/post_youtube.py').read())\""
-    artifacts: [automation/commands/post_youtube.py]
-    attempts: 0
-    last_error: null
-
-  # ── E9 SaaS hardening ────────────────────────────────────────────────────
-  - id: E9-T1
-    epic: E9 Hardening
-    story: Auth
-    title: NextAuth + org/RBAC (owner|approver|viewer); gate approve/apply
-    depends_on: [E1-T6]
-    status: todo
-    agent: general-purpose
-    acceptance: "approve/apply restricted to approver|owner"
-    verify: "cd platform/apps/web && npm run build"
-    artifacts: [platform/apps/web/lib/auth.ts]
-    attempts: 0
-    last_error: null
-
-  - id: E9-T2
-    epic: E9 Hardening
-    story: CI
-    title: GitHub Actions — pytest + vitest + prisma validate + npm build
-    depends_on: []
-    status: todo
-    agent: general-purpose
-    acceptance: "CI workflow runs on PR"
-    verify: "test -f .github/workflows/ci.yml"
-    artifacts: [.github/workflows/ci.yml]
-    attempts: 0
-    last_error: null
-
-  - id: E9-T3
-    epic: E9 Hardening
-    story: Tests
-    title: pytest suite (attribution, approval_queue, tune_ads proposals, sync_orders, orchestrator)
-    depends_on: [E2-T3, E3-T1, E3-T2, E2-T1, E0-T2]
-    status: todo
-    agent: general-purpose
-    acceptance: "pytest green; money-safety tests assert no spend outside apply_approved"
-    verify: "cd automation && python -m pytest -q"
-    artifacts: [automation/tests]
-    attempts: 0
-    last_error: null
-
-  - id: E9-T4
-    epic: E9 Hardening
-    story: Reliability
-    title: queue retries/DLQ + observability (structured logs/metrics) + retention jobs
-    depends_on: [E1-T9]
-    status: todo
-    agent: general-purpose
-    acceptance: "failed jobs retried then DLQ; metrics emitted"
-    verify: "python -c \"print('placeholder until implemented')\""
-    artifacts: [platform/workers/reliability.py]
-    attempts: 0
-    last_error: null
+- id: E0-T1
+  epic: E0 Build Engine
+  story: Backlog format
+  title: Seed build/backlog.yaml with full epic/task DAG
+  depends_on: []
+  status: done
+  agent: general-purpose
+  acceptance: backlog.yaml parses; tasks have id/epic/depends_on/status/verify
+  verify: python build/orchestrate.py --dry-run
+  artifacts:
+  - build/backlog.yaml
+  attempts: 0
+  last_error: null
+- id: E0-T2
+  epic: E0 Build Engine
+  story: Orchestrator
+  title: Implement build/orchestrate.py (ready-set, dispatch, verify, commit, regen, lock)
+  depends_on:
+  - E0-T1
+  status: in_progress
+  agent: general-purpose
+  acceptance: --dry-run lists ready tasks; --dispatch=mock runs a no-op task and commits
+  verify: python build/orchestrate.py --dry-run
+  artifacts:
+  - build/orchestrate.py
+  attempts: 1
+  last_error: null
+- id: E0-T3
+  epic: E0 Build Engine
+  story: Cron/resume
+  title: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff, WIP safeguard)
+  depends_on:
+  - E0-T2
+  status: todo
+  agent: general-purpose
+  acceptance: resume.sh --once --dry-run exits 0; honors lock; backs off on rate-limit
+  verify: bash build/resume.sh --once --dry-run
+  artifacts:
+  - build/resume.sh
+  attempts: 0
+  last_error: null
+- id: E0-T4
+  epic: E0 Build Engine
+  story: Human view
+  title: BUILD_PLAN.md generator + state.json
+  depends_on:
+  - E0-T2
+  status: todo
+  agent: general-purpose
+  acceptance: BUILD_PLAN.md regenerated from backlog after each task; state.json written
+  verify: test -f build/BUILD_PLAN.md
+  artifacts:
+  - build/BUILD_PLAN.md
+  - build/state.json
+  attempts: 0
+  last_error: null
+- id: E0-T5
+  epic: E0 Build Engine
+  story: Cron install
+  title: Add resume.sh cron line to automation/crontab.example + build/README.md
+  depends_on:
+  - E0-T3
+  status: todo
+  agent: general-purpose
+  acceptance: crontab.example has */15 resume.sh line; README documents crontab -e install + sandbox fallback
+  verify: grep -q resume.sh automation/crontab.example
+  artifacts:
+  - automation/crontab.example
+  - build/README.md
+  attempts: 0
+  last_error: null
+- id: E1-T1
+  epic: E1 Platform foundation
+  story: Infra
+  title: platform/docker-compose.yml (postgres:16 + redis:7)
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: docker compose config validates
+  verify: test -f platform/docker-compose.yml
+  artifacts:
+  - platform/docker-compose.yml
+  attempts: 0
+  last_error: null
+- id: E1-T2
+  epic: E1 Platform foundation
+  story: DB
+  title: platform/packages/db/schema.prisma (port existing + new tables per doc 01)
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: prisma validate passes
+  verify: cd platform/packages/db && npx --yes prisma validate
+  artifacts:
+  - platform/packages/db/schema.prisma
+  attempts: 0
+  last_error: null
+- id: E1-T3
+  epic: E1 Platform foundation
+  story: DB
+  title: prisma migrations + lib/db.ts client
+  depends_on:
+  - E1-T2
+  status: todo
+  agent: general-purpose
+  acceptance: migration dir created; client generated
+  verify: test -d platform/packages/db/migrations || cd platform/packages/db && npx --yes prisma validate
+  artifacts:
+  - platform/packages/db/migrations
+  attempts: 0
+  last_error: null
+- id: E1-T4
+  epic: E1 Platform foundation
+  story: DB
+  title: seed_from_sqlite.py (idempotent import of automation/db/pipeline.db)
+  depends_on:
+  - E1-T3
+  status: todo
+  agent: general-purpose
+  acceptance: re-running reports 0 inserts/N updates, no dupes
+  verify: python platform/packages/db/seed_from_sqlite.py --dry-run
+  artifacts:
+  - platform/packages/db/seed_from_sqlite.py
+  attempts: 0
+  last_error: null
+- id: E1-T5
+  epic: E1 Platform foundation
+  story: CLI parity
+  title: automation/db/schema.sql new tables (creative, order, ad_spend_daily, attribution, approval_queue,
+    build_task, audit_log)
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: fresh get_db() creates all new tables
+  verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.db import get_db; get_db()"
+  artifacts:
+  - automation/db/schema.sql
+  attempts: 0
+  last_error: null
+- id: E1-T6
+  epic: E1 Platform foundation
+  story: Web
+  title: Next.js app skeleton + layout + lib/queue.ts
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: npm run build passes
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web
+  attempts: 0
+  last_error: null
+- id: E1-T7
+  epic: E1 Platform foundation
+  story: Web
+  title: Calendar screen + /api/posts CRUD
+  depends_on:
+  - E1-T6
+  - E1-T3
+  status: todo
+  agent: general-purpose
+  acceptance: posts list/create/update/archive; build passes
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web/app/(dash)/calendar
+  attempts: 0
+  last_error: null
+- id: E1-T8
+  epic: E1 Platform foundation
+  story: Web
+  title: Creative Review screen + /api/creatives CRUD
+  depends_on:
+  - E1-T6
+  - E1-T3
+  status: todo
+  agent: general-purpose
+  acceptance: variant select/reject/regenerate; build passes
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web/app/(dash)/creatives
+  attempts: 0
+  last_error: null
+- id: E1-T9
+  epic: E1 Platform foundation
+  story: Workers
+  title: platform/workers/* wrapping automation/commands/*
+  depends_on:
+  - E1-T1
+  status: todo
+  agent: general-purpose
+  acceptance: worker entrypoint dispatches a named command by job payload
+  verify: python platform/workers/run_job.py --help
+  artifacts:
+  - platform/workers
+  attempts: 0
+  last_error: null
+- id: E2-T1
+  epic: E2 Profit loop
+  story: Orders
+  title: sync_orders.py + sync-orders CLI + order table upsert
+  depends_on:
+  - E1-T5
+  status: todo
+  agent: general-purpose
+  acceptance: --dry-run prints N orders, writes none; real run upserts by order_id
+  verify: python automation/main.py --dry-run sync-orders
+  artifacts:
+  - automation/commands/sync_orders.py
+  - automation/main.py
+  attempts: 0
+  last_error: null
+- id: E2-T2
+  epic: E2 Profit loop
+  story: Spend
+  title: extend monitor_ads.py to upsert ad_spend_daily (per-day, purchases+value)
+  depends_on:
+  - E1-T5
+  status: todo
+  agent: general-purpose
+  acceptance: per-day rows upserted by (ad_id,date); lifetime cache untouched
+  verify: python -c "import ast; ast.parse(open('automation/commands/monitor_ads.py').read())"
+  artifacts:
+  - automation/commands/monitor_ads.py
+  attempts: 0
+  last_error: null
+- id: E2-T3
+  epic: E2 Profit loop
+  story: Attribution
+  title: attribution.py + compute-attribution (blended/paid ROAS, div0/refund/split safe)
+  depends_on:
+  - E2-T1
+  - E2-T2
+  status: todo
+  agent: general-purpose
+  acceptance: "rollups by sku/campaign/blended; \xF70 -> null; refunds honored"
+  verify: python automation/main.py --dry-run compute-attribution
+  artifacts:
+  - automation/commands/attribution.py
+  - automation/main.py
+  attempts: 0
+  last_error: null
+- id: E2-T4
+  epic: E2 Profit loop
+  story: Web
+  title: ROAS dashboard screen + /api/attribution
+  depends_on:
+  - E2-T3
+  - E1-T6
+  status: todo
+  agent: general-purpose
+  acceptance: blended vs paid ROAS by sku/campaign/range; build passes
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web/app/(dash)/roas
+  attempts: 0
+  last_error: null
+- id: E2-T5
+  epic: E2 Profit loop
+  story: Reporting
+  title: extend export_report.py with blended-ROAS section
+  depends_on:
+  - E2-T3
+  status: todo
+  agent: general-purpose
+  acceptance: report shows blended ROAS by SKU 7/30d with trend
+  verify: python -c "import ast; ast.parse(open('automation/commands/export_report.py').read())"
+  artifacts:
+  - automation/commands/export_report.py
+  attempts: 0
+  last_error: null
+- id: E3-T1
+  epic: E3 Approval-gated spend
+  story: Queue
+  title: approval_queue table + producer helper (utils/approvals.py)
+  depends_on:
+  - E1-T5
+  status: todo
+  agent: general-purpose
+  acceptance: propose() inserts pending row, dedupes identical pending
+  verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.approvals import propose;
+    print('ok')"
+  artifacts:
+  - automation/utils/approvals.py
+  attempts: 0
+  last_error: null
+- id: E3-T2
+  epic: E3 Approval-gated spend
+  story: Producer
+  title: refactor tune_ads.py (SCALE/activate -> proposal; PAUSE immediate)
+  depends_on:
+  - E3-T1
+  status: todo
+  agent: general-purpose
+  acceptance: scale writes proposal, no Meta call; pause applies immediately
+  verify: python -c "import ast; ast.parse(open('automation/commands/tune_ads.py').read())"
+  artifacts:
+  - automation/commands/tune_ads.py
+  attempts: 0
+  last_error: null
+- id: E3-T3
+  epic: E3 Approval-gated spend
+  story: Consumer
+  title: apply_approved.py + apply-approved CLI (cap re-check, idempotent)
+  depends_on:
+  - E3-T1
+  status: todo
+  agent: general-purpose
+  acceptance: applies only approved rows; cap breach -> failed, no spend
+  verify: python automation/main.py --help
+  artifacts:
+  - automation/commands/apply_approved.py
+  - automation/main.py
+  attempts: 0
+  last_error: null
+- id: E3-T4
+  epic: E3 Approval-gated spend
+  story: Web
+  title: Approvals screen + /api/approvals approve/reject/apply
+  depends_on:
+  - E3-T1
+  - E1-T6
+  status: todo
+  agent: general-purpose
+  acceptance: one-tap approve/reject; guarded transitions; build passes
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web/app/(dash)/approvals
+  attempts: 0
+  last_error: null
+- id: E3-T5
+  epic: E3 Approval-gated spend
+  story: Config
+  title: caps/config in config.py + email deep-link approve
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: MAX_DAILY_SPEND_INR, MAX_CAMPAIGN_BUDGET_INR, APPROVAL_TTL_HOURS, AUTONOMY_MODE present
+  verify: python -c "import sys; sys.path.insert(0,'automation'); import config; config.MAX_DAILY_SPEND_INR"
+  artifacts:
+  - automation/config.py
+  attempts: 0
+  last_error: null
+- id: E4-T1
+  epic: E4 Strategist
+  story: Brain
+  title: strategize.py (Claude allocation -> draft posts + proposals)
+  depends_on:
+  - E2-T3
+  - E3-T1
+  status: todo
+  agent: general-purpose
+  acceptance: produces draft posts + approval proposals; no autonomous spend/publish
+  verify: python automation/main.py --dry-run strategize
+  artifacts:
+  - automation/commands/strategize.py
+  - automation/main.py
+  attempts: 0
+  last_error: null
+- id: E4-T2
+  epic: E4 Strategist
+  story: Surface
+  title: strategize CLI registration + Build screen surfacing
+  depends_on:
+  - E4-T1
+  status: todo
+  agent: general-purpose
+  acceptance: strategize command registered; proposals visible in web
+  verify: python automation/main.py --help
+  artifacts:
+  - automation/main.py
+  attempts: 0
+  last_error: null
+- id: E5-T1
+  epic: E5 Creative Studio
+  story: Variants
+  title: multi-variant generation (IMAGE_VARIANTS_PER_POST > 1) + creative table wiring
+  depends_on:
+  - E1-T5
+  - E1-T8
+  status: todo
+  agent: general-purpose
+  acceptance: N variants per post stored as creative rows
+  verify: python -c "import ast; ast.parse(open('automation/commands/generate_images.py').read())"
+  artifacts:
+  - automation/commands/generate_images.py
+  attempts: 0
+  last_error: null
+- id: E5-T2
+  epic: E5 Creative Studio
+  story: Brand safety
+  title: banned-phrase lint + regenerate on caption/ad copy
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: captions containing brand banned_phrases are rejected + regenerated
+  verify: python -c "import ast; ast.parse(open('automation/commands/generate_prompts.py').read())"
+  artifacts:
+  - automation/commands/generate_prompts.py
+  attempts: 0
+  last_error: null
+- id: E5-T3
+  epic: E5 Creative Studio
+  story: Scoring
+  title: CTR-fed variant scoring loop to pick promote-worthy creatives
+  depends_on:
+  - E2-T2
+  - E5-T1
+  status: todo
+  agent: general-purpose
+  acceptance: winning variant flagged from ad_spend_daily CTR
+  verify: python -c "print('placeholder until implemented')"
+  artifacts:
+  - automation/commands/score_creatives.py
+  attempts: 0
+  last_error: null
+- id: E6-T1
+  epic: E6 Calendar Autopilot
+  story: Autoseed
+  title: auto-seed posts from cultural_calendar + perf gaps + sku_split (dedupe by post_id)
+  depends_on:
+  - E2-T3
+  status: todo
+  agent: general-purpose
+  acceptance: weekly calendar proposed honoring sku_split; founder approves
+  verify: python -c "print('placeholder until implemented')"
+  artifacts:
+  - automation/commands/autopilot_calendar.py
+  attempts: 0
+  last_error: null
+- id: E7-T1
+  epic: E7 Storefront loop
+  story: Read
+  title: read Shopify products + landing perf (orders by landing_ref)
+  depends_on:
+  - E2-T1
+  status: todo
+  agent: general-purpose
+  acceptance: product pages + landing metrics fetched
+  verify: python -c "print('placeholder until implemented')"
+  artifacts:
+  - automation/commands/storefront_audit.py
+  attempts: 0
+  last_error: null
+- id: E7-T2
+  epic: E7 Storefront loop
+  story: Propose
+  title: copy/price-test proposals (write-gated via approval_queue, margin guardrails)
+  depends_on:
+  - E7-T1
+  - E3-T1
+  status: todo
+  agent: general-purpose
+  acceptance: product_copy_change/price_test proposals; apply only after approval
+  verify: python -c "print('placeholder until implemented')"
+  artifacts:
+  - automation/commands/storefront_propose.py
+  attempts: 0
+  last_error: null
+- id: E8-T1
+  epic: E8 Channels
+  story: Influencer CRM
+  title: surface influencer + conversations in web UI (CRUD)
+  depends_on:
+  - E1-T6
+  - E1-T3
+  status: todo
+  agent: general-purpose
+  acceptance: influencer list/detail/status update in web
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web/app/(dash)/influencers
+  attempts: 0
+  last_error: null
+- id: E8-T2
+  epic: E8 Channels
+  story: YouTube
+  title: auto cross-post Reels to YouTube Shorts in pipeline
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: approved reels auto-queued to post_youtube
+  verify: python -c "import ast; ast.parse(open('automation/commands/post_youtube.py').read())"
+  artifacts:
+  - automation/commands/post_youtube.py
+  attempts: 0
+  last_error: null
+- id: E9-T1
+  epic: E9 Hardening
+  story: Auth
+  title: NextAuth + org/RBAC (owner|approver|viewer); gate approve/apply
+  depends_on:
+  - E1-T6
+  status: todo
+  agent: general-purpose
+  acceptance: approve/apply restricted to approver|owner
+  verify: cd platform/apps/web && npm run build
+  artifacts:
+  - platform/apps/web/lib/auth.ts
+  attempts: 0
+  last_error: null
+- id: E9-T2
+  epic: E9 Hardening
+  story: CI
+  title: "GitHub Actions \u2014 pytest + vitest + prisma validate + npm build"
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: CI workflow runs on PR
+  verify: test -f .github/workflows/ci.yml
+  artifacts:
+  - .github/workflows/ci.yml
+  attempts: 0
+  last_error: null
+- id: E9-T3
+  epic: E9 Hardening
+  story: Tests
+  title: pytest suite (attribution, approval_queue, tune_ads proposals, sync_orders, orchestrator)
+  depends_on:
+  - E2-T3
+  - E3-T1
+  - E3-T2
+  - E2-T1
+  - E0-T2
+  status: todo
+  agent: general-purpose
+  acceptance: pytest green; money-safety tests assert no spend outside apply_approved
+  verify: cd automation && python -m pytest -q
+  artifacts:
+  - automation/tests
+  attempts: 0
+  last_error: null
+- id: E9-T4
+  epic: E9 Hardening
+  story: Reliability
+  title: queue retries/DLQ + observability (structured logs/metrics) + retention jobs
+  depends_on:
+  - E1-T9
+  status: todo
+  agent: general-purpose
+  acceptance: failed jobs retried then DLQ; metrics emitted
+  verify: python -c "print('placeholder until implemented')"
+  artifacts:
+  - platform/workers/reliability.py
+  attempts: 0
+  last_error: null
