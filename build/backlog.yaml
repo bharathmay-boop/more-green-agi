@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:10:33.199616+00:00'
+  updated_at: '2026-06-17T18:10:35.000811+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -37,7 +37,7 @@ tasks:
   title: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff, WIP safeguard)
   depends_on:
   - E0-T2
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: resume.sh --once --dry-run exits 0; honors lock; backs off on rate-limit
   verify: bash build/resume.sh --once --dry-run

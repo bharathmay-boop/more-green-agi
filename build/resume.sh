@@ -41,10 +41,16 @@ done
 
 log() { echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] resume: $*"; }
 
-# pick a python interpreter
-PYTHON="$(command -v python3 || command -v python || true)"
+# pick a python interpreter that actually works (skip the Windows Store stub,
+# which resolves on PATH but only prints an install message)
+PYTHON=""
+for cand in python3 python py; do
+  if command -v "$cand" >/dev/null 2>&1 && "$cand" --version >/dev/null 2>&1; then
+    PYTHON="$cand"; break
+  fi
+done
 if [ -z "$PYTHON" ]; then
-  log "no python found"; exit 1
+  log "no working python found"; exit 1
 fi
 
 # ── portable lock with stale reclaim ─────────────────────────────────────────
@@ -100,9 +106,14 @@ wip_safeguard() {
 
 # ── run orchestrator with usage-limit backoff ────────────────────────────────
 run_orchestrator() {
+  # --dry-run is read-only: list ready tasks, regenerate BUILD_PLAN, mutate nothing.
+  if [ "$DRY_RUN" -eq 1 ]; then
+    log "orchestrate.py --dry-run (read-only)"
+    "$PYTHON" build/orchestrate.py --dry-run
+    return $?
+  fi
   local dispatch="claude"
   local extra=()
-  [ "$DRY_RUN" -eq 1 ] && dispatch="mock"
   [ "$ONCE" -eq 1 ] && extra+=(--once)
 
   # backoff schedule in minutes (2 -> 4 -> 8 -> 16, then cron handles the rest)
