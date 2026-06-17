@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:08:53.436755+00:00'
+  updated_at: '2026-06-17T18:08:54.248932+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -56,14 +56,14 @@ tasks:
   title: BUILD_PLAN.md generator + state.json
   depends_on:
   - E0-T2
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: BUILD_PLAN.md regenerated from backlog after each task; state.json written
   verify: test -f build/BUILD_PLAN.md
   artifacts:
   - build/BUILD_PLAN.md
   - build/state.json
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E0-T5
   epic: E0 Build Engine
