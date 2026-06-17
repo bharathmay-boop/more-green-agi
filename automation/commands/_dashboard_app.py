@@ -291,11 +291,132 @@ hr {
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 
+def _run_command(label: str, fn, *args, **kwargs):
+    """Run a pipeline function and show success/error in sidebar."""
+    with st.spinner(f"{label}…"):
+        try:
+            fn(*args, **kwargs)
+            st.sidebar.success(f"{label} done.")
+        except Exception as e:
+            st.sidebar.error(f"{label} failed: {e}")
+
+
 def _sidebar_health():
     st.sidebar.title("🌿 More Green Studio")
     st.sidebar.markdown("---")
-    st.sidebar.subheader("System Health")
 
+    # ── Pipeline Actions ──────────────────────────────────────────────────────
+    st.sidebar.subheader("Pipeline Actions")
+
+    if st.sidebar.button("↻ Sync from Sheets", use_container_width=True):
+        try:
+            from commands.sync_sheets import run as _run
+            _run_command("Sync", _run)
+            st.rerun()
+        except Exception as e:
+            st.sidebar.error(str(e))
+
+    if st.sidebar.button("✦ Generate Prompts", use_container_width=True):
+        try:
+            from commands.generate_prompts import run as _run
+            _run_command("Generate prompts", _run)
+            st.rerun()
+        except Exception as e:
+            st.sidebar.error(str(e))
+
+    if st.sidebar.button("◈ Generate Creatives", use_container_width=True):
+        try:
+            from commands.generate_images import run as _img
+            from commands.upload_media import run as _upload
+            _run_command("Generate images", _img)
+            _run_command("Upload media", _upload)
+            st.rerun()
+        except Exception as e:
+            st.sidebar.error(str(e))
+
+    if st.sidebar.button("🚀 Post Today", use_container_width=True, type="primary"):
+        try:
+            from commands.post_organic import run as _run
+            _run_command("Post organic", _run, platform="both")
+            st.rerun()
+        except Exception as e:
+            st.sidebar.error(str(e))
+
+    st.sidebar.markdown("---")
+
+    col_mon, col_tune = st.sidebar.columns(2)
+    with col_mon:
+        if st.button("📊 Monitor", use_container_width=True, key="sb_monitor"):
+            try:
+                from commands.monitor_ads import run as _run
+                _run_command("Monitor ads", _run)
+            except Exception as e:
+                st.sidebar.error(str(e))
+    with col_tune:
+        if st.button("⚡ Tune", use_container_width=True, key="sb_tune"):
+            try:
+                from commands.tune_ads import run as _run
+                _run_command("Tune ads", _run, dry_run=False)
+            except Exception as e:
+                st.sidebar.error(str(e))
+
+    st.sidebar.markdown("---")
+
+    # ── Campaign Settings ─────────────────────────────────────────────────────
+    st.sidebar.subheader("Campaign Settings")
+    st.sidebar.markdown(
+        '<p style="font-size:0.72rem;color:rgba(248,244,233,0.55);margin:-6px 0 8px;'
+        'line-height:1.5">Applied when you click Create Ad on a post.</p>',
+        unsafe_allow_html=True,
+    )
+
+    from config import SKUS, META_BUDGET_PHASE
+    sku_options = list(SKUS.keys())
+    active_sku = st.sidebar.selectbox(
+        "Active SKU",
+        options=sku_options,
+        index=sku_options.index(st.session_state.get("campaign_sku", sku_options[0])),
+        format_func=lambda x: x.title(),
+        key="sb_sku",
+    )
+    st.session_state["campaign_sku"] = active_sku
+
+    phase = st.sidebar.radio(
+        "Campaign Phase",
+        options=[1, 2, 3],
+        index=st.session_state.get("campaign_phase", 1) - 1,
+        format_func=lambda x: {1: "1 · Traffic", 2: "2 · Conversions", 3: "3 · Sales"}[x],
+        horizontal=True,
+        key="sb_phase",
+    )
+    st.session_state["campaign_phase"] = phase
+
+    default_budget = META_BUDGET_PHASE.get(phase, 500)
+    budget = st.sidebar.number_input(
+        "Daily Budget (₹)",
+        min_value=100,
+        max_value=50000,
+        value=st.session_state.get("campaign_budget", default_budget),
+        step=100,
+        key="sb_budget",
+    )
+    st.session_state["campaign_budget"] = budget
+
+    st.sidebar.markdown(
+        f'<div style="background:rgba(212,175,55,0.12);border:1px solid rgba(212,175,55,0.25);'
+        f'border-radius:8px;padding:8px 12px;margin-top:4px;">'
+        f'<span style="font-size:0.70rem;color:rgba(212,175,55,0.9);letter-spacing:0.08em;'
+        f'text-transform:uppercase;font-weight:500">Active</span><br>'
+        f'<span style="font-size:0.92rem;color:#F8F4E9;font-weight:500">'
+        f'{active_sku.title()} · Phase {phase} · ₹{budget:,}/day</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.sidebar.markdown("---")
+
+    # ── System Health ─────────────────────────────────────────────────────────
+    st.sidebar.subheader("System Health")
     checks = {
         "Anthropic API":  lambda: bool(os.environ.get("ANTHROPIC_API_KEY")),
         "fal.ai":         lambda: bool(os.environ.get("FAL_KEY")),
@@ -421,8 +542,10 @@ def _post_card(post):
             unsafe_allow_html=True,
         )
         date_str = (post["scheduled_at"] or "")[:10]
-        if date_str:
-            st.caption(f"📅 {date_str}")
+        pillar = (post["content_pillar"] or "").replace("_", " ")
+        meta = " · ".join(filter(None, [date_str, pillar]))
+        if meta:
+            st.caption(meta)
         if post["on_hold"]:
             st.markdown('<span class="mg-badge mg-badge-hold">⏸ on hold</span>', unsafe_allow_html=True)
         if post["last_error"]:
@@ -458,44 +581,40 @@ def screen_post_detail(post_id: str):
     left, right = st.columns([1, 1])
 
     with left:
-        st.subheader("Image Prompt")
-        img_prompt = st.text_area(
-            "Image prompt",
-            value=post["image_prompt"] or "",
-            height=150,
-            key=f"img_prompt_{post_id}",
-            label_visibility="collapsed",
-            placeholder="Claude will fill this in when you generate prompts…",
-        )
+        is_reel = (post["post_type"] or "") == "reels"
 
-        st.subheader("Video Prompt")
-        vid_prompt = st.text_area(
-            "Video prompt",
-            value=post["video_prompt"] or "",
-            height=110,
-            key=f"vid_prompt_{post_id}",
-            label_visibility="collapsed",
-            placeholder="Kling motion instructions…",
-        )
+        if is_reel:
+            st.subheader("Video Prompt")
+            vid_prompt = st.text_area(
+                "Video prompt",
+                value=post["video_prompt"] or "",
+                height=150,
+                key=f"vid_prompt_{post_id}",
+                label_visibility="collapsed",
+                placeholder="Kling motion instructions…",
+            )
+            img_prompt = post["image_prompt"] or ""
+        else:
+            st.subheader("Image Prompt")
+            img_prompt = st.text_area(
+                "Image prompt",
+                value=post["image_prompt"] or "",
+                height=150,
+                key=f"img_prompt_{post_id}",
+                label_visibility="collapsed",
+                placeholder="Claude will fill this in when you generate prompts…",
+            )
+            vid_prompt = post["video_prompt"] or ""
 
-        st.subheader("Instagram Caption")
-        ig_caption = st.text_area(
-            "Instagram caption",
+        st.subheader("Caption")
+        st.caption("Used for both Instagram and Facebook. Edit here if needed.")
+        caption = st.text_area(
+            "Caption",
             value=post["caption_instagram"] or "",
-            height=120,
-            key=f"ig_caption_{post_id}",
+            height=140,
+            key=f"caption_{post_id}",
             label_visibility="collapsed",
             placeholder="Pattern interrupt · fact · CTA · hashtags",
-        )
-
-        st.subheader("Facebook Caption")
-        fb_caption = st.text_area(
-            "Facebook caption",
-            value=post["caption_facebook"] or "",
-            height=100,
-            key=f"fb_caption_{post_id}",
-            label_visibility="collapsed",
-            placeholder="Slightly longer, more educational…",
         )
 
         if st.button("Save Edits", use_container_width=True):
@@ -506,11 +625,84 @@ def screen_post_detail(post_id: str):
                         caption_instagram=?, caption_facebook=?,
                         updated_at=datetime('now')
                     WHERE post_id=?""",
-                    (img_prompt, vid_prompt, ig_caption, fb_caption, post_id),
+                    (img_prompt, vid_prompt, caption, caption, post_id),
                 )
             st.success("Saved.")
 
     with right:
+        st.subheader("Ad Copy")
+        ad_headline = post["ad_headline"] or ""
+        ad_primary = post["ad_primary_text"] or ""
+
+        if ad_headline or ad_primary:
+            with st.container(border=True):
+                st.markdown(
+                    f'<p style="font-family:\'DM Sans\',sans-serif;font-size:0.72rem;'
+                    f'font-weight:500;text-transform:uppercase;letter-spacing:0.1em;'
+                    f'color:#7A7A60;margin:0 0 4px">Headline</p>'
+                    f'<p style="font-family:\'Cormorant Garamond\',serif;font-size:1.1rem;'
+                    f'font-weight:600;color:#1B4332;margin:0 0 10px">{ad_headline}</p>'
+                    f'<p style="font-family:\'DM Sans\',sans-serif;font-size:0.72rem;'
+                    f'font-weight:500;text-transform:uppercase;letter-spacing:0.1em;'
+                    f'color:#7A7A60;margin:0 0 4px">Primary Text</p>'
+                    f'<p style="font-family:\'DM Sans\',sans-serif;font-size:0.88rem;'
+                    f'color:#1C1C1C;margin:0">{ad_primary}</p>',
+                    unsafe_allow_html=True,
+                )
+
+            # Check if a campaign already exists for this post
+            db2 = get_db()
+            existing_campaign = db2.execute(
+                "SELECT campaign_id FROM ad_campaigns WHERE campaign_key LIKE ?",
+                (f"{post['sku']}%",)
+            ).fetchone()
+
+            btn_col1, btn_col2 = st.columns(2)
+            with btn_col1:
+                if st.button("↻ Regenerate Ad Copy", use_container_width=True, key=f"regen_ad_{post_id}"):
+                    with st.spinner("Writing ad copy…"):
+                        try:
+                            from commands.generate_prompts import generate_ad_copy
+                            generate_ad_copy(post_id)
+                            st.success("Ad copy updated.")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Failed: {e}")
+            with btn_col2:
+                if existing_campaign:
+                    st.success(f"Ad created ✓")
+                    st.caption(f"`{existing_campaign['campaign_id']}`")
+                else:
+                    phase = st.session_state.get("campaign_phase", 1)
+                    budget = st.session_state.get("campaign_budget", 500)
+                    active_sku = st.session_state.get("campaign_sku", post["sku"])
+                    btn_label = f"📢 Create Ad  ₹{budget:,}/d · P{phase}"
+                    if st.button(btn_label, use_container_width=True, type="primary", key=f"create_ad_{post_id}"):
+                        with st.spinner("Creating Meta campaign (PAUSED)…"):
+                            try:
+                                from commands.create_ads import run as create_ads_run
+                                create_ads_run(
+                                    post_id=post_id,
+                                    budget_override=budget,
+                                    phase_override=phase,
+                                )
+                                st.success(f"Campaign created (PAUSED) — {active_sku.title()}, Phase {phase}, ₹{budget:,}/day. Activate in Ads Manager.")
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Failed: {e}")
+        else:
+            st.caption("No ad copy yet.")
+            if st.button("✦ Generate Ad Copy", use_container_width=True, type="primary", key=f"gen_ad_{post_id}"):
+                with st.spinner("Writing ad copy…"):
+                    try:
+                        from commands.generate_prompts import generate_ad_copy
+                        result = generate_ad_copy(post_id)
+                        st.success(f"Done: {result.get('ad_headline')}")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed: {e}")
+
+        st.markdown("---")
         st.subheader("Instagram Preview")
         with st.container(border=True):
             st.markdown(
@@ -648,6 +840,18 @@ def screen_creative_approval(post_id: str):
             st.success("Approved. Post goes live at its scheduled time.")
             st.session_state["screen"] = "overview"
             st.rerun()
+
+        if post["creatives_approved"]:
+            if st.button("🚀 Post Now", use_container_width=True):
+                with st.spinner("Posting…"):
+                    try:
+                        from commands.post_organic import run as post_run
+                        post_run(platform="both", post_id=post_id)
+                        st.success("Posted to Instagram & Facebook.")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Post failed: {e}")
+
     with col2:
         if st.button("↻ Regenerate All", use_container_width=True):
             with st.spinner("Regenerating…"):

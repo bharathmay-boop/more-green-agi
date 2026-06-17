@@ -72,3 +72,51 @@ CREATE TABLE IF NOT EXISTS insights_cache (
     action_taken        TEXT,
     PRIMARY KEY (ad_id, fetched_date)
 );
+
+CREATE TABLE IF NOT EXISTS influencers (
+    handle                  TEXT PRIMARY KEY,
+    full_name               TEXT,
+    email                   TEXT,
+    ig_user_id              TEXT,       -- IGSID from conversations endpoint (NOT Business Discovery)
+    follower_count          INTEGER,
+    engagement_rate         REAL,       -- (like_count + comments_count) / follower_count
+    source_hashtag          TEXT,
+    post_url                TEXT,
+    like_count              INTEGER,
+    comments_count          INTEGER,
+    template_used           TEXT,
+    last_reply_preview      TEXT,
+    last_message_at         TEXT,
+    last_checked_at         TEXT,       -- last time check-replies polled this thread
+    shipping_address        TEXT,
+    product_dispatched_at   TEXT,
+    agreed_post_date        TEXT,
+    post_live_url           TEXT,
+    status                  TEXT DEFAULT 'discovered',
+    notes                   TEXT,
+    outreach_sent_at        TEXT,
+    dm_draft_generated_at   TEXT,
+    reply_received_at       TEXT,
+    collab_agreed           INTEGER DEFAULT 0,
+    product_shipped         INTEGER DEFAULT 0,
+    tracking_code           TEXT,
+    created_at              TEXT DEFAULT (datetime('now')),
+    updated_at              TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS influencer_conversations (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    handle              TEXT NOT NULL,
+    ig_thread_id        TEXT,
+    direction           TEXT NOT NULL,
+    message_text        TEXT NOT NULL,
+    sent_at             TEXT NOT NULL,
+    meta_message_id     TEXT,
+    created_at          TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS hashtag_usage (
+    hashtag             TEXT NOT NULL,
+    queried_date        TEXT NOT NULL,
+    PRIMARY KEY (hashtag, queried_date)
+);

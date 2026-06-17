@@ -33,13 +33,15 @@ def run(platform: str = "both", post_id: str = None, dry_run: bool = False) -> N
             continue
 
         image_url = urls[0]
+        ig_caption = (post["caption_instagram"] or "").replace("{link}", "get yours at moregreen.in")
+        fb_caption = (post["caption_facebook"] or "").replace("{link}", "get yours at moregreen.in")
 
         if dry_run:
             log.info("[DRY RUN] Would post %s to %s (image: %s)", post["post_id"], platform, image_url)
             continue
 
         if platform in ("instagram", "both"):
-            ig_post_id = _post_instagram(ig_id, image_url, post["caption_instagram"], token, post["post_id"])
+            ig_post_id = _post_instagram(ig_id, image_url, ig_caption, token, post["post_id"])
             if ig_post_id:
                 with db:
                     db.execute(
@@ -48,7 +50,7 @@ def run(platform: str = "both", post_id: str = None, dry_run: bool = False) -> N
                     )
 
         if platform in ("facebook", "both"):
-            fb_post_id = _post_facebook(page_id, image_url, post["caption_facebook"], token, post["post_id"])
+            fb_post_id = _post_facebook(page_id, image_url, fb_caption, token, post["post_id"])
             if fb_post_id:
                 with db:
                     db.execute(

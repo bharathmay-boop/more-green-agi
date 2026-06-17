@@ -36,7 +36,7 @@ HASHTAGS = _hashtags
 CULTURAL_CALENDAR = _calendar["events"]
 
 # ── Image / Video Generation ──────────────────────────────────────────────────
-IMAGE_VARIANTS_PER_POST  = 3
+IMAGE_VARIANTS_PER_POST  = 1
 IMAGE_ASPECT_RATIO_FEED  = "1:1"
 IMAGE_ASPECT_RATIO_REELS = "9:16"
 VIDEO_DURATION_SECONDS   = 5
@@ -105,6 +105,10 @@ FAL_FLUX_KONTEXT_ENDPOINT = "fal-ai/flux-pro/kontext"
 FAL_KLING_ENDPOINT        = "fal-ai/kling-video/v2.1/standard/image-to-video"
 FAL_NANO_BANANA_ENDPOINT  = "fal-ai/flux/dev"
 ANTHROPIC_MODEL           = "claude-sonnet-4-6"
+
+# ── BytePlus / SeeDance 2.0 ────────────────────────────────────────────────────
+BYTEPLUS_ARK_BASE   = "https://ark.ap-southeast.bytepluses.com/api/v3"
+SEEDANCE_MODEL      = "dreamina-seedance-2-0-260128"
 CLOUDINARY_FOLDER         = "more-green"
 
 # ── Credential Rotation Notes ─────────────────────────────────────────────────
