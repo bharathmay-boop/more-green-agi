@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:08:51.886770+00:00'
+  updated_at: '2026-06-17T18:08:53.436755+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -37,14 +37,19 @@ tasks:
   title: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff, WIP safeguard)
   depends_on:
   - E0-T2
-  status: in_progress
+  status: blocked
   agent: general-purpose
   acceptance: resume.sh --once --dry-run exits 0; honors lock; backs off on rate-limit
   verify: bash build/resume.sh --once --dry-run
-  artifacts:
+  artifacts: &id001
   - build/resume.sh
   attempts: 1
-  last_error: null
+  last_error: 'verify failed: [2026-06-17T18:08:53Z] resume: orchestrate.py --dispatch=mock --once
+
+    [2026-06-17T18:08:53Z] resume: done (rc=49)
+
+    Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut
+    from Settings > Apps > Advanced app settings > App execution aliases.'
 - id: E0-T4
   epic: E0 Build Engine
   story: Human view
@@ -549,3 +554,21 @@ tasks:
   - platform/workers/reliability.py
   attempts: 0
   last_error: null
+- id: E0-T3-FIX
+  epic: E0 Build Engine
+  story: Cron/resume
+  title: 'Fix failing task E0-T3: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff,
+    WIP safeguard)'
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: resume.sh --once --dry-run exits 0; honors lock; backs off on rate-limit
+  verify: bash build/resume.sh --once --dry-run
+  artifacts: *id001
+  attempts: 0
+  last_error: 'verify failed: [2026-06-17T18:08:53Z] resume: orchestrate.py --dispatch=mock --once
+
+    [2026-06-17T18:08:53Z] resume: done (rc=49)
+
+    Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut
+    from Settings > Apps > Advanced app settings > App execution aliases.'
