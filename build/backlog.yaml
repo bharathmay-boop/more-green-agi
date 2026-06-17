@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:08:49.737858+00:00'
+  updated_at: '2026-06-17T18:08:51.022772+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -23,7 +23,7 @@ tasks:
   title: Implement build/orchestrate.py (ready-set, dispatch, verify, commit, regen, lock)
   depends_on:
   - E0-T1
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: --dry-run lists ready tasks; --dispatch=mock runs a no-op task and commits
   verify: python build/orchestrate.py --dry-run
