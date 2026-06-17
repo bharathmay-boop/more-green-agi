@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:09:22.614628+00:00'
+  updated_at: '2026-06-17T18:09:23.602222+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -85,14 +85,14 @@ tasks:
   story: Infra
   title: platform/docker-compose.yml (postgres:16 + redis:7)
   depends_on: []
-  status: in_progress
+  status: blocked
   agent: general-purpose
   acceptance: docker compose config validates
   verify: test -f platform/docker-compose.yml
-  artifacts:
+  artifacts: &id002
   - platform/docker-compose.yml
   attempts: 1
-  last_error: null
+  last_error: 'verify failed: '
 - id: E1-T2
   epic: E1 Platform foundation
   story: DB
@@ -572,3 +572,15 @@ tasks:
 
     Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut
     from Settings > Apps > Advanced app settings > App execution aliases.'
+- id: E1-T1-FIX
+  epic: E1 Platform foundation
+  story: Infra
+  title: 'Fix failing task E1-T1: platform/docker-compose.yml (postgres:16 + redis:7)'
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: docker compose config validates
+  verify: test -f platform/docker-compose.yml
+  artifacts: *id002
+  attempts: 0
+  last_error: 'verify failed: '
