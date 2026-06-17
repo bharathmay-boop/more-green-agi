@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:13:52.091091+00:00'
+  updated_at: '2026-06-17T18:13:53.557026+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -135,7 +135,7 @@ tasks:
   title: automation/db/schema.sql new tables (creative, order, ad_spend_daily, attribution, approval_queue,
     build_task, audit_log)
   depends_on: []
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: fresh get_db() creates all new tables
   verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.db import get_db; get_db()"

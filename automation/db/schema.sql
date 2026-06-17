@@ -120,3 +120,132 @@ CREATE TABLE IF NOT EXISTS hashtag_usage (
     queried_date        TEXT NOT NULL,
     PRIMARY KEY (hashtag, queried_date)
 );
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- Autonomous Marketing Platform — new tables (docs/plan/moregreen/01-data-model.md)
+-- Additive only. SQLite stays usable for the CLI; Postgres/Prisma is canonical.
+-- ════════════════════════════════════════════════════════════════════════════
+
+-- One row per generated asset variant (decouples assets from posts).
+CREATE TABLE IF NOT EXISTS creatives (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id             TEXT REFERENCES posts(post_id),
+    kind                TEXT CHECK (kind IN ('image','video')),
+    variant_index       INTEGER DEFAULT 0,
+    local_path          TEXT,
+    cloudinary_url      TEXT,
+    cloudinary_public_id TEXT,
+    status              TEXT DEFAULT 'generating'
+                        CHECK (status IN ('generating','ready','failed','selected','rejected')),
+    cost_usd            REAL,
+    error               TEXT,
+    created_at          TEXT DEFAULT (datetime('now')),
+    updated_at          TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_creatives_post_status ON creatives(post_id, status);
+
+-- Shopify orders — financial record, never deleted (re-sync upserts by order_id).
+CREATE TABLE IF NOT EXISTS orders (
+    order_id            TEXT PRIMARY KEY,
+    created_at          TEXT,
+    sku                 TEXT,
+    quantity            INTEGER DEFAULT 1,
+    revenue_inr         REAL DEFAULT 0,
+    discount_inr        REAL DEFAULT 0,
+    customer_hash       TEXT,                 -- sha256(lower(email))
+    landing_ref         TEXT,                 -- utm/referrer if available
+    raw_json            TEXT,
+    ingested_at         TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
+CREATE INDEX IF NOT EXISTS idx_orders_sku_created ON orders(sku, created_at);
+
+-- Per-ad per-day spend + conversions (lifetime snapshot stays in insights_cache).
+CREATE TABLE IF NOT EXISTS ad_spend_daily (
+    ad_id               TEXT NOT NULL,
+    date                TEXT NOT NULL,        -- YYYY-MM-DD (IST bucket)
+    campaign_id         TEXT,
+    sku                 TEXT,
+    spend_inr           REAL DEFAULT 0,
+    impressions         INTEGER DEFAULT 0,
+    clicks              INTEGER DEFAULT 0,
+    purchases           INTEGER DEFAULT 0,
+    purchase_value_inr  REAL DEFAULT 0,
+    cpm_inr             REAL,
+    ctr                 REAL,
+    frequency           REAL,
+    fetched_at          TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (ad_id, date)
+);
+CREATE INDEX IF NOT EXISTS idx_spend_sku_date ON ad_spend_daily(sku, date);
+
+-- Computed ROAS rollups (recompute overwrites).
+CREATE TABLE IF NOT EXISTS attribution (
+    scope               TEXT NOT NULL CHECK (scope IN ('sku','campaign','blended')),
+    scope_id            TEXT NOT NULL,
+    date                TEXT NOT NULL,
+    paid_roas           REAL,
+    blended_roas        REAL,
+    organic_assist_inr  REAL DEFAULT 0,
+    spend_inr           REAL DEFAULT 0,
+    revenue_inr         REAL DEFAULT 0,
+    computed_at         TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (scope, scope_id, date)
+);
+CREATE INDEX IF NOT EXISTS idx_attr_scope_date ON attribution(scope, scope_id, date);
+
+-- Money/state proposals awaiting human decision. Status transitions guarded in code (doc 04).
+CREATE TABLE IF NOT EXISTS approval_queue (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    action_type         TEXT NOT NULL CHECK (action_type IN
+                        ('activate_ad','scale_budget','reallocate','price_test',
+                         'publish_post','product_copy_change')),
+    entity_ref          TEXT,                 -- polymorphic ref (ad_id, campaign_key, post_id, sku…)
+    payload_json        TEXT,                 -- {current, proposed, …}
+    expected_impact_json TEXT,                -- {projected_roas, projected_spend, …}
+    status              TEXT DEFAULT 'pending' CHECK (status IN
+                        ('pending','approved','rejected','applied','failed','expired')),
+    requested_by        TEXT DEFAULT 'orchestrator',
+    requested_at        TEXT DEFAULT (datetime('now')),
+    decided_by          TEXT,
+    decided_at          TEXT,
+    applied_at          TEXT,
+    error               TEXT,
+    expires_at          TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_approval_status_req ON approval_queue(status, requested_at);
+-- Dedupe key for identical pending proposals (entity + action + proposed payload).
+CREATE UNIQUE INDEX IF NOT EXISTS uq_approval_pending
+    ON approval_queue(action_type, entity_ref, payload_json)
+    WHERE status = 'pending';
+
+-- Mirror of backlog.yaml for the web Build screen.
+CREATE TABLE IF NOT EXISTS build_tasks (
+    id                  TEXT PRIMARY KEY,
+    epic                TEXT,
+    story               TEXT,
+    title               TEXT,
+    depends_on          TEXT,                 -- json array
+    status              TEXT DEFAULT 'todo'
+                        CHECK (status IN ('todo','in_progress','done','blocked')),
+    agent               TEXT,
+    acceptance          TEXT,
+    verify              TEXT,
+    artifacts           TEXT,                 -- json array
+    last_run_at         TEXT,
+    last_error          TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_build_tasks_status ON build_tasks(status);
+
+-- Append-only audit trail for every mutating action.
+CREATE TABLE IF NOT EXISTS audit_log (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor               TEXT,                 -- human | orchestrator | worker
+    action              TEXT,
+    entity              TEXT,
+    entity_id           TEXT,
+    before_json         TEXT,
+    after_json          TEXT,
+    created_at          TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_audit_entity ON audit_log(entity, entity_id);
