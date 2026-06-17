@@ -100,6 +100,17 @@ SCALE_BUDGET_MULTIPLIER      = 1.20
 CREATIVE_REFRESH_FREQUENCY   = 3.5
 MAX_CPM_INR                  = 400
 
+# ── Money-Safety Caps & Autonomy (docs/plan/moregreen/04-approval-and-spend.md) ─
+# Hard ceilings re-checked at apply time in apply_approved.py. No code path may
+# activate or increase ad budget without an approved approval_queue row.
+import os as _os
+
+MAX_DAILY_SPEND_INR     = float(_os.getenv("MAX_DAILY_SPEND_INR", 3000))      # total/day across campaigns
+MAX_CAMPAIGN_BUDGET_INR = float(_os.getenv("MAX_CAMPAIGN_BUDGET_INR", 2000))  # per-campaign daily budget ceiling
+ROAS_FLOOR_FOR_SCALE    = float(_os.getenv("ROAS_FLOOR_FOR_SCALE", 2.5))      # min ROAS to propose a scale
+APPROVAL_TTL_HOURS      = int(_os.getenv("APPROVAL_TTL_HOURS", 48))           # pending proposals expire after this
+AUTONOMY_MODE           = _os.getenv("AUTONOMY_MODE", "propose")             # propose | autonomous (locked: propose)
+
 # ── API Endpoints ─────────────────────────────────────────────────────────────
 FAL_FLUX_KONTEXT_ENDPOINT = "fal-ai/flux-pro/kontext"
 FAL_KLING_ENDPOINT        = "fal-ai/kling-video/v2.1/standard/image-to-video"
