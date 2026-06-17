@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-17T18:10:05.348918+00:00'
+  updated_at: '2026-06-17T18:10:33.199616+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -43,7 +43,7 @@ tasks:
   verify: bash build/resume.sh --once --dry-run
   artifacts:
   - build/resume.sh
-  attempts: 1
+  attempts: 2
   last_error: null
 - id: E0-T4
   epic: E0 Build Engine
