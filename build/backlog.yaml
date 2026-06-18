@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:41:24.599019+00:00'
+  updated_at: '2026-06-18T03:41:25.360489+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -93,13 +93,13 @@ tasks:
   story: DB
   title: platform/packages/db/schema.prisma (port existing + new tables per doc 01)
   depends_on: []
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: prisma validate passes
   verify: cd platform/packages/db && npx --yes prisma validate
   artifacts:
   - platform/packages/db/schema.prisma
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E1-T3
   epic: E1 Platform foundation
