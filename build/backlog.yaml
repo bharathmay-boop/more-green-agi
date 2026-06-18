@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T04:09:22.449719+00:00'
+  updated_at: '2026-06-18T04:12:03.957269+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -152,14 +152,21 @@ tasks:
   story: Web
   title: Next.js app skeleton + layout + lib/queue.ts
   depends_on: []
-  status: in_progress
+  status: blocked
   agent: general-purpose
   acceptance: npm run build passes
   verify: cd platform/apps/web && npm run build
-  artifacts:
+  artifacts: &id002
   - platform/apps/web
   attempts: 2
-  last_error: null
+  last_error: 'verify failed: > @moregreen/web@0.1.0 build
+
+    > next build
+
+
+    ''next'' is not recognized as an internal or external command,
+
+    operable program or batch file.'
 - id: E1-T7
   epic: E1 Platform foundation
   story: Web
@@ -570,3 +577,22 @@ tasks:
     \ no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and\
     \ pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the\
     \ `PrismaClient` constructor. See https://pri"
+- id: E1-T6-FIX
+  epic: E1 Platform foundation
+  story: Web
+  title: 'Fix failing task E1-T6: Next.js app skeleton + layout + lib/queue.ts'
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: npm run build passes
+  verify: cd platform/apps/web && npm run build
+  artifacts: *id002
+  attempts: 0
+  last_error: 'verify failed: > @moregreen/web@0.1.0 build
+
+    > next build
+
+
+    ''next'' is not recognized as an internal or external command,
+
+    operable program or batch file.'
