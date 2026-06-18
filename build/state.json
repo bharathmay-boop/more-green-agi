@@ -1,7 +1,7 @@
 {
   "run_count": 38,
   "started_at": "2026-06-18T06:54:48.299198+00:00",
-  "last_error": null,
+  "last_error": "usage_limit:E1-T9",
   "last_task": "E1-T9",
-  "finished_at": "2026-06-18T06:38:46.838029+00:00"
+  "finished_at": "2026-06-18T06:54:58.425030+00:00"
 }
