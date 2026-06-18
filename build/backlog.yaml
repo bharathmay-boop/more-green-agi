@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T09:03:09.081918+00:00'
+  updated_at: '2026-06-18T09:07:09.959153+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -469,13 +469,13 @@ tasks:
   depends_on:
   - E7-T1
   - E3-T1
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: product_copy_change/price_test proposals; apply only after approval
   verify: python -c "print('placeholder until implemented')"
   artifacts:
   - automation/commands/storefront_propose.py
-  attempts: 2
+  attempts: 3
   last_error: null
 - id: E8-T1
   epic: E8 Channels
