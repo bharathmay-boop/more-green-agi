@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T04:22:12.969340+00:00'
+  updated_at: '2026-06-18T04:30:13.869077+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -203,13 +203,13 @@ tasks:
   title: platform/workers/* wrapping automation/commands/*
   depends_on:
   - E1-T1
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: worker entrypoint dispatches a named command by job payload
   verify: python platform/workers/run_job.py --help
   artifacts:
   - platform/workers
-  attempts: 3
+  attempts: 4
   last_error: null
 - id: E2-T1
   epic: E2 Profit loop
