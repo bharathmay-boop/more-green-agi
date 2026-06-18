@@ -553,10 +553,10 @@ tasks:
   title: queue retries/DLQ + observability (structured logs/metrics) + retention jobs
   depends_on:
   - E1-T9
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: failed jobs retried then DLQ; metrics emitted
-  verify: python -c "print('placeholder until implemented')"
+  verify: cd platform/workers && python -m pytest test_reliability.py -q && python run_job.py --help
   artifacts:
   - platform/workers/reliability.py
   attempts: 0

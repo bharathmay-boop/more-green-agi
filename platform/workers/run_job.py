@@ -29,6 +29,7 @@ import json
 import logging
 import os
 import sys
+import time
 from pathlib import Path
 
 # --- Path bootstrap -------------------------------------------------------
@@ -40,6 +41,7 @@ if str(AUTOMATION_DIR) not in sys.path:
     sys.path.insert(0, str(AUTOMATION_DIR))
 
 from dispatch import REGISTRY, dispatch  # noqa: E402  (after sys.path setup)
+import reliability  # noqa: E402  (sibling module; retries/DLQ/metrics/retention)
 
 log = logging.getLogger("workers.run_job")
 
@@ -81,14 +83,21 @@ def run_worker(redis_url: str, dry_run: bool, once: bool) -> int:
             payload = None
 
         if payload is not None:
-            r.hset(key, "status", "running")
+            try:
+                attempts = int(data.get("attempts") or 0) + 1
+            except (TypeError, ValueError):
+                attempts = 1
+            r.hset(key, mapping={"status": "running", "attempts": attempts})
+            reliability.emit_metric(r, "started", job_type=job_type)
+            started = time.time()
             try:
                 dispatch(job_type, payload, dry_run)
-                r.hset(key, mapping={"status": "done", "error": ""})
+                reliability.mark_done(r, job_id=job_id, job_type=job_type, started_at=started)
                 log.info("job %s (%s) done", job_id, job_type)
             except Exception as exc:  # never let one bad job kill the worker
-                log.exception("job %s (%s) failed", job_id, job_type)
-                r.hset(key, mapping={"status": "failed", "error": str(exc)})
+                log.exception("job %s (%s) failed (attempt %d)", job_id, job_type, attempts)
+                reliability.handle_failure(r, job_id=job_id, job_type=job_type,
+                                           attempts=attempts, error=str(exc))
 
         if once:
             return 0
