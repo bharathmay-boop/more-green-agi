@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:46:05.088246+00:00'
+  updated_at: '2026-06-18T03:49:14.759414+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -152,7 +152,7 @@ tasks:
   story: Web
   title: Next.js app skeleton + layout + lib/queue.ts
   depends_on: []
-  status: in_progress
+  status: todo
   agent: general-purpose
   acceptance: npm run build passes
   verify: cd platform/apps/web && npm run build
@@ -210,14 +210,14 @@ tasks:
   title: sync_orders.py + sync-orders CLI + order table upsert
   depends_on:
   - E1-T5
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: --dry-run prints N orders, writes none; real run upserts by order_id
   verify: python automation/main.py --dry-run sync-orders
   artifacts:
   - automation/commands/sync_orders.py
   - automation/main.py
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E2-T2
   epic: E2 Profit loop
