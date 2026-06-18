@@ -74,8 +74,88 @@ def run() -> None:
                 ),
             )
 
+        # Per-day spend rows for blended-ROAS attribution (doc 03). Additive —
+        # the lifetime cache above is left untouched for backward compatibility.
+        _upsert_daily(db, c)
+
     headers = ["SKU", "Date", "Spend", "CTR", "Freq", "CPM", "ROAS"]
     print(tabulate(rows, headers=headers, tablefmt="simple"))
+
+
+def _upsert_daily(db, campaign) -> None:
+    """Fetch last-7-day per-day insights for one ad and upsert ad_spend_daily.
+
+    Keyed by (ad_id, date); sku/campaign_id are carried from the ad_campaigns
+    row so attribution can roll up by SKU and by campaign.
+    """
+    for day in _fetch_daily_insights(campaign["ad_id"]):
+        date = day.get("date_start")
+        if not date:
+            continue
+        spend       = float(day.get("spend", 0) or 0)
+        impressions = int(float(day.get("impressions", 0) or 0))
+        clicks      = int(float(day.get("clicks", 0) or 0))
+        cpm         = float(day.get("cpm", 0) or 0)
+        ctr         = float(day.get("ctr", 0) or 0)
+        freq        = float(day.get("frequency", 0) or 0)
+        purchases, purchase_value = _extract_purchases(day)
+        with db:
+            db.execute(
+                """
+                INSERT INTO ad_spend_daily
+                    (ad_id, date, campaign_id, sku, spend_inr, impressions,
+                     clicks, purchases, purchase_value_inr, cpm_inr, ctr,
+                     frequency, fetched_at)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'))
+                ON CONFLICT(ad_id, date) DO UPDATE SET
+                     campaign_id=excluded.campaign_id, sku=excluded.sku,
+                     spend_inr=excluded.spend_inr, impressions=excluded.impressions,
+                     clicks=excluded.clicks, purchases=excluded.purchases,
+                     purchase_value_inr=excluded.purchase_value_inr,
+                     cpm_inr=excluded.cpm_inr, ctr=excluded.ctr,
+                     frequency=excluded.frequency, fetched_at=datetime('now')
+                """,
+                (
+                    campaign["ad_id"], date, campaign["campaign_id"], campaign["sku"],
+                    spend, impressions, clicks, purchases, purchase_value,
+                    cpm, ctr, freq,
+                ),
+            )
+
+
+def _fetch_daily_insights(ad_id: str) -> list:
+    """Per-day insights for the last 7 days (time_increment=1)."""
+    try:
+        ad = Ad(ad_id)
+        insights = ad.get_insights(
+            fields=_INSIGHT_FIELDS + ["action_values", "date_start", "date_stop"],
+            params={"date_preset": "last_7d", "time_increment": 1},
+        )
+        return [dict(i) for i in insights] if insights else []
+    except Exception as e:
+        log.warning("Could not fetch daily insights for ad %s: %s", ad_id, e)
+        return []
+
+
+def _extract_purchases(ins: dict) -> tuple:
+    """Return (purchase_count, purchase_value_inr) from the actions arrays."""
+    count = 0
+    for action in ins.get("actions", []) or []:
+        if action.get("action_type") == "omni_purchase":
+            try:
+                count = int(float(action.get("value", 0)))
+            except (TypeError, ValueError):
+                pass
+            break
+    value = 0.0
+    for av in ins.get("action_values", []) or []:
+        if av.get("action_type") == "omni_purchase":
+            try:
+                value = float(av.get("value", 0))
+            except (TypeError, ValueError):
+                pass
+            break
+    return count, value
 
 
 def _fetch_insights(ad_id: str) -> dict:

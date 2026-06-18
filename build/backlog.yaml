@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:49:16.795101+00:00'
+  updated_at: '2026-06-18T03:49:17.851911+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -225,7 +225,7 @@ tasks:
   title: extend monitor_ads.py to upsert ad_spend_daily (per-day, purchases+value)
   depends_on:
   - E1-T5
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: per-day rows upserted by (ad_id,date); lifetime cache untouched
   verify: python -c "import ast; ast.parse(open('automation/commands/monitor_ads.py').read())"
