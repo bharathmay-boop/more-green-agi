@@ -199,6 +199,16 @@ def tune_ads(ctx, apply):
     run(dry_run=not apply)
 
 
+@cli.command("strategize")
+@click.option("--days", default=14, show_default=True, type=int,
+              help="Look back this many days of blended-ROAS attribution.")
+@click.pass_context
+def strategize(ctx, days):
+    """Rank SKUs by blended ROAS and write spend/content proposals (no autonomous spend)."""
+    from commands.strategize import run
+    run(dry_run=ctx.obj["dry_run"], days=days)
+
+
 @cli.command("apply-approved")
 @click.pass_context
 def apply_approved(ctx):

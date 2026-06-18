@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:54:47.041938+00:00'
+  updated_at: '2026-06-18T03:54:48.370865+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -357,7 +357,7 @@ tasks:
   depends_on:
   - E2-T3
   - E3-T1
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: produces draft posts + approval proposals; no autonomous spend/publish
   verify: python automation/main.py --dry-run strategize
