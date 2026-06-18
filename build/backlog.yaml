@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T08:51:49.885117+00:00'
+  updated_at: '2026-06-18T08:51:50.471554+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -454,13 +454,13 @@ tasks:
   title: read Shopify products + landing perf (orders by landing_ref)
   depends_on:
   - E2-T1
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: product pages + landing metrics fetched
   verify: python -c "print('placeholder until implemented')"
   artifacts:
   - automation/commands/storefront_audit.py
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E7-T2
   epic: E7 Storefront loop
