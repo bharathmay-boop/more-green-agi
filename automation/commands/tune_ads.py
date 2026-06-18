@@ -18,6 +18,7 @@ from config import (
 )
 from utils.db import get_db
 from utils.notifications import notify_founder
+from utils import approvals
 
 log = logging.getLogger(__name__)
 
@@ -85,12 +86,16 @@ def _evaluate(c, db, today: str, dry_run: bool) -> None:
     )
 
     if not dry_run:
-        FacebookAdsApi.init(
-            app_id=os.environ["META_APP_ID"],
-            app_secret=os.environ["META_APP_SECRET"],
-            access_token=os.environ["META_ACCESS_TOKEN"],
-        )
-        _apply_action(c, action, db)
+        # Meta init is only needed for the immediate PAUSE path. SCALE never
+        # touches Meta here — it writes an approval proposal instead.
+        if action in ("PAUSE_HIGH_CPM", "PAUSE_LOW_CTR"):
+            FacebookAdsApi.init(
+                app_id=os.environ["META_APP_ID"],
+                app_secret=os.environ["META_APP_SECRET"],
+                access_token=os.environ["META_ACCESS_TOKEN"],
+            )
+        _apply_action(c, action, db, metrics={"roas": roas, "cpm": cpm,
+                                              "ctr": ctr, "spend": spend})
 
     with db:
         db.execute(
@@ -99,8 +104,10 @@ def _evaluate(c, db, today: str, dry_run: bool) -> None:
         )
 
 
-def _apply_action(campaign, action: str, db) -> None:
+def _apply_action(campaign, action: str, db, metrics: dict | None = None) -> None:
+    metrics = metrics or {}
     if action in ("PAUSE_HIGH_CPM", "PAUSE_LOW_CTR"):
+        # Pausing only ever reduces waste → immediate, bypasses the approval queue.
         Ad(campaign["ad_id"]).api_update(params={"status": "PAUSED"})
         with db:
             db.execute(
@@ -110,10 +117,39 @@ def _apply_action(campaign, action: str, db) -> None:
         log.info("    Paused ad %s", campaign["ad_id"])
 
     elif action == "SCALE":
-        adset = AdSet(campaign["adset_id"]).api_get(fields=["daily_budget"])
-        new_budget = int(float(adset["daily_budget"]) * SCALE_BUDGET_MULTIPLIER)
-        AdSet(campaign["adset_id"]).api_update(params={"daily_budget": new_budget})
-        log.info("    Scaled adset budget to ₹%.0f", new_budget / 100)
+        # MONEY-SAFETY: never raise budget here. Write a proposal; only
+        # apply_approved.py (after human approval + cap re-check) touches Meta.
+        current_inr = float(campaign["daily_budget_inr"] or 0)
+        proposed_inr = round(current_inr * SCALE_BUDGET_MULTIPLIER)
+        roas = float(metrics.get("roas") or 0)
+        pid = approvals.propose(
+            action_type="scale_budget",
+            entity_ref=campaign["campaign_key"],
+            payload={
+                "adset_id": campaign["adset_id"],
+                "sku": campaign["sku"],
+                "current_inr": current_inr,
+                "proposed_inr": proposed_inr,
+                "multiplier": SCALE_BUDGET_MULTIPLIER,
+            },
+            expected_impact={
+                "current_roas": roas,
+                "current_spend_inr": float(metrics.get("spend") or 0),
+                "projected_spend_inr": proposed_inr,
+            },
+            requested_by="tune_ads",
+            db=db,
+        )
+        log.info("    Proposed scale ₹%.0f→₹%.0f for %s (approval #%s)",
+                 current_inr, proposed_inr, campaign["sku"], pid)
+        notify_founder(
+            subject=f"Approve budget scale: {campaign['sku']} (ROAS {roas:.1f}x)",
+            body=(
+                f"{campaign['sku']} is hitting ROAS {roas:.1f}x. Proposed daily "
+                f"budget ₹{current_inr:.0f} → ₹{proposed_inr:.0f}. "
+                f"Approve in the dashboard (proposal #{pid}) to apply."
+            ),
+        )
 
     elif action == "REFRESH_CREATIVE":
         log.warning("    Creative refresh needed for %s", campaign["sku"])

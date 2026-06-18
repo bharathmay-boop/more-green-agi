@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:51:15.398860+00:00'
+  updated_at: '2026-06-18T03:51:16.450936+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -299,7 +299,7 @@ tasks:
   title: refactor tune_ads.py (SCALE/activate -> proposal; PAUSE immediate)
   depends_on:
   - E3-T1
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: scale writes proposal, no Meta call; pause applies immediately
   verify: python -c "import ast; ast.parse(open('automation/commands/tune_ads.py').read())"
