@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T08:47:04.944402+00:00'
+  updated_at: '2026-06-18T08:51:49.885117+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -440,7 +440,7 @@ tasks:
   title: auto-seed posts from cultural_calendar + perf gaps + sku_split (dedupe by post_id)
   depends_on:
   - E2-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: weekly calendar proposed honoring sku_split; founder approves
   verify: python -c "print('placeholder until implemented')"
