@@ -1,0 +1,269 @@
+// More Green platform — canonical data model (doc 01).
+// Postgres is the system of record; the Python CLI keeps a 1:1 SQLite mirror
+// (automation/db/schema.sql) and seed_from_sqlite.py imports existing rows.
+//
+// Validate (no DB needed):  cd platform/packages/db && npx prisma validate
+// Prisma is pinned in this package's package.json so validation is deterministic.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Existing entities (ported 1:1 from SQLite, keys unchanged) ────────────────
+model Post {
+  postId            String     @id @map("post_id")
+  scheduledAt       String?    @map("scheduled_at")
+  platform          String?
+  postType          String?    @map("post_type")
+  sku               String?
+  topic             String?
+  theme             String?
+  contentPillar     String?    @map("content_pillar")
+  imagePrompt       String?    @map("image_prompt")
+  videoPrompt       String?    @map("video_prompt")
+  captionInstagram  String?    @map("caption_instagram")
+  captionFacebook   String?    @map("caption_facebook")
+  altText           String?    @map("alt_text")
+  sourceProductImage String?   @map("source_product_image")
+  promptsApproved   Boolean    @default(false) @map("prompts_approved")
+  creativesApproved Boolean    @default(false) @map("creatives_approved")
+  onHold            Boolean    @default(false) @map("on_hold")
+  mediaPath         String?    @map("media_path")
+  videoPath         String?    @map("video_path")
+  cloudinaryUrl     String?    @map("cloudinary_url")
+  igPostId          String?    @map("ig_post_id")
+  fbPostId          String?    @map("fb_post_id")
+  youtubeVideoId    String?    @map("youtube_video_id")
+  pipelineStatus    String     @default("draft") @map("pipeline_status")
+  lastError         String?    @map("last_error")
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @updatedAt @map("updated_at")
+  creatives         Creative[]
+
+  @@index([sku, scheduledAt])
+  @@index([pipelineStatus])
+  @@map("posts")
+}
+
+model AdCampaign {
+  campaignKey    String   @id @map("campaign_key")
+  sku            String?
+  campaignDate   String?  @map("campaign_date")
+  campaignPhase  Int?     @map("campaign_phase")
+  campaignId     String?  @map("campaign_id")
+  adsetId        String?  @map("adset_id")
+  creativeId     String?  @map("creative_id")
+  adId           String?  @map("ad_id")
+  status         String?
+  dailyBudgetInr Float?   @map("daily_budget_inr")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([sku, status])
+  @@map("ad_campaigns")
+}
+
+model InsightsCache {
+  adId             String @map("ad_id")
+  fetchedDate      String @map("fetched_date")
+  spendInr         Float? @map("spend_inr")
+  impressions      Int?
+  clicks           Int?
+  purchases        Int?
+  purchaseValueInr Float? @map("purchase_value_inr")
+  raw              String?
+
+  @@id([adId, fetchedDate])
+  @@map("insights_cache")
+}
+
+model Influencer {
+  id            Int                       @id @default(autoincrement())
+  username      String                    @unique
+  fullName      String?                   @map("full_name")
+  followers     Int?
+  email         String?
+  bio           String?
+  status        String                    @default("discovered")
+  discoveredVia String?                   @map("discovered_via")
+  createdAt     DateTime                  @default(now()) @map("created_at")
+  conversations InfluencerConversation[]
+
+  @@index([status])
+  @@map("influencers")
+}
+
+model InfluencerConversation {
+  id           Int        @id @default(autoincrement())
+  influencerId Int        @map("influencer_id")
+  direction    String?
+  message      String?
+  channel      String?
+  createdAt    DateTime   @default(now()) @map("created_at")
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+
+  @@index([influencerId])
+  @@map("influencer_conversations")
+}
+
+model HashtagUsage {
+  hashtag   String   @id
+  lastUsed  String?  @map("last_used")
+  count     Int      @default(0)
+
+  @@map("hashtag_usage")
+}
+
+// ── New entities ──────────────────────────────────────────────────────────────
+model Creative {
+  id                 Int      @id @default(autoincrement())
+  postId             String   @map("post_id")
+  kind               String
+  variantIndex       Int      @default(0) @map("variant_index")
+  localPath          String?  @map("local_path")
+  cloudinaryUrl      String?  @map("cloudinary_url")
+  cloudinaryPublicId String?  @map("cloudinary_public_id")
+  status             String   @default("generating")
+  score              Float?
+  costUsd            Float?   @map("cost_usd")
+  error              String?
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+  post               Post     @relation(fields: [postId], references: [postId])
+
+  @@index([postId, status])
+  @@map("creatives")
+}
+
+model Order {
+  orderId      String   @map("order_id")
+  sku          String
+  createdAt    String?  @map("created_at")
+  quantity     Int      @default(1)
+  revenueInr   Float    @default(0) @map("revenue_inr")
+  discountInr  Float    @default(0) @map("discount_inr")
+  customerHash String?  @map("customer_hash")
+  landingRef   String?  @map("landing_ref")
+  rawJson      String?  @map("raw_json")
+  ingestedAt   DateTime @default(now()) @map("ingested_at")
+
+  @@id([orderId, sku])
+  @@index([sku, createdAt])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model AdSpendDaily {
+  adId             String  @map("ad_id")
+  date             String
+  campaignId       String? @map("campaign_id")
+  sku              String?
+  spendInr         Float   @default(0) @map("spend_inr")
+  impressions      Int     @default(0)
+  clicks           Int     @default(0)
+  purchases        Int     @default(0)
+  purchaseValueInr Float   @default(0) @map("purchase_value_inr")
+  cpmInr           Float?  @map("cpm_inr")
+  ctr              Float?
+  frequency        Float?
+  fetchedAt        DateTime @default(now()) @map("fetched_at")
+
+  @@id([adId, date])
+  @@index([sku, date])
+  @@map("ad_spend_daily")
+}
+
+model Attribution {
+  scope            String
+  scopeId          String   @map("scope_id")
+  date             String
+  spendInr         Float    @default(0) @map("spend_inr")
+  revenueInr       Float    @default(0) @map("revenue_inr")
+  paidRoas         Float?   @map("paid_roas")
+  blendedRoas      Float?   @map("blended_roas")
+  organicAssistInr Float    @default(0) @map("organic_assist_inr")
+  computedAt       DateTime @default(now()) @map("computed_at")
+
+  @@id([scope, scopeId, date])
+  @@index([scope, scopeId, date])
+  @@map("attribution")
+}
+
+model ApprovalQueue {
+  id                 Int       @id @default(autoincrement())
+  actionType         String    @map("action_type")
+  entityRef          String    @map("entity_ref")
+  payloadJson        String?   @map("payload_json")
+  expectedImpactJson String?   @map("expected_impact_json")
+  status             String    @default("pending")
+  requestedBy        String?   @map("requested_by")
+  requestedAt        DateTime  @default(now()) @map("requested_at")
+  decidedBy          String?   @map("decided_by")
+  decidedAt          DateTime? @map("decided_at")
+  appliedAt          DateTime? @map("applied_at")
+  error              String?
+  expiresAt          DateTime? @map("expires_at")
+
+  @@index([status, requestedAt])
+  @@map("approval_queue")
+}
+
+model BuildTask {
+  id        String   @id
+  epic      String?
+  story     String?
+  title     String?
+  dependsOn String?  @map("depends_on")
+  status    String   @default("todo")
+  agent     String?
+  acceptance String?
+  verify    String?
+  artifacts String?
+  lastRunAt DateTime? @map("last_run_at")
+  lastError String?  @map("last_error")
+
+  @@index([status])
+  @@map("build_tasks")
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  actor      String?
+  action     String?
+  entity     String?
+  entityId   String?  @map("entity_id")
+  beforeJson String?  @map("before_json")
+  afterJson  String?  @map("after_json")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([entity, entityId])
+  @@map("audit_log")
+}
+
+// ── Auth / multi-tenancy (E9 — schema stubbed now) ───────────────────────────
+model Org {
+  id        String   @id @default(cuid())
+  name      String
+  plan      String   @default("free")
+  createdAt DateTime @default(now()) @map("created_at")
+  users     User[]
+
+  @@map("orgs")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("viewer") // owner | approver | viewer
+  orgId     String?  @map("org_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  org       Org?     @relation(fields: [orgId], references: [id])
+
+  @@index([orgId])
+  @@map("users")
+}

@@ -152,21 +152,14 @@ tasks:
   story: Web
   title: Next.js app skeleton + layout + lib/queue.ts
   depends_on: []
-  status: blocked
+  status: done
   agent: general-purpose
   acceptance: npm run build passes
   verify: cd platform/apps/web && npm run build
   artifacts: &id002
   - platform/apps/web
   attempts: 2
-  last_error: 'verify failed: > @moregreen/web@0.1.0 build
-
-    > next build
-
-
-    ''next'' is not recognized as an internal or external command,
-
-    operable program or batch file.'
+  last_error: null
 - id: E1-T7
   epic: E1 Platform foundation
   story: Web
@@ -583,20 +576,13 @@ tasks:
   story: Web
   title: 'Fix failing task E1-T6: Next.js app skeleton + layout + lib/queue.ts'
   depends_on: []
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: npm run build passes
   verify: cd platform/apps/web && npm run build
   artifacts: *id002
   attempts: 0
-  last_error: 'verify failed: > @moregreen/web@0.1.0 build
-
-    > next build
-
-
-    ''next'' is not recognized as an internal or external command,
-
-    operable program or batch file.'
+  last_error: null
 - id: E5-T2-FIX
   epic: E5 Creative Studio
   story: Brand safety
