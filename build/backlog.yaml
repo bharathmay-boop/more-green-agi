@@ -407,18 +407,15 @@ tasks:
   story: Brand safety
   title: banned-phrase lint + regenerate on caption/ad copy
   depends_on: []
-  status: blocked
+  status: done
   agent: general-purpose
   acceptance: captions containing brand banned_phrases are rejected + regenerated
-  verify: python -c "import ast; ast.parse(open('automation/commands/generate_prompts.py').read())"
+  verify: python -c "import ast,sys; sys.path.insert(0,'automation'); ast.parse(open('automation/commands/generate_prompts.py').read());
+    from commands.generate_prompts import banned_in; assert banned_in('morning ritual')==['morning ritual']"
   artifacts: &id003
   - automation/commands/generate_prompts.py
   attempts: 1
-  last_error: "verify failed: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n\
-    \    import ast; ast.parse(open('automation/commands/generate_prompts.py').read())\n             \
-    \   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python314\\Lib\\\
-    ast.py\", line 46, in parse\n    return compile(source, filename, mode, flags,\n                 \
-    \  _feature_version=feature_version, optimiz"
+  last_error: null
 - id: E5-T3
   epic: E5 Creative Studio
   story: Scoring
@@ -605,14 +602,11 @@ tasks:
   story: Brand safety
   title: 'Fix failing task E5-T2: banned-phrase lint + regenerate on caption/ad copy'
   depends_on: []
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: captions containing brand banned_phrases are rejected + regenerated
-  verify: python -c "import ast; ast.parse(open('automation/commands/generate_prompts.py').read())"
+  verify: python -c "import ast,sys; sys.path.insert(0,'automation'); ast.parse(open('automation/commands/generate_prompts.py').read());
+    from commands.generate_prompts import banned_in; assert banned_in('morning ritual')==['morning ritual']"
   artifacts: *id003
   attempts: 0
-  last_error: "verify failed: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n\
-    \    import ast; ast.parse(open('automation/commands/generate_prompts.py').read())\n             \
-    \   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python314\\Lib\\\
-    ast.py\", line 46, in parse\n    return compile(source, filename, mode, flags,\n                 \
-    \  _feature_version=feature_version, optimiz"
+  last_error: null

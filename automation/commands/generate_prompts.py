@@ -40,6 +40,7 @@ CTA rules by content_pillar:
 
 ## Caption Rules — Facebook
 2-3 sentences. Slightly more educational. Max 6 hashtags. No "Discover the power of..."
+"""
 
 _AD_COPY_RULES = """
 ## Ad Copy Rules
@@ -57,6 +58,12 @@ _IMAGE_KEYS = "image_prompt, caption, alt_text"
 _VIDEO_KEYS = "video_prompt, caption, alt_text"
 
 VIDEO_TYPES = {"reels"}
+
+
+def banned_in(*texts: str) -> list[str]:
+    """Return brand banned phrases found (case-insensitive) across the given texts."""
+    blob = " ".join(t for t in texts if t).lower()
+    return [p for p in BANNED_PHRASES if p.lower() in blob]
 
 
 def _build_system_prompt(post_type: str) -> tuple[str, list[str]]:
@@ -139,10 +146,11 @@ def _generate_one(client: anthropic.Anthropic, post: dict, dry_run: bool) -> dic
             return {k: "[DRY RUN]" for k in expected_keys}
 
         sku = SKUS[post["sku"]]
+        price_suffix = f" (₹{sku['price_inr']})" if sku.get('price_inr') else ""
         user_msg = (
             f"Generate creative prompts for this content brief:\n\n"
             f"Post type: {post.get('post_type', 'feed_image')}\n"
-            f"SKU: {sku['name']}{f' (₹{sku[\"price_inr\"]})' if sku['price_inr'] else ''}\n"
+            f"SKU: {sku['name']}{price_suffix}\n"
             f"Product facts: {json.dumps(sku['product_facts'])}\n"
             f"Differentiation: {sku['differentiation_angle']}\n"
             f"Content pillar: {post.get('content_pillar', 'product')}\n"
@@ -154,7 +162,8 @@ def _generate_one(client: anthropic.Anthropic, post: dict, dry_run: bool) -> dic
             f"Source image: {post['source_product_image']}"
         )
 
-        for attempt in range(2):
+        relinted = False
+        for attempt in range(3):
             response = client.messages.create(
                 model=ANTHROPIC_MODEL,
                 max_tokens=900,
@@ -173,13 +182,28 @@ def _generate_one(client: anthropic.Anthropic, post: dict, dry_run: bool) -> dic
                 stripped = text.strip()
                 if stripped.startswith("```"):
                     stripped = stripped.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
-                return json.loads(stripped)
+                data = json.loads(stripped)
             except json.JSONDecodeError:
-                if attempt == 0:
+                if attempt < 2:
                     log.warning("JSON parse failed for %s — retrying with stricter prompt", post["post_id"])
                     user_msg += "\n\nIMPORTANT: Return ONLY a JSON object. No markdown, no explanation."
-                else:
-                    raise ValueError(f"Claude returned non-JSON for {post['post_id']}: {text[:200]}")
+                    continue
+                raise ValueError(f"Claude returned non-JSON for {post['post_id']}: {text[:200]}")
+
+            # Brand-safety lint: reject + regenerate once if a banned phrase slipped through.
+            hits = banned_in(data.get("caption"), data.get("alt_text"))
+            if hits and not relinted:
+                relinted = True
+                log.warning("banned phrase(s) %s in %s — regenerating", hits, post["post_id"])
+                user_msg += (
+                    "\n\nREJECTED: your last caption used banned phrases: "
+                    f"{', '.join(hits)}. Rewrite WITHOUT any of these or close variants."
+                )
+                continue
+            if hits:
+                log.error("banned phrase(s) still present in %s after regenerate: %s",
+                          post["post_id"], hits)
+            return data
 
         raise RuntimeError("Unreachable")
 
@@ -194,9 +218,10 @@ def generate_ad_copy(post_id: str) -> dict:
     sku = SKUS[post["sku"]]
     client = anthropic.Anthropic()
     system = _SYSTEM_BASE + _AD_COPY_RULES
+    price_suffix = f" (₹{sku['price_inr']})" if sku.get('price_inr') else ""
     user_msg = (
         f"Write ad copy for this post:\n\n"
-        f"SKU: {sku['name']}{f' (₹{sku[\"price_inr\"]})' if sku['price_inr'] else ''}\n"
+        f"SKU: {sku['name']}{price_suffix}\n"
         f"Product facts: {json.dumps(sku['product_facts'])}\n"
         f"Differentiation: {sku['differentiation_angle']}\n"
         f"Caption: {post.get('caption_instagram', '')}\n"
