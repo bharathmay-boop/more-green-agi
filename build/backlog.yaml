@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:49:14.759414+00:00'
+  updated_at: '2026-06-18T03:49:16.006105+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -210,7 +210,7 @@ tasks:
   title: sync_orders.py + sync-orders CLI + order table upsert
   depends_on:
   - E1-T5
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: --dry-run prints N orders, writes none; real run upserts by order_id
   verify: python automation/main.py --dry-run sync-orders
