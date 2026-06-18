@@ -494,7 +494,7 @@ tasks:
   story: YouTube
   title: auto cross-post Reels to YouTube Shorts in pipeline
   depends_on: []
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: approved reels auto-queued to post_youtube
   verify: python -c "import ast; ast.parse(open('automation/commands/post_youtube.py').read())"
