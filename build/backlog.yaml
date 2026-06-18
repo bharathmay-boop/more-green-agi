@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:54:49.314165+00:00'
+  updated_at: '2026-06-18T03:54:50.511734+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -372,7 +372,7 @@ tasks:
   title: strategize CLI registration + Build screen surfacing
   depends_on:
   - E4-T1
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: strategize command registered; proposals visible in web
   verify: python automation/main.py --help
