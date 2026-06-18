@@ -539,7 +539,7 @@ tasks:
   - E3-T2
   - E2-T1
   - E0-T2
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: pytest green; money-safety tests assert no spend outside apply_approved
   verify: cd automation && python -m pytest -q
