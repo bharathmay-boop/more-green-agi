@@ -1,6 +1,6 @@
 {
   "run_count": 19,
   "started_at": "2026-06-18T04:09:22.439018+00:00",
-  "last_error": null,
-  "last_task": "E4-T2"
+  "last_error": "verify failed: > @moregreen/web@0.1.0 build\n> next build\n\n'next' is not recognized as an internal or external command,\noperable program or batch file.",
+  "last_task": "E1-T6"
 }
