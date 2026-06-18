@@ -1,11 +1,80 @@
 import logging
-from datetime import datetime
+import sqlite3
+from datetime import datetime, timedelta
 
 from tabulate import tabulate
 
 from utils.db import get_db
 
 log = logging.getLogger(__name__)
+
+
+def _roas(revenue, spend):
+    """Blended/paid ROAS, ÷0-safe (returns None when spend == 0)."""
+    if not spend:
+        return None
+    return revenue / spend
+
+
+def _fmt_roas(value) -> str:
+    return f"{value:.2f}x" if value is not None else "—"
+
+
+def _trend(recent, baseline) -> str:
+    """Arrow comparing the 7d rate against the 30d rate."""
+    if recent is None or baseline is None:
+        return "—"
+    if recent > baseline * 1.02:
+        return "↑"
+    if recent < baseline * 0.98:
+        return "↓"
+    return "→"
+
+
+def _blended_roas_rows(db):
+    """Per-SKU spend/revenue aggregated over 7d and 30d windows from `attribution`."""
+    cutoff_30 = (datetime.utcnow().date() - timedelta(days=30)).isoformat()
+    cutoff_7 = (datetime.utcnow().date() - timedelta(days=7)).isoformat()
+    try:
+        records = db.execute(
+            """
+            SELECT scope_id AS sku, date, spend_inr, revenue_inr
+            FROM attribution
+            WHERE scope = 'sku' AND date >= ?
+            """,
+            (cutoff_30,),
+        ).fetchall()
+    except sqlite3.OperationalError:
+        return None
+
+    agg: dict[str, dict] = {}
+    for r in records:
+        a = agg.setdefault(
+            r["sku"], {"spend7": 0.0, "rev7": 0.0, "spend30": 0.0, "rev30": 0.0}
+        )
+        spend = r["spend_inr"] or 0.0
+        rev = r["revenue_inr"] or 0.0
+        a["spend30"] += spend
+        a["rev30"] += rev
+        if r["date"] >= cutoff_7:
+            a["spend7"] += spend
+            a["rev7"] += rev
+
+    rows = []
+    for sku in sorted(agg):
+        a = agg[sku]
+        roas7 = _roas(a["rev7"], a["spend7"])
+        roas30 = _roas(a["rev30"], a["spend30"])
+        rows.append(
+            [
+                sku,
+                f"₹{a['spend7']:.0f}",
+                _fmt_roas(roas7),
+                _fmt_roas(roas30),
+                _trend(roas7, roas30),
+            ]
+        )
+    return rows
 
 
 def run() -> None:
@@ -50,5 +119,20 @@ def run() -> None:
         print(tabulate(rows, headers=["Post ID", "SKU", "Status", "Scheduled"], tablefmt="simple"))
     else:
         print("  No posts yet.")
+
+    print("\n--- Blended ROAS by SKU (7/30d) ---")
+    roas_rows = _blended_roas_rows(db)
+    if roas_rows is None:
+        print("  No attribution data yet (run compute-attribution).")
+    elif roas_rows:
+        print(
+            tabulate(
+                roas_rows,
+                headers=["SKU", "Spend 7d", "Blended 7d", "Blended 30d", "Trend"],
+                tablefmt="simple",
+            )
+        )
+    else:
+        print("  No attribution data yet.")
 
     print()

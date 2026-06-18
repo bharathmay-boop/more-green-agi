@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T08:41:58.256124+00:00'
+  updated_at: '2026-06-18T08:44:39.765118+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -277,7 +277,7 @@ tasks:
   title: extend export_report.py with blended-ROAS section
   depends_on:
   - E2-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: report shows blended ROAS by SKU 7/30d with trend
   verify: python -c "import ast; ast.parse(open('automation/commands/export_report.py').read())"
