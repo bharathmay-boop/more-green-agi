@@ -77,7 +77,7 @@ acquire_lock() {
   held_ts="$(cat "$LOCK_DIR/ts" 2>/dev/null || echo 0)"
   now="$(date -u +%s)"
   age=$(( now - held_ts ))
-  if ! pid_alive "$held_pid" && [ "$age" -gt "$STALE_LOCK_SECONDS" ]; then
+  if ! pid_alive "$held_pid" || [ "$age" -gt "$STALE_LOCK_SECONDS" ]; then
     log "reclaiming stale resume lock (pid=$held_pid gone, age=${age}s)"
     rm -rf "$LOCK_DIR"
     if mkdir "$LOCK_DIR" 2>/dev/null; then

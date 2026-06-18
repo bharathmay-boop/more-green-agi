@@ -148,8 +148,8 @@ def acquire_lock() -> bool:
         pid = held.get("pid", -1)
         hb = held.get("heartbeat", "")
         age = _age_seconds(hb)
-        if not _pid_alive(pid) and age > STALE_LOCK_SECONDS:
-            log(f"reclaiming stale lock (pid={pid} gone, age={int(age)}s)")
+        if not _pid_alive(pid) or age > STALE_LOCK_SECONDS:
+            log(f"reclaiming stale lock (pid={pid} gone or stale, age={int(age)}s)")
             shutil.rmtree(LOCK_DIR, ignore_errors=True)
             try:
                 LOCK_DIR.mkdir()
