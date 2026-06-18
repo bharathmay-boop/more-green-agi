@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T08:44:39.765118+00:00'
+  updated_at: '2026-06-18T08:44:40.610299+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -407,13 +407,13 @@ tasks:
   story: Brand safety
   title: banned-phrase lint + regenerate on caption/ad copy
   depends_on: []
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: captions containing brand banned_phrases are rejected + regenerated
   verify: python -c "import ast; ast.parse(open('automation/commands/generate_prompts.py').read())"
   artifacts:
   - automation/commands/generate_prompts.py
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E5-T3
   epic: E5 Creative Studio
