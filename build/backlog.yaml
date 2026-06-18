@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:49:18.753633+00:00'
+  updated_at: '2026-06-18T03:49:20.211619+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -240,7 +240,7 @@ tasks:
   depends_on:
   - E2-T1
   - E2-T2
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: "rollups by sku/campaign/blended; \xF70 -> null; refunds honored"
   verify: python automation/main.py --dry-run compute-attribution
