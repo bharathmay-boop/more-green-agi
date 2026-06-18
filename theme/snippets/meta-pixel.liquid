@@ -1,0 +1,61 @@
+<script>
+  !function(f,b,e,v,n,t,s){
+    if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)
+  }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '696793890178877');
+  fbq('track', 'PageView');
+
+  {% if template.name == 'product' %}
+    fbq('track', 'ViewContent', {
+      content_ids: ['{{ product.variants.first.id }}'],
+      content_type: 'product',
+      content_name: {{ product.title | json }},
+      value: {{ product.selected_or_first_available_variant.price | divided_by: 100.0 }},
+      currency: '{{ shop.currency }}'
+    });
+  {% endif %}
+
+  {% if template.name == 'collection' %}
+    fbq('track', 'ViewCategory', {
+      content_name: {{ collection.title | json }}
+    });
+  {% endif %}
+
+  {% if template.name == 'search' and search.performed %}
+    fbq('track', 'Search', {
+      search_string: {{ search.terms | json }}
+    });
+  {% endif %}
+
+  // AddToCart — intercepts all /cart/add.js fetch calls
+  (function() {
+    var _fetch = window.fetch;
+    window.fetch = function(input, init) {
+      var url = typeof input === 'string' ? input : (input && input.url) || '';
+      if (url.indexOf('/cart/add') !== -1 && init && init.body) {
+        try {
+          var body = typeof init.body === 'string' ? JSON.parse(init.body) : init.body;
+          var items = body.items || (body.id ? [body] : []);
+          items.forEach(function(item) {
+            fbq('track', 'AddToCart', {
+              content_ids: [String(item.id)],
+              content_type: 'product',
+              currency: '{{ shop.currency }}'
+            });
+          });
+        } catch(e) {}
+      }
+      return _fetch.apply(this, arguments);
+    };
+  })();
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=696793890178877&ev=PageView&noscript=1"/>
+</noscript>

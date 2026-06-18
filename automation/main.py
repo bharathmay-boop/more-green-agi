@@ -162,12 +162,32 @@ def create_ads(ctx, post):
     run(post_id=post, dry_run=ctx.obj["dry_run"])
 
 
+@cli.command("sync-orders")
+@click.option("--days", default=30, show_default=True, type=int,
+              help="On first run, look back this many days for orders.")
+@click.pass_context
+def sync_orders(ctx, days):
+    """Ingest Shopify orders into the orders table (per-SKU, for attribution)."""
+    from commands.sync_orders import run
+    run(dry_run=ctx.obj["dry_run"], days=days)
+
+
 @cli.command("monitor-ads")
 @click.pass_context
 def monitor_ads(ctx):
     """Fetch and display ad performance insights."""
     from commands.monitor_ads import run
     run()
+
+
+@cli.command("compute-attribution")
+@click.option("--days", default=30, show_default=True, type=int,
+              help="Compute ROAS rollups for the last N days.")
+@click.pass_context
+def compute_attribution(ctx, days):
+    """Compute blended/paid ROAS rollups by sku/campaign/blended into attribution."""
+    from commands.attribution import run
+    run(dry_run=ctx.obj["dry_run"], days=days)
 
 
 @cli.command("tune-ads")

@@ -1,0 +1,13 @@
+name = "More Green AGI"
+client_id = "30a575a7d9f7d09aef9a8399d5a64795"
+application_url = "https://example.com"
+embedded = false
+
+[access_scopes]
+scopes = "read_customers,read_orders,read_products,write_script_tags"
+
+[auth]
+redirect_urls = ["https://example.com/auth/callback"]
+
+[webhooks]
+api_version = "2025-01"

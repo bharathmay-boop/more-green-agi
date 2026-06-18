@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "layout": "collage",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "1762857589b07961b2": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_329af17_mN7XfX": {
+          "type": "ai_gen_block_329af17",
+          "settings": {
+            "text": "<p>References for blogs</p><ol><li>https://www.gardenary.com/blog/health-benefits-of-microgreens</li><li>https://pmc.ncbi.nlm.nih.gov/articles/PMC9864543/</li><li>https://www.isu.edu/media/libraries/rural-health/microgreens/Microgreen-Nutritional-Profile.pdf</li><li>https://www.mdpi.com/2673-9976/40/1/25</li><li>https://pmc.ncbi.nlm.nih.gov/articles/PMC9864543/</li><li>https://mpseeds.eu/sunflower-big-microgreens-seeds</li><li>https://www.solmicrogreensmi.com/shop/p/sunflower-microgreens</li><li>https://microgreensworld.com/what-do-microgreens-taste-like/</li><li>https://microgreensworld.com/sunflower-microgreens-nutrition/</li><li>https://betterme.world/articles/sunflower-microgreens-nutrition/</li><li>https://homemicrogreens.com/sunflower-microgreens-nutrition/</li><li>https://rootsnshootsmicrogreens.com/product/sunflower-shoots/</li><li>https://mpseeds.eu/sunflower-big-microgreens-seeds</li><li>https://microgardengreens.com/products/8oz-sunflower-microgreens/</li><li>https://www.researchgate.net/publication/338791568_Sunflower_Sprout_Nutraceuticals_for_Metabolic_Syndrome</li><li>https://pmc.ncbi.nlm.nih.gov/articles/PMC8445494/</li><li>https://www.peoplesfarm.com/post/microgreens-for-a-healthy-heart</li><li>https://ascendwellnessmbs.com/the-marvelous-benefits-of-microgreens-a-holistic-approach-to-nutrition/</li><li>https://www.greenu.in/managing-diabetes-naturally-with-greenu-microgreens/</li><li>https://tinymountainmg.com/resources/lose-weight-naturally-with-microgreens-tips-from-a-local-organic-grower</li><li>https://pamsmicrogreens.com/pages/sunflower</li><li>https://quantummicrogreens.com/learn-all-about-sunflower-shootsyes-they-are-microgreens/</li><li>https://www.bootstrapfarmer.com/blogs/microgreens/10-of-the-tastiest-ways-to-enjoy-microgreens</li><li>https://www.peoplesfarm.com/post/6-sunflower-shoots-recipes</li><li>https://www.youtube.com/watch?v=ZVY2O4t0oVA</li><li>https://quantummicrogreens.com/simple-salad-with-sunflower-shoots-recipe/</li></ol>",
+            "font_size": 12,
+            "font_weight": "300",
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "line_height": "1.5",
+            "letter_spacing": 0,
+            "text_transform": "none",
+            "text_alignment": "left",
+            "text_color": "#004643",
+            "background_color": "#fffaf1",
+            "padding": 45,
+            "border_radius": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_329af17_mN7XfX"
+      ],
+      "settings": {}
+    },
+    "rich_text_BaYU67": {
+      "type": "rich-text",
+      "blocks": {
+        "button_VDndCG": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Green Gold",
+            "button_link": "shopify://products/sunflower-microgreen-powder-30g",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "button_VDndCG"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1762857589b07961b2",
+    "rich_text_BaYU67"
+  ]
+}

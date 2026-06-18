@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "brand_name": "More Green",
+  "website_url": "https://www.moregreen.in",
+  "extracted_at": "2026-06-08T00:00:00Z",
+
+  "taglines": [
+    "Plant Power for a Better Life!",
+    "Pure nutrition, made simple, made honest."
+  ],
+
+  "brand_story": "Started in a small polyhouse in Bangalore growing sunflower microgreens. A clean-eating experiment that became a mission: trustworthy, nutrient-dense plant-based foods grown and processed in India, with no additives or shortcuts.",
+
+  "voice": {
+    "formal_casual": 7,
+    "rational_emotional": 4,
+    "playful_serious": 5,
+    "bold_subtle": 8,
+    "traditional_innovative": 7,
+    "expert_accessible": 6,
+    "descriptors": ["honest", "science-backed", "transparent", "purposeful", "clean"]
+  },
+
+  "colors": {
+    "primary": "#08a045",
+    "secondary": ["#067a35", "#FFFFFF"],
+    "forbidden": ["neon colors", "artificial reds", "ultra-processed food palette"],
+    "background": "#FFFFFF",
+    "text": "#1A1A1A"
+  },
+
+  "typography": {
+    "heading_font": "Archivo",
+    "body_font": "Inter",
+    "pairing_descriptor": "bold geometric heading (Archivo 600) with clean humanist body (Inter 400)"
+  },
+
+  "imagery": {
+    "style": "professional product photography",
+    "subjects": ["microgreen plants and powders", "clean product shots on white", "wellness lifestyle", "fresh ingredients close-up", "polyhouse / farm origin shots"],
+    "composition": "clean white or soft natural backgrounds, generous negative space, ingredient-forward shots",
+    "forbidden": ["synthetic food colors", "artificial-looking food styling", "cluttered backgrounds", "cheesy stock wellness clichés", "before/after body transformation imagery"]
+  },
+
+  "aesthetic": {
+    "mood_keywords": ["fresh", "clean", "honest", "purposeful", "trustworthy"],
+    "texture": "minimal",
+    "negative_space": "generous"
+  },
+
+  "brand_values": [
+    "pure nutrition — no additives or shortcuts",
+    "transparency as process, not marketing",
+    "FSSAI/NABL lab-tested every batch",
+    "single-sourced, India-grown ingredients",
+    "supporting local growers and a greener tomorrow"
+  ],
+
+  "credentials": {
+    "certifications": ["FSSAI-approved lab testing", "NABL-accredited lab testing"],
+    "testing": ["heavy metals", "microbes", "nutrient content"],
+    "origin": "Bangalore, India"
+  },
+
+  "target_audience": {
+    "age_range": "25-45",
+    "profession": "health-conscious urban Indians, parents, working professionals",
+    "pain_points": [
+      "not eating enough vegetables daily",
+      "busy lifestyle leaving little time for nutrition",
+      "difficulty getting kids to eat greens",
+      "skepticism about supplement quality and claims"
+    ],
+    "aspirations": [
+      "clean, effortless daily nutrition",
+      "more energy and vitality",
+      "transparent ingredients they can trust",
+      "simple wellness habits that stick"
+    ]
+  },
+
+  "products": {
+    "skus": ["Sunflower Microgreen Powder", "Freeze Dried Blueberry Powder"],
+    "price_range": "₹390–490",
+    "market": "India"
+  },
+
+  "social": {
+    "instagram": "@moregreen_in"
+  },
+
+  "contact": {
+    "phone_whatsapp": "+91 99004 73950",
+    "email": "bs.moregreen@gmail.com",
+    "address": "1129, 35th C Cross, Jayanagar 4th T Block, Bangalore 560041"
+  },
+
+  "extraction_notes": "Colors and typography confirmed from project source (CLAUDE.md). Voice updated with about page: rational_emotional moved to 4 (lab testing / scientific validation emphasis), playful_serious moved to 5 (earnest mission-driven tone). Confidence: HIGH across all axes."
+}

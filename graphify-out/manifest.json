@@ -1,0 +1,172 @@
+{
+  "D:\\More Green AGI\\automation\\ads_log.json": {
+    "mtime": 1780143767.6200502,
+    "ast_hash": "8a80554c91d9fca8acb82f023de02f11",
+    "semantic_hash": "8a80554c91d9fca8acb82f023de02f11"
+  },
+  "D:\\More Green AGI\\automation\\commands\\__init__.py": {
+    "mtime": 1780143418.2659187,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\More Green AGI\\automation\\commands\\_dashboard_app.py": {
+    "mtime": 1780148425.0331223,
+    "ast_hash": "75a1a08b5e49a27b8e02918cb783ff4f",
+    "semantic_hash": "75a1a08b5e49a27b8e02918cb783ff4f"
+  },
+  "D:\\More Green AGI\\automation\\commands\\create_ads.py": {
+    "mtime": 1780143641.1270182,
+    "ast_hash": "675fb253e52ea7859bc54da6eb3be845",
+    "semantic_hash": "675fb253e52ea7859bc54da6eb3be845"
+  },
+  "D:\\More Green AGI\\automation\\commands\\export_report.py": {
+    "mtime": 1780143748.747045,
+    "ast_hash": "44ecace0677092b0d933089da29e3410",
+    "semantic_hash": "44ecace0677092b0d933089da29e3410"
+  },
+  "D:\\More Green AGI\\automation\\commands\\generate_images.py": {
+    "mtime": 1780143532.3260088,
+    "ast_hash": "2c4b4891f7244d2fa8240dcd174005ad",
+    "semantic_hash": "2c4b4891f7244d2fa8240dcd174005ad"
+  },
+  "D:\\More Green AGI\\automation\\commands\\generate_prompts.py": {
+    "mtime": 1780143468.7195218,
+    "ast_hash": "bc78b8b8c5a8beff49f3b38a5d2cdeda",
+    "semantic_hash": "bc78b8b8c5a8beff49f3b38a5d2cdeda"
+  },
+  "D:\\More Green AGI\\automation\\commands\\generate_videos.py": {
+    "mtime": 1780143550.94386,
+    "ast_hash": "e66d0bcf903620416ce3a7a97de01e5b",
+    "semantic_hash": "e66d0bcf903620416ce3a7a97de01e5b"
+  },
+  "D:\\More Green AGI\\automation\\commands\\monitor_ads.py": {
+    "mtime": 1780143717.8020046,
+    "ast_hash": "4980be19116ecfb76436b48702cfc6af",
+    "semantic_hash": "4980be19116ecfb76436b48702cfc6af"
+  },
+  "D:\\More Green AGI\\automation\\commands\\new_week.py": {
+    "mtime": 1780143760.387396,
+    "ast_hash": "2fc3446927c0ce2c56397d7c1b321302",
+    "semantic_hash": "2fc3446927c0ce2c56397d7c1b321302"
+  },
+  "D:\\More Green AGI\\automation\\commands\\onboard.py": {
+    "mtime": 1780143442.239158,
+    "ast_hash": "152f53631fd42a8c2a38d429afa5ae81",
+    "semantic_hash": "152f53631fd42a8c2a38d429afa5ae81"
+  },
+  "D:\\More Green AGI\\automation\\commands\\post_organic.py": {
+    "mtime": 1780143606.7709968,
+    "ast_hash": "ac771c0e137a48f670683147e12f6d70",
+    "semantic_hash": "ac771c0e137a48f670683147e12f6d70"
+  },
+  "D:\\More Green AGI\\automation\\commands\\post_youtube.py": {
+    "mtime": 1780143615.558532,
+    "ast_hash": "e6f16dc97c44f1eb30875fba0f67488c",
+    "semantic_hash": "e6f16dc97c44f1eb30875fba0f67488c"
+  },
+  "D:\\More Green AGI\\automation\\commands\\sync_audience.py": {
+    "mtime": 1780143738.5831468,
+    "ast_hash": "79fe7d1d467eeb4e752e77db1188ff33",
+    "semantic_hash": "79fe7d1d467eeb4e752e77db1188ff33"
+  },
+  "D:\\More Green AGI\\automation\\commands\\sync_sheets.py": {
+    "mtime": 1780143442.9199872,
+    "ast_hash": "ea6fc39f1616a468c27fc08cd0ef8fc3",
+    "semantic_hash": "ea6fc39f1616a468c27fc08cd0ef8fc3"
+  },
+  "D:\\More Green AGI\\automation\\commands\\tune_ads.py": {
+    "mtime": 1780148619.1259205,
+    "ast_hash": "12a93ccf63043beecc8a6f557321aa68",
+    "semantic_hash": "12a93ccf63043beecc8a6f557321aa68"
+  },
+  "D:\\More Green AGI\\automation\\commands\\upload_media.py": {
+    "mtime": 1780143549.6491416,
+    "ast_hash": "dccb827567ef3d4693002dc69c777ea0",
+    "semantic_hash": "dccb827567ef3d4693002dc69c777ea0"
+  },
+  "D:\\More Green AGI\\automation\\commands\\verify_media.py": {
+    "mtime": 1780143553.9060242,
+    "ast_hash": "a63c8f8dc681ab6337f1a19e5aa13080",
+    "semantic_hash": "a63c8f8dc681ab6337f1a19e5aa13080"
+  },
+  "D:\\More Green AGI\\automation\\config.py": {
+    "mtime": 1780143264.2081347,
+    "ast_hash": "8c9da04c0eb38181924ed29fc7656dfc",
+    "semantic_hash": "8c9da04c0eb38181924ed29fc7656dfc"
+  },
+  "D:\\More Green AGI\\automation\\db\\schema.sql": {
+    "mtime": 1780143242.6022134,
+    "ast_hash": "94b872827d2d83f6086a3bf69e2a125f",
+    "semantic_hash": "94b872827d2d83f6086a3bf69e2a125f"
+  },
+  "D:\\More Green AGI\\automation\\main.py": {
+    "mtime": 1780143415.5237901,
+    "ast_hash": "ca3b0ad4177a55a8160d50e74757f5f8",
+    "semantic_hash": "ca3b0ad4177a55a8160d50e74757f5f8"
+  },
+  "D:\\More Green AGI\\automation\\setup.sh": {
+    "mtime": 1780143132.7127783,
+    "ast_hash": "b7e984d508c4e526d102dcc866839a64",
+    "semantic_hash": "b7e984d508c4e526d102dcc866839a64"
+  },
+  "D:\\More Green AGI\\automation\\utils\\__init__.py": {
+    "mtime": 1780143306.5183015,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\More Green AGI\\automation\\utils\\db.py": {
+    "mtime": 1780143310.6352732,
+    "ast_hash": "6b44d6fd102f97c638e556e0e091bf15",
+    "semantic_hash": "6b44d6fd102f97c638e556e0e091bf15"
+  },
+  "D:\\More Green AGI\\automation\\utils\\guards.py": {
+    "mtime": 1780143320.6404276,
+    "ast_hash": "56cb92c7b8c19206ce6e47375dc8a590",
+    "semantic_hash": "56cb92c7b8c19206ce6e47375dc8a590"
+  },
+  "D:\\More Green AGI\\automation\\utils\\logging_config.py": {
+    "mtime": 1780143324.2031796,
+    "ast_hash": "6e753a35553495480ebe484f87e48e0b",
+    "semantic_hash": "6e753a35553495480ebe484f87e48e0b"
+  },
+  "D:\\More Green AGI\\automation\\utils\\meta_auth.py": {
+    "mtime": 1780143317.2420933,
+    "ast_hash": "8674ce742ca5cc13827de4d932e9788a",
+    "semantic_hash": "8674ce742ca5cc13827de4d932e9788a"
+  },
+  "D:\\More Green AGI\\automation\\utils\\notifications.py": {
+    "mtime": 1780143321.3706024,
+    "ast_hash": "9df186e1f8cf9a25ad8056825bdfebcd",
+    "semantic_hash": "9df186e1f8cf9a25ad8056825bdfebcd"
+  },
+  "D:\\More Green AGI\\automation\\utils\\retry.py": {
+    "mtime": 1780143316.4050796,
+    "ast_hash": "f1fc4a7e29a02ad4b2e93752828f4ce1",
+    "semantic_hash": "f1fc4a7e29a02ad4b2e93752828f4ce1"
+  },
+  "D:\\More Green AGI\\automation\\V0_DASHBOARD_INSTRUCTIONS.md": {
+    "mtime": 1780148534.5068638,
+    "ast_hash": "e259b9b3440a20060817de845ad25167",
+    "semantic_hash": "e259b9b3440a20060817de845ad25167"
+  },
+  "D:\\More Green AGI\\automation\\config\\brand.yaml": {
+    "mtime": 1780143211.395324,
+    "ast_hash": "9518d3a4ab59d7e217481fad31dd4545",
+    "semantic_hash": "9518d3a4ab59d7e217481fad31dd4545"
+  },
+  "D:\\More Green AGI\\automation\\config\\cultural_calendar.yaml": {
+    "mtime": 1780143232.1836076,
+    "ast_hash": "146fd6615fa91a635d2f12dfe08a0020",
+    "semantic_hash": "146fd6615fa91a635d2f12dfe08a0020"
+  },
+  "D:\\More Green AGI\\automation\\config\\hashtags.yaml": {
+    "mtime": 1780143220.6526942,
+    "ast_hash": "ae2d55fbda9fefe90fcf04d2ed821a21",
+    "semantic_hash": "ae2d55fbda9fefe90fcf04d2ed821a21"
+  },
+  "D:\\More Green AGI\\automation\\requirements.txt": {
+    "mtime": 1780143141.5572782,
+    "ast_hash": "a6a8c52be9903e0fdf1159d6ad269853",
+    "semantic_hash": "a6a8c52be9903e0fdf1159d6ad269853"
+  }
+}

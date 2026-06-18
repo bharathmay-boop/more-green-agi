@@ -1,0 +1,722 @@
+{% doc %}
+  @prompt
+    Create a hero split section with two columns - one side with an image and the other side with product information. Include:
+    
+    1. Product title and description text
+    2. A quantity selector (+ and - buttons with number input) so customers can choose how many items to add
+    3. An "Add to Cart" button that adds the selected quantity directly to the cart and redirects to the cart page
+    4. Customizable settings for:
+       - Product selection
+       - Image upload
+       - Text content (title, description)
+       - Button text and colors
+       - Layout (image left/right)
+       - Spacing and alignment
+    
+    The add-to-cart button should use Shopify's cart API to add the product with the selected quantity and then redirect to /cart page automatically.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-split-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 20px;
+  }
+
+  .ai-hero-split-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ block.settings.column_gap }}px;
+    align-items: center;
+  }
+
+  {% if block.settings.layout == 'image_right' %}
+    .ai-hero-split-image-{{ ai_gen_id }} {
+      order: 2;
+    }
+    .ai-hero-split-content-{{ ai_gen_id }} {
+      order: 1;
+    }
+  {% endif %}
+
+  .ai-hero-split-image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+    position: relative;
+  }
+
+  .ai-hero-split-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    object-fit: cover;
+  }
+
+  .ai-hero-split-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    position: relative;
+  }
+
+  .ai-hero-split-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-hero-split-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-hero-split-content-{{ ai_gen_id }} {
+    padding: 20px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-hero-split-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 16px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .ai-hero-split-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    margin: 0 0 24px;
+    line-height: 1.6;
+  }
+
+  .ai-hero-split-product-info-{{ ai_gen_id }} {
+    margin-bottom: 24px;
+  }
+
+  .ai-hero-split-price-{{ ai_gen_id }} {
+    font-size: 28px;
+    font-weight: 700;
+    color: {{ block.settings.price_color }};
+    margin-bottom: 20px;
+  }
+
+  .ai-hero-split-quantity-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    {% if block.settings.text_alignment == 'center' %}
+      justify-content: center;
+    {% elsif block.settings.text_alignment == 'right' %}
+      justify-content: flex-end;
+    {% endif %}
+  }
+
+  .ai-hero-split-quantity-label-{{ ai_gen_id }} {
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ block.settings.title_color }};
+  }
+
+  .ai-hero-split-quantity-selector-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    border: 2px solid {{ block.settings.button_color }};
+    border-radius: {{ block.settings.button_border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-hero-split-quantity-btn-{{ ai_gen_id }} {
+    width: 40px;
+    height: 40px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-hero-split-quantity-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-hero-split-quantity-btn-{{ ai_gen_id }}:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ai-hero-split-quantity-input-{{ ai_gen_id }} {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ block.settings.title_color }};
+    background-color: #ffffff;
+  }
+
+  .ai-hero-split-quantity-input-{{ ai_gen_id }}::-webkit-inner-spin-button,
+  .ai-hero-split-quantity-input-{{ ai_gen_id }}::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .ai-hero-split-add-to-cart-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_text_size }}px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 200px;
+  }
+
+  .ai-hero-split-add-to-cart-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-hero-split-add-to-cart-{{ ai_gen_id }}:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .ai-hero-split-loading-{{ ai_gen_id }} {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid {{ block.settings.button_text_color }};
+    border-top-color: transparent;
+    border-radius: 50%;
+  }
+
+  .ai-hero-split-add-to-cart-{{ ai_gen_id }}.loading .ai-hero-split-loading-{{ ai_gen_id }} {
+    display: block;
+  }
+
+  .ai-hero-split-add-to-cart-{{ ai_gen_id }}.loading .ai-hero-split-button-text-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-hero-split-error-{{ ai_gen_id }} {
+    color: #d82c0d;
+    font-size: 14px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .ai-hero-split-error-{{ ai_gen_id }}.visible {
+    display: block;
+  }
+
+  .ai-hero-split-empty-product-{{ ai_gen_id }} {
+    padding: 40px 20px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  @keyframes ai-hero-split-spin-{{ ai_gen_id }} {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .ai-hero-split-loading-{{ ai_gen_id }} {
+    animation: ai-hero-split-spin-{{ ai_gen_id }} 0.6s linear infinite;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-split-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ai-hero-split-image-{{ ai_gen_id }},
+    .ai-hero-split-content-{{ ai_gen_id }} {
+      order: unset !important;
+    }
+
+    .ai-hero-split-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.8);
+    }
+
+    .ai-hero-split-description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.description_size }}px * 0.9);
+    }
+
+    .ai-hero-split-content-{{ ai_gen_id }} {
+      text-align: center;
+    }
+
+    .ai-hero-split-quantity-wrapper-{{ ai_gen_id }} {
+      justify-content: center;
+    }
+  }
+{% endstyle %}
+
+<hero-split-{{ ai_gen_id }} class="ai-hero-split-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-hero-split-container-{{ ai_gen_id }}">
+    <div class="ai-hero-split-image-{{ ai_gen_id }}">
+      <div class="ai-hero-split-image-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.image %}
+          <img
+            src="{{ block.settings.image | image_url: width: 1000 }}"
+            alt="{{ block.settings.image.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image.width }}"
+            height="{{ block.settings.image.height }}"
+          >
+        {% else %}
+          <div class="ai-hero-split-image-placeholder-{{ ai_gen_id }}">
+            {{ 'product-1' | placeholder_svg_tag }}
+            <div class="ai-hero-split-empty-state-{{ ai_gen_id }}">
+              Next, add an image
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-hero-split-content-{{ ai_gen_id }}">
+      {% if block.settings.product != blank %}
+        {% assign product = block.settings.product %}
+        {% assign selected_variant = product.selected_or_first_available_variant %}
+
+        <h2 class="ai-hero-split-title-{{ ai_gen_id }}">
+          {% if block.settings.title != blank %}
+            {{ block.settings.title }}
+          {% else %}
+            {{ product.title }}
+          {% endif %}
+        </h2>
+
+        <div class="ai-hero-split-description-{{ ai_gen_id }}">
+          {% if block.settings.description != blank %}
+            {{ block.settings.description }}
+          {% else %}
+            {{ product.description | truncate: 200 }}
+          {% endif %}
+        </div>
+
+        <div class="ai-hero-split-product-info-{{ ai_gen_id }}">
+          <div class="ai-hero-split-price-{{ ai_gen_id }}">
+            {{ selected_variant.price | money }}
+          </div>
+
+          <div class="ai-hero-split-quantity-wrapper-{{ ai_gen_id }}">
+            <span class="ai-hero-split-quantity-label-{{ ai_gen_id }}">Quantity:</span>
+            <div class="ai-hero-split-quantity-selector-{{ ai_gen_id }}">
+              <button
+                type="button"
+                class="ai-hero-split-quantity-btn-{{ ai_gen_id }} ai-hero-split-quantity-decrease-{{ ai_gen_id }}"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <input
+                type="number"
+                class="ai-hero-split-quantity-input-{{ ai_gen_id }}"
+                value="1"
+                min="1"
+                max="99"
+                aria-label="Quantity"
+                readonly
+              >
+              <button
+                type="button"
+                class="ai-hero-split-quantity-btn-{{ ai_gen_id }} ai-hero-split-quantity-increase-{{ ai_gen_id }}"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="ai-hero-split-add-to-cart-{{ ai_gen_id }}"
+            data-variant-id="{{ selected_variant.id }}"
+            {% unless selected_variant.available %}disabled{% endunless %}
+          >
+            <span class="ai-hero-split-button-text-{{ ai_gen_id }}">
+              {% if selected_variant.available %}
+                {{ block.settings.button_text }}
+              {% else %}
+                Sold out
+              {% endif %}
+            </span>
+            <span class="ai-hero-split-loading-{{ ai_gen_id }}"></span>
+          </button>
+
+          <div class="ai-hero-split-error-{{ ai_gen_id }}" role="alert"></div>
+        </div>
+      {% else %}
+        <div class="ai-hero-split-empty-product-{{ ai_gen_id }}">
+          Next, select a product to display
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</hero-split-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HeroSplit{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.quantityInput = this.querySelector('.ai-hero-split-quantity-input-{{ ai_gen_id }}');
+        this.decreaseBtn = this.querySelector('.ai-hero-split-quantity-decrease-{{ ai_gen_id }}');
+        this.increaseBtn = this.querySelector('.ai-hero-split-quantity-increase-{{ ai_gen_id }}');
+        this.addToCartBtn = this.querySelector('.ai-hero-split-add-to-cart-{{ ai_gen_id }}');
+        this.errorMessage = this.querySelector('.ai-hero-split-error-{{ ai_gen_id }}');
+      }
+
+      connectedCallback() {
+        if (!this.quantityInput || !this.addToCartBtn) return;
+
+        this.decreaseBtn.addEventListener('click', () => this.updateQuantity(-1));
+        this.increaseBtn.addEventListener('click', () => this.updateQuantity(1));
+        this.addToCartBtn.addEventListener('click', () => this.addToCart());
+        this.quantityInput.addEventListener('change', () => this.validateQuantity());
+      }
+
+      updateQuantity(change) {
+        const currentValue = parseInt(this.quantityInput.value) || 1;
+        const newValue = currentValue + change;
+        const min = parseInt(this.quantityInput.min) || 1;
+        const max = parseInt(this.quantityInput.max) || 99;
+
+        if (newValue >= min && newValue <= max) {
+          this.quantityInput.value = newValue;
+          this.updateButtonStates();
+        }
+      }
+
+      validateQuantity() {
+        const value = parseInt(this.quantityInput.value) || 1;
+        const min = parseInt(this.quantityInput.min) || 1;
+        const max = parseInt(this.quantityInput.max) || 99;
+
+        if (value < min) {
+          this.quantityInput.value = min;
+        } else if (value > max) {
+          this.quantityInput.value = max;
+        }
+
+        this.updateButtonStates();
+      }
+
+      updateButtonStates() {
+        const value = parseInt(this.quantityInput.value) || 1;
+        const min = parseInt(this.quantityInput.min) || 1;
+        const max = parseInt(this.quantityInput.max) || 99;
+
+        this.decreaseBtn.disabled = value <= min;
+        this.increaseBtn.disabled = value >= max;
+      }
+
+      async addToCart() {
+        const variantId = this.addToCartBtn.dataset.variantId;
+        const quantity = parseInt(this.quantityInput.value) || 1;
+
+        if (!variantId) {
+          this.showError('Product variant not found');
+          return;
+        }
+
+        this.addToCartBtn.classList.add('loading');
+        this.addToCartBtn.disabled = true;
+        this.errorMessage.classList.remove('visible');
+
+        try {
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              items: [{
+                id: variantId,
+                quantity: quantity
+              }]
+            })
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.description || 'Failed to add to cart');
+          }
+
+          window.location.href = '/cart';
+        } catch (error) {
+          this.showError(error.message);
+          this.addToCartBtn.classList.remove('loading');
+          this.addToCartBtn.disabled = false;
+        }
+      }
+
+      showError(message) {
+        this.errorMessage.textContent = message;
+        this.errorMessage.classList.add('visible');
+      }
+    }
+
+    customElements.define('hero-split-{{ ai_gen_id }}', HeroSplit{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero split with product",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "info": "Leave blank to use product title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "info": "Leave blank to use product description"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Leave blank to use product featured image"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Image border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "image_left",
+          "label": "Left"
+        },
+        {
+          "value": "image_right",
+          "label": "Right"
+        }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#08a045"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#067a35"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero split with product"
+    }
+  ]
+}
+{% endschema %}

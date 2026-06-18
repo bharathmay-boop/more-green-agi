@@ -144,18 +144,21 @@ CREATE TABLE IF NOT EXISTS creatives (
 );
 CREATE INDEX IF NOT EXISTS idx_creatives_post_status ON creatives(post_id, status);
 
--- Shopify orders — financial record, never deleted (re-sync upserts by order_id).
+-- Shopify orders — financial record, never deleted. One row per (order_id, sku)
+-- line item so multi-SKU orders split cleanly for per-SKU attribution (doc 03).
+-- Re-sync upserts by the composite key.
 CREATE TABLE IF NOT EXISTS orders (
-    order_id            TEXT PRIMARY KEY,
+    order_id            TEXT NOT NULL,
+    sku                 TEXT NOT NULL,        -- 'unmapped' when product not in config.SKUS
     created_at          TEXT,
-    sku                 TEXT,
     quantity            INTEGER DEFAULT 1,
-    revenue_inr         REAL DEFAULT 0,
+    revenue_inr         REAL DEFAULT 0,       -- line subtotal (negative for refunds)
     discount_inr        REAL DEFAULT 0,
     customer_hash       TEXT,                 -- sha256(lower(email))
     landing_ref         TEXT,                 -- utm/referrer if available
     raw_json            TEXT,
-    ingested_at         TEXT DEFAULT (datetime('now'))
+    ingested_at         TEXT DEFAULT (datetime('now')),
+    PRIMARY KEY (order_id, sku)
 );
 CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_orders_sku_created ON orders(sku, created_at);

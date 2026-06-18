@@ -1,0 +1,562 @@
+{% doc %}
+  @prompt
+    A hero split section. One side is an image clickable to a product. The other side showcases product itself.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-split-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  .ai-hero-split-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: {{ block.settings.section_height }}px;
+    width: 100%;
+  }
+
+  .ai-hero-split-image-side-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ block.settings.image_bg_color }};
+  }
+
+  .ai-hero-split-image-link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .ai-hero-split-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-hero-split-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-hero-split-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 400px;
+  }
+
+  .ai-hero-split-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-hero-split-product-side-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: {{ block.settings.content_alignment }};
+    padding: {{ block.settings.content_padding }}px;
+    background-color: {{ block.settings.content_bg_color }};
+    text-align: {% if block.settings.content_alignment == 'flex-start' %}left{% elsif block.settings.content_alignment == 'flex-end' %}right{% else %}center{% endif %};
+  }
+
+  .ai-hero-split-product-content-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    width: 100%;
+  }
+
+  .ai-hero-split-product-image-{{ ai_gen_id }} {
+    width: {{ block.settings.product_image_width }}px;
+    height: {{ block.settings.product_image_width }}px;
+    margin-bottom: 20px;
+    border-radius: {{ block.settings.product_image_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-hero-split-product-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-hero-split-product-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-hero-split-product-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+  }
+
+  .ai-hero-split-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+    color: {{ block.settings.product_title_color }};
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .ai-hero-split-product-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_description_size }}px;
+    color: {{ block.settings.product_description_color }};
+    margin: 0 0 20px;
+    line-height: 1.6;
+  }
+
+  .ai-hero-split-product-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_price_size }}px;
+    color: {{ block.settings.product_price_color }};
+    margin: 0 0 24px;
+    font-weight: 600;
+  }
+
+  .ai-hero-split-product-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_radius }}px;
+    font-size: {{ block.settings.button_text_size }}px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-hero-split-product-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-hero-split-empty-product-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: #999;
+    text-align: center;
+    padding: 40px 20px;
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-split-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .ai-hero-split-image-side-{{ ai_gen_id }} {
+      min-height: 300px;
+    }
+
+    .ai-hero-split-product-side-{{ ai_gen_id }} {
+      padding: 30px 20px;
+    }
+
+    .ai-hero-split-product-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.product_title_size }}px * 0.8);
+    }
+
+    .ai-hero-split-product-description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.product_description_size }}px * 0.9);
+    }
+
+    .ai-hero-split-product-image-{{ ai_gen_id }} {
+      width: calc({{ block.settings.product_image_width }}px * 0.8);
+      height: calc({{ block.settings.product_image_width }}px * 0.8);
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-split-container-{{ ai_gen_id }}.ai-hero-split-reverse-{{ ai_gen_id }} {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .ai-hero-split-container-{{ ai_gen_id }}.ai-hero-split-reverse-{{ ai_gen_id }} .ai-hero-split-image-side-{{ ai_gen_id }} {
+      order: 2;
+    }
+
+    .ai-hero-split-container-{{ ai_gen_id }}.ai-hero-split-reverse-{{ ai_gen_id }} .ai-hero-split-product-side-{{ ai_gen_id }} {
+      order: 1;
+    }
+  }
+{% endstyle %}
+
+<hero-split-{{ ai_gen_id }}
+  class="ai-hero-split-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-hero-split-container-{{ ai_gen_id }} {% if block.settings.reverse_layout %}ai-hero-split-reverse-{{ ai_gen_id }}{% endif %}">
+    <div class="ai-hero-split-image-side-{{ ai_gen_id }}">
+      {% if block.settings.featured_product %}
+        <a
+          href="{{ block.settings.featured_product.url }}"
+          class="ai-hero-split-image-link-{{ ai_gen_id }}"
+        >
+          {% if block.settings.hero_image %}
+            <img
+              src="{{ block.settings.hero_image | image_url: width: 1200 }}"
+              alt="{{ block.settings.hero_image.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.hero_image.width }}"
+              height="{{ block.settings.hero_image.height }}"
+              class="ai-hero-split-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-hero-split-image-placeholder-{{ ai_gen_id }}">
+              {{ 'hero-apparel-1' | placeholder_svg_tag }}
+              <div class="ai-hero-split-empty-state-{{ ai_gen_id }}">
+                Next, add a hero image
+              </div>
+            </div>
+          {% endif %}
+        </a>
+      {% else %}
+        {% if block.settings.hero_image %}
+          <img
+            src="{{ block.settings.hero_image | image_url: width: 1200 }}"
+            alt="{{ block.settings.hero_image.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.hero_image.width }}"
+            height="{{ block.settings.hero_image.height }}"
+            class="ai-hero-split-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-hero-split-image-placeholder-{{ ai_gen_id }}">
+            {{ 'hero-apparel-1' | placeholder_svg_tag }}
+            <div class="ai-hero-split-empty-state-{{ ai_gen_id }}">
+              Next, add a hero image
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="ai-hero-split-product-side-{{ ai_gen_id }}">
+      {% if block.settings.featured_product %}
+        <div class="ai-hero-split-product-content-{{ ai_gen_id }}">
+          {% if block.settings.show_product_image %}
+            <div class="ai-hero-split-product-image-{{ ai_gen_id }}">
+              {% if block.settings.featured_product.featured_image %}
+                <img
+                  src="{{ block.settings.featured_product.featured_image | image_url: width: 400 }}"
+                  alt="{{ block.settings.featured_product.featured_image.alt | escape }}"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                >
+              {% else %}
+                <div class="ai-hero-split-product-image-placeholder-{{ ai_gen_id }}">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <h2 class="ai-hero-split-product-title-{{ ai_gen_id }}">
+            {{ block.settings.featured_product.title }}
+          </h2>
+
+          {% if block.settings.show_description and block.settings.featured_product.description != blank %}
+            <div class="ai-hero-split-product-description-{{ ai_gen_id }}">
+              {{ block.settings.featured_product.description | truncate: 200 }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.show_price %}
+            <div class="ai-hero-split-product-price-{{ ai_gen_id }}">
+              {{ block.settings.featured_product.price | money }}
+            </div>
+          {% endif %}
+
+          <a
+            href="{{ block.settings.featured_product.url }}"
+            class="ai-hero-split-product-button-{{ ai_gen_id }}"
+          >
+            {{ block.settings.button_text }}
+          </a>
+        </div>
+      {% else %}
+        <div class="ai-hero-split-empty-product-{{ ai_gen_id }}">
+          Next, select a product to showcase
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</hero-split-{{ ai_gen_id }}>
+
+{% schema %}
+{
+  "name": "Hero split",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Section height",
+      "default": 600
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse layout on desktop",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Image side"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Background color",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "header",
+      "content": "Product side"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Featured product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image",
+      "label": "Show product image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "product_image_width",
+      "min": 80,
+      "max": 300,
+      "step": 20,
+      "unit": "px",
+      "label": "Product image size",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "product_image_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Product image radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Content style"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 300,
+      "max": 600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max width",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Title color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "product_description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "product_description_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "product_price_size",
+      "min": 16,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Price size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Price color",
+      "default": "#08a045"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#08a045"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#066d33"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero split"
+    }
+  ]
+}
+{% endschema %}
