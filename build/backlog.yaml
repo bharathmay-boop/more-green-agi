@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T08:44:40.610299+00:00'
+  updated_at: '2026-06-18T08:47:04.268385+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -407,14 +407,18 @@ tasks:
   story: Brand safety
   title: banned-phrase lint + regenerate on caption/ad copy
   depends_on: []
-  status: in_progress
+  status: blocked
   agent: general-purpose
   acceptance: captions containing brand banned_phrases are rejected + regenerated
   verify: python -c "import ast; ast.parse(open('automation/commands/generate_prompts.py').read())"
-  artifacts:
+  artifacts: &id003
   - automation/commands/generate_prompts.py
   attempts: 1
-  last_error: null
+  last_error: "verify failed: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n\
+    \    import ast; ast.parse(open('automation/commands/generate_prompts.py').read())\n             \
+    \   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python314\\Lib\\\
+    ast.py\", line 46, in parse\n    return compile(source, filename, mode, flags,\n                 \
+    \  _feature_version=feature_version, optimiz"
 - id: E5-T3
   epic: E5 Creative Studio
   story: Scoring
@@ -596,3 +600,19 @@ tasks:
     ''next'' is not recognized as an internal or external command,
 
     operable program or batch file.'
+- id: E5-T2-FIX
+  epic: E5 Creative Studio
+  story: Brand safety
+  title: 'Fix failing task E5-T2: banned-phrase lint + regenerate on caption/ad copy'
+  depends_on: []
+  status: todo
+  agent: general-purpose
+  acceptance: captions containing brand banned_phrases are rejected + regenerated
+  verify: python -c "import ast; ast.parse(open('automation/commands/generate_prompts.py').read())"
+  artifacts: *id003
+  attempts: 0
+  last_error: "verify failed: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n\
+    \    import ast; ast.parse(open('automation/commands/generate_prompts.py').read())\n             \
+    \   ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python314\\Lib\\\
+    ast.py\", line 46, in parse\n    return compile(source, filename, mode, flags,\n                 \
+    \  _feature_version=feature_version, optimiz"
