@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:52:53.036771+00:00'
+  updated_at: '2026-06-18T03:52:54.222777+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -313,7 +313,7 @@ tasks:
   title: apply_approved.py + apply-approved CLI (cap re-check, idempotent)
   depends_on:
   - E3-T1
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: applies only approved rows; cap breach -> failed, no spend
   verify: python automation/main.py --help

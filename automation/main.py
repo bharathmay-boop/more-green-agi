@@ -199,6 +199,14 @@ def tune_ads(ctx, apply):
     run(dry_run=not apply)
 
 
+@cli.command("apply-approved")
+@click.pass_context
+def apply_approved(ctx):
+    """Apply human-approved spend proposals to Meta (only path that raises budget)."""
+    from commands.apply_approved import run
+    run(dry_run=ctx.obj["dry_run"])
+
+
 @cli.command("resume-video-jobs")
 @click.pass_context
 def resume_video_jobs(ctx):
