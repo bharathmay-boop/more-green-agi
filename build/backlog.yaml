@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T03:46:04.585076+00:00'
+  updated_at: '2026-06-18T03:46:05.088246+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -152,13 +152,13 @@ tasks:
   story: Web
   title: Next.js app skeleton + layout + lib/queue.ts
   depends_on: []
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: npm run build passes
   verify: cd platform/apps/web && npm run build
   artifacts:
   - platform/apps/web
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E1-T7
   epic: E1 Platform foundation
