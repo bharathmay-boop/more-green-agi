@@ -443,7 +443,7 @@ tasks:
   status: done
   agent: general-purpose
   acceptance: weekly calendar proposed honoring sku_split; founder approves
-  verify: python -c "print('placeholder until implemented')"
+  verify: cd automation && python main.py --dry-run autopilot-calendar
   artifacts:
   - automation/commands/autopilot_calendar.py
   attempts: 1
@@ -457,7 +457,7 @@ tasks:
   status: done
   agent: general-purpose
   acceptance: product pages + landing metrics fetched
-  verify: python -c "print('placeholder until implemented')"
+  verify: cd automation && python main.py --dry-run storefront-audit
   artifacts:
   - automation/commands/storefront_audit.py
   attempts: 1
@@ -469,10 +469,10 @@ tasks:
   depends_on:
   - E7-T1
   - E3-T1
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: product_copy_change/price_test proposals; apply only after approval
-  verify: python -c "print('placeholder until implemented')"
+  verify: cd automation && python main.py --dry-run storefront-propose
   artifacts:
   - automation/commands/storefront_propose.py
   attempts: 4

@@ -355,6 +355,34 @@ def export_report(ctx):
     run()
 
 
+@cli.command("storefront-audit")
+@click.pass_context
+def storefront_audit(ctx):
+    """Read live Shopify products + landing performance (read-only)."""
+    from commands.storefront_audit import run
+    run(dry_run=ctx.obj["dry_run"])
+
+
+@cli.command("storefront-propose")
+@click.pass_context
+def storefront_propose(ctx):
+    """Propose product-copy / margin-guardrailed price tests (write-gated via approval queue)."""
+    from commands.storefront_propose import run
+    run(dry_run=ctx.obj["dry_run"])
+
+
+@cli.command("autopilot-calendar")
+@click.option("--week-start", default=None, help="ISO date of week start e.g. 2026-06-22.")
+@click.option("--slots", default=6, show_default=True, type=int, help="Posts to plan for the week.")
+@click.option("--include-sundays", is_flag=True, default=False, help="Include Sunday story posts.")
+@click.pass_context
+def autopilot_calendar(ctx, week_start, slots, include_sundays):
+    """Auto-seed posts from cultural calendar + perf gaps honoring sku_split (founder approves)."""
+    from commands.autopilot_calendar import run
+    run(dry_run=ctx.obj["dry_run"], week_start=week_start, slots=slots,
+        include_sundays=include_sundays)
+
+
 @cli.command("dashboard")
 def dashboard():
     """Launch the Streamlit dashboard (or visit the deployed URL)."""
