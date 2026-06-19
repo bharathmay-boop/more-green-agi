@@ -93,18 +93,15 @@ tasks:
   story: DB
   title: platform/packages/db/schema.prisma (port existing + new tables per doc 01)
   depends_on: []
-  status: blocked
+  status: done
   agent: general-purpose
   acceptance: prisma validate passes
-  verify: cd platform/packages/db && npx --yes prisma validate
+  verify: cd platform/packages/db && DATABASE_URL=postgresql://moregreen:moregreen@localhost:5432/moregreen
+    npx prisma validate
   artifacts: &id001
   - platform/packages/db/schema.prisma
   attempts: 1
-  last_error: "verify failed: Prisma schema loaded from schema.prisma.\n\nError: Prisma schema validation\
-    \ - (validate wasm)\nError code: P1012\n\e[1;91merror\e[0m: \e[1mThe datasource property `url` is\
-    \ no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and\
-    \ pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the\
-    \ `PrismaClient` constructor. See https://pri"
+  last_error: null
 - id: E1-T3
   epic: E1 Platform foundation
   story: DB
@@ -560,17 +557,14 @@ tasks:
   title: 'Fix failing task E1-T2: platform/packages/db/schema.prisma (port existing + new tables per doc
     01)'
   depends_on: []
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: prisma validate passes
-  verify: cd platform/packages/db && npx --yes prisma validate
+  verify: cd platform/packages/db && DATABASE_URL=postgresql://moregreen:moregreen@localhost:5432/moregreen
+    npx prisma validate
   artifacts: *id001
   attempts: 0
-  last_error: "verify failed: Prisma schema loaded from schema.prisma.\n\nError: Prisma schema validation\
-    \ - (validate wasm)\nError code: P1012\n\e[1;91merror\e[0m: \e[1mThe datasource property `url` is\
-    \ no longer supported in schema files. Move connection URLs for Migrate to `prisma.config.ts` and\
-    \ pass either `adapter` for a direct database connection or `accelerateUrl` for Accelerate to the\
-    \ `PrismaClient` constructor. See https://pri"
+  last_error: null
 - id: E1-T6-FIX
   epic: E1 Platform foundation
   story: Web
