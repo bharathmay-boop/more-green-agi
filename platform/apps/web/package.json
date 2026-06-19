@@ -4,12 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prisma:generate": "prisma generate"
+  },
+  "prisma": {
+    "schema": "../../packages/db/schema.prisma"
   },
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "ioredis": "^5.4.1",
     "next": "15.1.6",
     "react": "19.0.0",
@@ -19,6 +24,7 @@
     "@types/node": "^20.17.12",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
+    "prisma": "^6.2.1",
     "typescript": "^5.7.3"
   }
 }

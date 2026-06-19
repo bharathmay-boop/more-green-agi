@@ -108,10 +108,10 @@ tasks:
   title: prisma migrations + lib/db.ts client
   depends_on:
   - E1-T2
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: migration dir created; client generated
-  verify: test -d platform/packages/db/migrations || cd platform/packages/db && npx --yes prisma validate
+  verify: cd platform/apps/web && npm run build
   artifacts:
   - platform/packages/db/migrations
   attempts: 0

@@ -28,3 +28,8 @@ next-env.d.ts
 build.log
 npm-install.log
 validate.log
+
+# prisma generated client
+/lib/generated
+# prisma logs
+prisma-gen.log
