@@ -83,13 +83,22 @@ def _process_post(db, post, dry_run: bool, strength: float = 0.75, aspect_ratio:
         out_dir.mkdir(parents=True, exist_ok=True)
         saved_paths = []
 
+        cost_each = 0.04
         for i, img in enumerate(result["images"]):
             out_path = out_dir / f"{pid}_{i}.jpg"
             out_path.write_bytes(requests.get(img["url"], timeout=30).content)
-            saved_paths.append(str(out_path.relative_to(PROJECT_ROOT)))
+            rel = str(out_path.relative_to(PROJECT_ROOT))
+            saved_paths.append(rel)
             log.info("  ✓ Saved %s (%dKB)", out_path.name, out_path.stat().st_size // 1024)
+            # E5-T1: one creatives row per variant so score_creatives can rank them.
+            with db:
+                db.execute(
+                    """INSERT INTO creatives (post_id, kind, variant_index, local_path, status, cost_usd)
+                       VALUES (?, 'image', ?, ?, 'ready', ?)""",
+                    (pid, i, rel, cost_each),
+                )
 
-        log.info("COST fal.ai flux_kontext post=%s variants=%d $%.2f", pid, IMAGE_VARIANTS_PER_POST, IMAGE_VARIANTS_PER_POST * 0.04)
+        log.info("COST fal.ai flux_kontext post=%s variants=%d $%.2f", pid, IMAGE_VARIANTS_PER_POST, IMAGE_VARIANTS_PER_POST * cost_each)
 
         with db:
             db.execute(

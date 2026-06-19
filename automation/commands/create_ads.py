@@ -154,12 +154,12 @@ def _create_campaign_for_post(db, account: AdAccount, post, dry_run: bool,
             """
             INSERT INTO ad_campaigns
                 (campaign_key, sku, campaign_date, campaign_phase,
-                 campaign_id, adset_id, creative_id, ad_id, daily_budget_inr)
-            VALUES (?,?,?,?,?,?,?,?,?)
+                 campaign_id, adset_id, creative_id, ad_id, daily_budget_inr, post_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
             """,
             (
                 campaign_key, post["sku"], campaign_date, phase,
-                campaign["id"], adset["id"], creative["id"], ad["id"], budget_inr,
+                campaign["id"], adset["id"], creative["id"], ad["id"], budget_inr, pid,
             ),
         )
 

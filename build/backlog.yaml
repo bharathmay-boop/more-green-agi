@@ -20,7 +20,8 @@ tasks:
 - id: E0-T2
   epic: E0 Build Engine
   story: Orchestrator
-  title: Implement build/orchestrate.py (ready-set, dispatch, verify, commit, regen, lock)
+  title: Implement build/orchestrate.py (ready-set, dispatch, verify, commit, regen,
+    lock)
   depends_on:
   - E0-T1
   status: done
@@ -34,7 +35,8 @@ tasks:
 - id: E0-T3
   epic: E0 Build Engine
   story: Cron/resume
-  title: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff, WIP safeguard)
+  title: Implement build/resume.sh (flock, stale-lock reclaim, usage-limit backoff,
+    WIP safeguard)
   depends_on:
   - E0-T2
   status: done
@@ -68,7 +70,8 @@ tasks:
   - E0-T3
   status: done
   agent: general-purpose
-  acceptance: crontab.example has */15 resume.sh line; README documents crontab -e install + sandbox fallback
+  acceptance: crontab.example has */15 resume.sh line; README documents crontab -e
+    install + sandbox fallback
   verify: grep -q resume.sh automation/crontab.example
   artifacts:
   - automation/crontab.example
@@ -122,7 +125,7 @@ tasks:
   title: seed_from_sqlite.py (idempotent import of automation/db/pipeline.db)
   depends_on:
   - E1-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: re-running reports 0 inserts/N updates, no dupes
   verify: python platform/packages/db/seed_from_sqlite.py --dry-run
@@ -133,13 +136,14 @@ tasks:
 - id: E1-T5
   epic: E1 Platform foundation
   story: CLI parity
-  title: automation/db/schema.sql new tables (creative, order, ad_spend_daily, attribution, approval_queue,
-    build_task, audit_log)
+  title: automation/db/schema.sql new tables (creative, order, ad_spend_daily, attribution,
+    approval_queue, build_task, audit_log)
   depends_on: []
   status: done
   agent: general-purpose
   acceptance: fresh get_db() creates all new tables
-  verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.db import get_db; get_db()"
+  verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.db import
+    get_db; get_db()"
   artifacts:
   - automation/db/schema.sql
   attempts: 1
@@ -233,13 +237,14 @@ tasks:
 - id: E2-T3
   epic: E2 Profit loop
   story: Attribution
-  title: attribution.py + compute-attribution (blended/paid ROAS, div0/refund/split safe)
+  title: attribution.py + compute-attribution (blended/paid ROAS, div0/refund/split
+    safe)
   depends_on:
   - E2-T1
   - E2-T2
   status: done
   agent: general-purpose
-  acceptance: "rollups by sku/campaign/blended; \xF70 -> null; refunds honored"
+  acceptance: rollups by sku/campaign/blended; ÷0 -> null; refunds honored
   verify: python automation/main.py --dry-run compute-attribution
   artifacts:
   - automation/commands/attribution.py
@@ -284,8 +289,8 @@ tasks:
   status: done
   agent: general-purpose
   acceptance: propose() inserts pending row, dedupes identical pending
-  verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.approvals import propose;
-    print('ok')"
+  verify: python -c "import sys; sys.path.insert(0,'automation'); from utils.approvals
+    import propose; print('ok')"
   artifacts:
   - automation/utils/approvals.py
   attempts: 1
@@ -341,7 +346,8 @@ tasks:
   depends_on: []
   status: done
   agent: general-purpose
-  acceptance: MAX_DAILY_SPEND_INR, MAX_CAMPAIGN_BUDGET_INR, APPROVAL_TTL_HOURS, AUTONOMY_MODE present
+  acceptance: MAX_DAILY_SPEND_INR, MAX_CAMPAIGN_BUDGET_INR, APPROVAL_TTL_HOURS, AUTONOMY_MODE
+    present
   verify: python -c "import sys; sys.path.insert(0,'automation'); import config; config.MAX_DAILY_SPEND_INR"
   artifacts:
   - automation/config.py
@@ -384,7 +390,7 @@ tasks:
   depends_on:
   - E1-T5
   - E1-T8
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: N variants per post stored as creative rows
   verify: python -c "import ast; ast.parse(open('automation/commands/generate_images.py').read())"
@@ -401,7 +407,8 @@ tasks:
   agent: general-purpose
   acceptance: captions containing brand banned_phrases are rejected + regenerated
   verify: python -c "import ast,sys; sys.path.insert(0,'automation'); ast.parse(open('automation/commands/generate_prompts.py').read());
-    from commands.generate_prompts import banned_in; assert banned_in('morning ritual')==['morning ritual']"
+    from commands.generate_prompts import banned_in; assert banned_in('morning ritual')==['morning
+    ritual']"
   artifacts: &id003
   - automation/commands/generate_prompts.py
   attempts: 1
@@ -413,7 +420,7 @@ tasks:
   depends_on:
   - E2-T2
   - E5-T1
-  status: todo
+  status: done
   agent: general-purpose
   acceptance: winning variant flagged from ad_spend_daily CTR
   verify: python -c "print('placeholder until implemented')"
@@ -424,7 +431,8 @@ tasks:
 - id: E6-T1
   epic: E6 Calendar Autopilot
   story: Autoseed
-  title: auto-seed posts from cultural_calendar + perf gaps + sku_split (dedupe by post_id)
+  title: auto-seed posts from cultural_calendar + perf gaps + sku_split (dedupe by
+    post_id)
   depends_on:
   - E2-T3
   status: done
@@ -509,7 +517,7 @@ tasks:
 - id: E9-T2
   epic: E9 Hardening
   story: CI
-  title: "GitHub Actions \u2014 pytest + vitest + prisma validate + npm build"
+  title: GitHub Actions — pytest + vitest + prisma validate + npm build
   depends_on: []
   status: done
   agent: general-purpose
@@ -522,7 +530,8 @@ tasks:
 - id: E9-T3
   epic: E9 Hardening
   story: Tests
-  title: pytest suite (attribution, approval_queue, tune_ads proposals, sync_orders, orchestrator)
+  title: pytest suite (attribution, approval_queue, tune_ads proposals, sync_orders,
+    orchestrator)
   depends_on:
   - E2-T3
   - E3-T1
@@ -546,7 +555,8 @@ tasks:
   status: done
   agent: general-purpose
   acceptance: failed jobs retried then DLQ; metrics emitted
-  verify: cd platform/workers && python -m pytest test_reliability.py -q && python run_job.py --help
+  verify: cd platform/workers && python -m pytest test_reliability.py -q && python
+    run_job.py --help
   artifacts:
   - platform/workers/reliability.py
   attempts: 0
@@ -554,8 +564,8 @@ tasks:
 - id: E1-T2-FIX
   epic: E1 Platform foundation
   story: DB
-  title: 'Fix failing task E1-T2: platform/packages/db/schema.prisma (port existing + new tables per doc
-    01)'
+  title: 'Fix failing task E1-T2: platform/packages/db/schema.prisma (port existing
+    + new tables per doc 01)'
   depends_on: []
   status: done
   agent: general-purpose
@@ -586,7 +596,8 @@ tasks:
   agent: general-purpose
   acceptance: captions containing brand banned_phrases are rejected + regenerated
   verify: python -c "import ast,sys; sys.path.insert(0,'automation'); ast.parse(open('automation/commands/generate_prompts.py').read());
-    from commands.generate_prompts import banned_in; assert banned_in('morning ritual')==['morning ritual']"
+    from commands.generate_prompts import banned_in; assert banned_in('morning ritual')==['morning
+    ritual']"
   artifacts: *id003
   attempts: 0
   last_error: null

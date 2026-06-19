@@ -36,7 +36,7 @@ HASHTAGS = _hashtags
 CULTURAL_CALENDAR = _calendar["events"]
 
 # ── Image / Video Generation ──────────────────────────────────────────────────
-IMAGE_VARIANTS_PER_POST  = 1
+IMAGE_VARIANTS_PER_POST  = 2  # >1 so score_creatives (E5-T3) can rank variants by CTR
 IMAGE_ASPECT_RATIO_FEED  = "1:1"
 IMAGE_ASPECT_RATIO_REELS = "9:16"
 VIDEO_DURATION_SECONDS   = 5

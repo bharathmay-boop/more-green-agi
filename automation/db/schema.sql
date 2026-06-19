@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS ad_campaigns (
     ad_id               TEXT,
     status              TEXT DEFAULT 'PAUSED',
     daily_budget_inr    INTEGER,
+    post_id             TEXT REFERENCES posts(post_id),
     created_at          TEXT DEFAULT (datetime('now'))
 );
 

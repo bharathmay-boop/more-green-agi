@@ -162,6 +162,14 @@ def create_ads(ctx, post):
     run(post_id=post, dry_run=ctx.obj["dry_run"])
 
 
+@cli.command("score-creatives")
+@click.pass_context
+def score_creatives(ctx):
+    """Score creatives by ad CTR and mark promote-worthy ones selected (E5-T3)."""
+    from commands.score_creatives import run
+    run(dry_run=ctx.obj["dry_run"])
+
+
 @cli.command("sync-orders")
 @click.option("--days", default=30, show_default=True, type=int,
               help="On first run, look back this many days for orders.")
