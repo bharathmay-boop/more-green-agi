@@ -1,6 +1,7 @@
 // /api/posts/[id] — update / hold / archive a post (E1-T7).
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { requireRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,8 @@ const EDITABLE = new Set([
 ]);
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const gate = await requireRole("approver");
+  if (gate instanceof Response) return gate;
   const { id } = await params;
   const body = await req.json().catch(() => ({}));
   const data: Record<string, unknown> = {};
@@ -30,6 +33,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
 // Soft-delete = archive (on_hold). Hard delete is owner-only and not exposed here.
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const gate = await requireRole("owner");
+  if (gate instanceof Response) return gate;
   const { id } = await params;
   try {
     const post = await prisma.post.update({ where: { postId: id }, data: { onHold: true } });

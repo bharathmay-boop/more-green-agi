@@ -1,6 +1,7 @@
 // /api/posts — list + create content posts (E1-T7).
 import { NextResponse } from "next/server";
 import { prisma, safeQuery } from "@/lib/db";
+import { requireRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const gate = await requireRole("approver");
+  if (gate instanceof Response) return gate;
   const body = await req.json().catch(() => ({}));
   if (!body.postId || !body.sku) {
     return NextResponse.json({ error: "postId and sku are required" }, { status: 400 });

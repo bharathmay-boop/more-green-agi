@@ -47,12 +47,16 @@ security item: every business model needs `orgId` + every query a `where:{orgId}
 + a Prisma middleware to enforce it so nobody can forget.
 → Add when: a second org is onboarded. Tracked as a backlog epic, not built.
 
-### 5. Real auth provider — PLANNED
-`getCurrentUser` reads an `mg_session` cookie (email) with a `DEV_ROLE` escape
-hatch. No login, no session signing, no expiry. Fine for a single internal
-operator behind a VPN; not fine for external users.
-→ Add when: anyone outside the founding team logs in. Swap the cookie lookup
-for Auth.js — route guards stay unchanged (the seam was built for this).
+### 5. Real auth provider — HARDENED THIS PASS ✅ (partial), full provider PLANNED
+Original finding: `mg_session` was an **unsigned** cookie — anyone could set
+`mg_session=owner@x` and become an owner (CRITICAL spoof).
+→ Fixed: the cookie is now HMAC-SHA256 signed with `SESSION_SECRET`
+(`signSession`/`verifySession`, stdlib `node:crypto`, constant-time compare).
+A forged or unsigned cookie fails verification → caller is `viewer` → money
+endpoints refuse. With no `SESSION_SECRET` set, nothing authenticates in prod
+(secure default). All mutation routes now call `requireRole(...)`.
+→ Still add when external users log in: a real login flow + session expiry/
+rotation (Auth.js). Route guards stay unchanged — the seam holds.
 
 ### 6. Billing / metering — PLANNED, speculative
 No plans, usage metering, or Stripe. `Org.plan` is a string stub.

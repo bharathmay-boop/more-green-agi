@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { enqueueJob } from "@/lib/queue";
+import { requireRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,8 @@ const ALLOWED = new Set(["selected", "rejected", "ready"]);
 
 // PATCH { status } — select/reject a creative variant.
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const gate = await requireRole("approver");
+  if (gate instanceof Response) return gate;
   const { id } = await params;
   const body = await req.json().catch(() => ({}));
   const status = String(body.status || "");
@@ -25,6 +28,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
 // POST — enqueue a regeneration job for this creative's post.
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const gate = await requireRole("approver");
+  if (gate instanceof Response) return gate;
   const { id } = await params;
   try {
     const creative = await prisma.creative.findUnique({ where: { id: Number(id) } });

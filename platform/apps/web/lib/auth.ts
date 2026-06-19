@@ -8,10 +8,42 @@
 // only swapping the cookie lookup for a NextAuth session — the route guards
 // (`requireRole`) stay unchanged. Secure by default: an unknown caller is a
 // viewer, never an approver.
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { prisma, safeQuery } from "@/lib/db";
 
 export type Role = "owner" | "approver" | "viewer";
+
+/**
+ * Verify an HMAC-signed session cookie. Value format is `email.base64url(sig)`
+ * where sig = HMAC-SHA256(email, SESSION_SECRET). An unsigned/forged/missing
+ * signature returns null — the email field alone is NOT trusted (it's
+ * attacker-controlled). Mint matching cookies server-side with `signSession`.
+ *
+ * No SESSION_SECRET set → no cookie can ever verify, so in production the
+ * money-sensitive guards refuse to operate until a real auth provider is wired
+ * (the DEV_ROLE escape hatch below is non-prod only).
+ */
+export function signSession(email: string): string {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) throw new Error("SESSION_SECRET not set");
+  const sig = createHmac("sha256", secret).update(email).digest("base64url");
+  return `${email}.${sig}`;
+}
+
+function verifySession(value: string | undefined): string | null {
+  const secret = process.env.SESSION_SECRET;
+  if (!value || !secret) return null;
+  const dot = value.lastIndexOf(".");
+  if (dot <= 0) return null;
+  const email = value.slice(0, dot);
+  const given = value.slice(dot + 1);
+  const expected = createHmac("sha256", secret).update(email).digest("base64url");
+  const a = Buffer.from(given);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+  return email;
+}
 
 const RANK: Record<Role, number> = { viewer: 0, approver: 1, owner: 2 };
 
@@ -30,7 +62,7 @@ const ANON: CurrentUser = { email: "anonymous", role: "viewer", orgId: null };
  */
 export async function getCurrentUser(): Promise<CurrentUser> {
   const jar = await cookies();
-  const email = jar.get("mg_session")?.value;
+  const email = verifySession(jar.get("mg_session")?.value);
 
   if (email) {
     const user = await safeQuery(
