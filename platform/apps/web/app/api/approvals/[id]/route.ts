@@ -6,7 +6,7 @@
 // is in `approved` state. Illegal transitions are rejected here, mirroring the
 // Python state machine in automation/utils/approvals.py.
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma, writeAudit } from "@/lib/db";
 import { enqueueJob } from "@/lib/queue";
 import { requireRole } from "@/lib/auth";
 
@@ -21,6 +21,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   const { id } = await params;
   const pid = Number(id);
+  if (!Number.isInteger(pid) || pid <= 0) {
+    return NextResponse.json({ error: "invalid id" }, { status: 400 });
+  }
   const body = await req.json().catch(() => ({}));
   const action = body.action as Action;
   const actor = gate.email;
@@ -46,6 +49,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         decidedAt: new Date(),
       },
     });
+    await writeAudit({
+      actor, action, entity: "approval_queue", entityId: pid,
+      before: { status: row.status }, after: { status: updated.status },
+    });
     return NextResponse.json({ item: updated });
   }
 
@@ -56,6 +63,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
   try {
     const job = await enqueueJob("apply_approved", { approvalId: pid });
+    await writeAudit({
+      actor, action: "apply", entity: "approval_queue", entityId: pid,
+      before: { status: "approved" }, after: { status: "applying", jobId: job.id },
+    });
     return NextResponse.json({ enqueued: job.id, note: "apply_approved worker will apply after cap re-check" });
   } catch (err) {
     return NextResponse.json({ error: `queue unavailable: ${err}` }, { status: 503 });
