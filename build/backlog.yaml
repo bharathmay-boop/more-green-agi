@@ -122,7 +122,7 @@ tasks:
   title: seed_from_sqlite.py (idempotent import of automation/db/pipeline.db)
   depends_on:
   - E1-T3
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: re-running reports 0 inserts/N updates, no dupes
   verify: python platform/packages/db/seed_from_sqlite.py --dry-run
@@ -164,7 +164,7 @@ tasks:
   depends_on:
   - E1-T6
   - E1-T3
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: posts list/create/update/archive; build passes
   verify: cd platform/apps/web && npm run build
@@ -179,7 +179,7 @@ tasks:
   depends_on:
   - E1-T6
   - E1-T3
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: variant select/reject/regenerate; build passes
   verify: cd platform/apps/web && npm run build
@@ -253,7 +253,7 @@ tasks:
   depends_on:
   - E2-T3
   - E1-T6
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: blended vs paid ROAS by sku/campaign/range; build passes
   verify: cd platform/apps/web && npm run build
@@ -326,7 +326,7 @@ tasks:
   depends_on:
   - E3-T1
   - E1-T6
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: one-tap approve/reject; guarded transitions; build passes
   verify: cd platform/apps/web && npm run build
@@ -471,7 +471,7 @@ tasks:
   depends_on:
   - E1-T6
   - E1-T3
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: influencer list/detail/status update in web
   verify: cd platform/apps/web && npm run build
@@ -498,7 +498,7 @@ tasks:
   title: NextAuth + org/RBAC (owner|approver|viewer); gate approve/apply
   depends_on:
   - E1-T6
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: approve/apply restricted to approver|owner
   verify: cd platform/apps/web && npm run build
