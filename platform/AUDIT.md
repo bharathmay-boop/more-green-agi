@@ -55,8 +55,11 @@ Original finding: `mg_session` was an **unsigned** cookie — anyone could set
 A forged or unsigned cookie fails verification → caller is `viewer` → money
 endpoints refuse. With no `SESSION_SECRET` set, nothing authenticates in prod
 (secure default). All mutation routes now call `requireRole(...)`.
-→ Still add when external users log in: a real login flow + session expiry/
-rotation (Auth.js). Route guards stay unchanged — the seam holds.
+→ Login flow now exists: `POST /api/auth/login` (constant-time ADMIN_PASSWORD
+check + user must exist in DB) mints the signed cookie with a 12h expiry;
+`POST /api/auth/logout` clears it. Interim shared-password, single-operator.
+→ Still add when external users log in: per-user credentials + rotation
+(Auth.js). Route guards stay unchanged — the seam holds.
 
 ### 6. Billing / metering — PLANNED, speculative
 No plans, usage metering, or Stripe. `Org.plan` is a string stub.
