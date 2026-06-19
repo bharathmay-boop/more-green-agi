@@ -1,11 +1,54 @@
-import { ScreenStub } from "../_components/ScreenStub";
+// Creative Review screen (E1-T8) — variants grouped by post with status + score.
+import { prisma, safeQuery } from "@/lib/db";
+import { PageHeader, Card, Badge, Empty, toneFor, td, th } from "../_components/ui";
 
-export default function CreativesPage() {
+export const dynamic = "force-dynamic";
+
+export default async function CreativesPage() {
+  const creatives = await safeQuery(
+    () => prisma.creative.findMany({ orderBy: [{ postId: "asc" }, { variantIndex: "asc" }], take: 300 }),
+    [] as Awaited<ReturnType<typeof prisma.creative.findMany>>,
+  );
+
+  const byPost = new Map<string, typeof creatives>();
+  for (const c of creatives) {
+    if (!byPost.has(c.postId)) byPost.set(c.postId, []);
+    byPost.get(c.postId)!.push(c);
+  }
+
   return (
-    <ScreenStub
-      title="Creative Review"
-      description="Variant carousel: select a winner, regenerate, or reject. Mirrors the Streamlit creative-approval gate."
-      task="E1-T8"
-    />
+    <section>
+      <PageHeader
+        title="Creative Review"
+        subtitle="Generated image/video variants per post. Select the winner or reject + regenerate (PATCH/POST /api/creatives/[id]). Scores come from the CTR-fed variant loop."
+      />
+      {creatives.length === 0 ? (
+        <Empty>No creatives generated yet. Approve post prompts, then run the generate worker.</Empty>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {[...byPost.entries()].map(([postId, items]) => (
+            <Card key={postId}>
+              <div style={{ fontWeight: 600, marginBottom: 8, fontSize: 14 }}>{postId}</div>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr><th style={th}>Variant</th><th style={th}>Kind</th><th style={th}>Status</th><th style={th}>Score</th><th style={th}>Cost $</th></tr>
+                </thead>
+                <tbody>
+                  {items.map((c) => (
+                    <tr key={c.id}>
+                      <td style={td}>#{c.variantIndex}</td>
+                      <td style={td}>{c.kind}</td>
+                      <td style={td}><Badge tone={toneFor(c.status)}>{c.status}</Badge></td>
+                      <td style={td}>{c.score == null ? "—" : c.score.toFixed(2)}</td>
+                      <td style={td}>{c.costUsd == null ? "—" : c.costUsd.toFixed(3)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }

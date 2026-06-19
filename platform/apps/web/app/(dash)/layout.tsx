@@ -5,6 +5,7 @@ const NAV: { href: string; label: string }[] = [
   { href: "/creatives", label: "Creative Review" },
   { href: "/approvals", label: "Approvals" },
   { href: "/roas", label: "ROAS" },
+  { href: "/influencers", label: "Influencers" },
   { href: "/build", label: "Build" },
   { href: "/audit", label: "Audit" },
 ];

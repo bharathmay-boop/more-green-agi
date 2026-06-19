@@ -179,7 +179,7 @@ tasks:
   depends_on:
   - E1-T6
   - E1-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: variant select/reject/regenerate; build passes
   verify: cd platform/apps/web && npm run build
@@ -253,7 +253,7 @@ tasks:
   depends_on:
   - E2-T3
   - E1-T6
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: blended vs paid ROAS by sku/campaign/range; build passes
   verify: cd platform/apps/web && npm run build
@@ -326,7 +326,7 @@ tasks:
   depends_on:
   - E3-T1
   - E1-T6
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: one-tap approve/reject; guarded transitions; build passes
   verify: cd platform/apps/web && npm run build
@@ -471,7 +471,7 @@ tasks:
   depends_on:
   - E1-T6
   - E1-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: influencer list/detail/status update in web
   verify: cd platform/apps/web && npm run build
