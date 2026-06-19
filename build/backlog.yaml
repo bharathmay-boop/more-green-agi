@@ -122,7 +122,7 @@ tasks:
   title: seed_from_sqlite.py (idempotent import of automation/db/pipeline.db)
   depends_on:
   - E1-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: re-running reports 0 inserts/N updates, no dupes
   verify: python platform/packages/db/seed_from_sqlite.py --dry-run
