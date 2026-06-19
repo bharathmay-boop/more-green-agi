@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-18T16:14:19.545102+00:00'
+  updated_at: '2026-06-19T03:29:09.503907+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -511,13 +511,13 @@ tasks:
   story: CI
   title: "GitHub Actions \u2014 pytest + vitest + prisma validate + npm build"
   depends_on: []
-  status: todo
+  status: in_progress
   agent: general-purpose
   acceptance: CI workflow runs on PR
   verify: test -f .github/workflows/ci.yml
   artifacts:
   - .github/workflows/ci.yml
-  attempts: 0
+  attempts: 1
   last_error: null
 - id: E9-T3
   epic: E9 Hardening
