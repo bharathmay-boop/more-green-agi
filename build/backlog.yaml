@@ -2,7 +2,7 @@ meta:
   project: More Green Autonomous Marketing Platform
   north_star: blended_roas
   autonomy_mode: propose
-  updated_at: '2026-06-19T03:29:09.503907+00:00'
+  updated_at: '2026-06-19T03:31:41.211277+00:00'
 tasks:
 - id: E0-T1
   epic: E0 Build Engine
@@ -122,7 +122,7 @@ tasks:
   title: seed_from_sqlite.py (idempotent import of automation/db/pipeline.db)
   depends_on:
   - E1-T3
-  status: done
+  status: in_progress
   agent: general-purpose
   acceptance: re-running reports 0 inserts/N updates, no dupes
   verify: python platform/packages/db/seed_from_sqlite.py --dry-run
@@ -511,7 +511,7 @@ tasks:
   story: CI
   title: "GitHub Actions \u2014 pytest + vitest + prisma validate + npm build"
   depends_on: []
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: CI workflow runs on PR
   verify: test -f .github/workflows/ci.yml

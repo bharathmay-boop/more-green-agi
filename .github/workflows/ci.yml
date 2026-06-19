@@ -1,0 +1,84 @@
+# CI — E9-T2. Runs the sandbox-safe checks from docs/plan/moregreen/09-verification.md
+# on every PR: pytest (automation) + prisma validate + npm build + vitest (web).
+# No money is spent: a dummy DATABASE_URL is supplied so prisma/next never need a
+# live database (validate and `prisma generate` are offline; tests use SQLite).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+# Avoid piling up runs on rapid pushes to the same PR/branch.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Offline placeholder — prisma validate / generate and next build read this but
+  # never connect. CI does not provision Postgres and spends nothing.
+  DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+
+jobs:
+  pytest:
+    name: pytest (automation)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: automation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: automation/requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Run pytest
+        run: pytest -q
+
+  prisma-validate:
+    name: prisma validate (packages/db)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: platform/packages/db
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: platform/packages/db/package-lock.json
+      - name: Install dependencies
+        run: npm install
+      - name: prisma validate
+        run: npx prisma validate
+
+  web:
+    name: vitest + build (apps/web)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: platform/apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: platform/apps/web/package-lock.json
+      - name: Install dependencies
+        run: npm install
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Vitest
+        # No-op until vitest tests are wired (no "test" script yet); activates
+        # automatically once one is added.
+        run: npm test --if-present
+      - name: Build
+        run: npm run build
