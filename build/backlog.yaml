@@ -164,7 +164,7 @@ tasks:
   depends_on:
   - E1-T6
   - E1-T3
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: posts list/create/update/archive; build passes
   verify: cd platform/apps/web && npm run build

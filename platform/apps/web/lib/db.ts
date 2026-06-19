@@ -4,7 +4,7 @@
 // PrismaClient (and a new connection pool) on every reload until Postgres runs
 // out of connections. Caching the instance on globalThis avoids that. In
 // production a single module instance is created normally.
-import { PrismaClient } from "@/lib/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
