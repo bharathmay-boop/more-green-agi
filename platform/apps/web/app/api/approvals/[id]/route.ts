@@ -8,17 +8,22 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { enqueueJob } from "@/lib/queue";
+import { requireRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 type Action = "approve" | "reject" | "apply";
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  // RBAC (E9-T1): approving/applying spend is approver|owner only.
+  const gate = await requireRole("approver");
+  if (gate instanceof Response) return gate;
+
   const { id } = await params;
   const pid = Number(id);
   const body = await req.json().catch(() => ({}));
   const action = body.action as Action;
-  const actor = String(body.actor || "web");
+  const actor = gate.email;
 
   if (!["approve", "reject", "apply"].includes(action)) {
     return NextResponse.json({ error: "action must be approve | reject | apply" }, { status: 400 });

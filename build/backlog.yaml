@@ -498,7 +498,7 @@ tasks:
   title: NextAuth + org/RBAC (owner|approver|viewer); gate approve/apply
   depends_on:
   - E1-T6
-  status: in_progress
+  status: done
   agent: general-purpose
   acceptance: approve/apply restricted to approver|owner
   verify: cd platform/apps/web && npm run build
