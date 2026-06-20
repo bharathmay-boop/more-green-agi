@@ -5,6 +5,10 @@ Three goals, one codebase:
 2. **Portfolio piece** (a live, showable system).
 3. **Bootstrapped Agent-as-a-Service (AaaS)** with monetization.
 
+> **This is the executive summary.** The extensive, code-grounded build detail
+> is split into per-phase sub-plans in [`plans/`](plans/README.md), backed by a
+> fresh code audit in [`plans/00-audit.md`](plans/00-audit.md).
+
 ---
 
 ## Hosting decision (goals incorporated): **Path A — all-managed, ~$0/mo**
