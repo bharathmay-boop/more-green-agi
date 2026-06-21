@@ -23,6 +23,7 @@ on:
     - cron: "30 13 * * *"      # 19:00 IST daily — attribution + strategize
     - cron: "0 4 * * *"        # 09:30 IST daily — sync orders
     - cron: "*/10 * * * *"     # every 10 min — apply approved proposals (cap-gated)
+    - cron: "5 * * * *"        # hourly — expire pending proposals past their TTL
 
 concurrency:
   group: pipeline-${{ github.event.schedule || github.event.inputs.command }}
@@ -103,6 +104,7 @@ jobs:
                 "30 13 * * *") python main.py compute-attribution; python main.py strategize ;;
                 "0 4 * * *")   python main.py sync-orders ;;
                 "*/10 * * * *") python main.py apply-approved ;;
+                "5 * * * *")    python main.py expire-approvals ;;
               esac
               ;;
           esac

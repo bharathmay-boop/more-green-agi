@@ -225,6 +225,14 @@ def apply_approved(ctx):
     run(dry_run=ctx.obj["dry_run"])
 
 
+@cli.command("expire-approvals")
+@click.pass_context
+def expire_approvals(ctx):
+    """Expire pending proposals past their TTL (keeps the approval queue tidy)."""
+    from commands.expire_approvals import run
+    run(dry_run=ctx.obj["dry_run"])
+
+
 @cli.command("seed-owner")
 @click.option("--email", default=None, help="Owner email (defaults to FOUNDER_EMAIL).")
 @click.option("--name", default=None, help="Display name.")
