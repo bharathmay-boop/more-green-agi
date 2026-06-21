@@ -3,7 +3,10 @@
 **Goal:** More Green's marketing agent running 24/7 in the cloud, dashboard on a
 real URL, **supervised** (you approve every spend before it applies). → Goal 1.
 
-**Precondition:** Phase 0 done (single Postgres DB, `process-jobs`, no Redis).
+**Precondition:** Phase 0 done (single Postgres DB, no Redis). Per Phase 0 D1
+the job queue is deferred to P3/4 — there is no `process-jobs`; the scheduled
+`apply-approved` run is the apply path. The cron workflow already exists at
+`.github/workflows/pipeline.yml` (dormant until `vars.PIPELINE_ENABLED=true`).
 
 **Needs you:** ~30 min — create two free accounts + paste secrets. Everything
 else is mine.
@@ -40,10 +43,12 @@ else is mine.
 - Add `.github/workflows/pipeline.yml` with jobs mirroring `crontab.example`:
   - `generate` + `post_organic` (Mon/Wed/Fri ~9am IST → cron in UTC),
   - `monitor_ads` (daily 6pm IST), `attribution` (7pm IST),
-  - `sync_orders` (a few times daily),
-  - `process_jobs` (every ~5 min — drains web-enqueued jobs incl.
-    `apply_approved`),
-  - `expire_approvals` (hourly — TTL per `APPROVAL_TTL_HOURS`).
+  - `sync_orders` (daily),
+  - `apply-approved` (every ~10 min — applies approved proposals after a cap
+    re-check; replaces the deferred job queue).
+  - (TTL expiry of stale pending proposals: `utils/approvals.expire_stale`
+    exists but has no CLI command yet — harmless to defer; pending rows never
+    auto-apply. Add an `expire-approvals` command if the queue grows noisy.)
 - All jobs: `pip install -r automation/requirements.txt`, export secrets from
   **GitHub Actions secrets**, `cd automation && python main.py <cmd>`.
 - Keep `AUTONOMY_MODE=propose` so nothing applies without an approved row.

@@ -81,3 +81,36 @@ def test_exception_aliases_default_to_sqlite():
     # With no DATABASE_URL the live driver is sqlite3; aliases point at it.
     assert db.IntegrityError is sqlite3.IntegrityError
     assert db.OperationalError is sqlite3.OperationalError
+
+
+# ── _PgConn behaviour, exercised with stub connections (no live Postgres) ──────
+def test_pgconn_skips_ddl_without_opening_a_cursor():
+    from utils.db import _PgConn, _NullCursor
+
+    class StubConn:
+        def cursor(self, **kw):
+            raise AssertionError("DDL must not open a cursor on PG (Prisma owns schema)")
+
+    cur = _PgConn(StubConn()).execute("CREATE TABLE IF NOT EXISTS hashtag_usage (h TEXT)")
+    assert isinstance(cur, _NullCursor)
+    assert cur.fetchone() is None and cur.fetchall() == []
+
+
+def test_pgconn_rewrites_dml_before_executing():
+    from utils.db import _PgConn
+
+    seen = {}
+
+    class StubCursor:
+        def execute(self, sql, params):
+            seen["sql"], seen["params"] = sql, params
+
+    class StubConn:
+        def cursor(self, **kw):
+            return StubCursor()
+
+    _PgConn(StubConn()).execute(
+        "UPDATE posts SET updated_at=datetime('now') WHERE id=?", (5,)
+    )
+    assert seen["sql"] == "UPDATE posts SET updated_at=now() WHERE id=%s"
+    assert seen["params"] == (5,)
