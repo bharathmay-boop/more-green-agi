@@ -253,3 +253,23 @@ CREATE TABLE IF NOT EXISTS audit_log (
     created_at          TEXT DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_audit_entity ON audit_log(entity, entity_id);
+
+-- ── Web-tier identity (mirrors Prisma orgs/users) ────────────────────────────
+-- Owned by Prisma in Postgres; defined here so local SQLite dev + `seed-owner`
+-- have the same tables. Login resolves role from `users`; password is the
+-- shared ADMIN_PASSWORD, not stored here.
+CREATE TABLE IF NOT EXISTS orgs (
+    id                  TEXT PRIMARY KEY,
+    name                TEXT NOT NULL,
+    plan                TEXT NOT NULL DEFAULT 'free',
+    created_at          TEXT DEFAULT (datetime('now'))
+);
+CREATE TABLE IF NOT EXISTS users (
+    id                  TEXT PRIMARY KEY,
+    email               TEXT NOT NULL UNIQUE,
+    name                TEXT,
+    role                TEXT NOT NULL DEFAULT 'viewer',   -- owner | approver | viewer
+    org_id              TEXT REFERENCES orgs(id),
+    created_at          TEXT DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_users_org ON users(org_id);

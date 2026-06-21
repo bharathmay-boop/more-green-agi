@@ -225,6 +225,19 @@ def apply_approved(ctx):
     run(dry_run=ctx.obj["dry_run"])
 
 
+@cli.command("seed-owner")
+@click.option("--email", default=None, help="Owner email (defaults to FOUNDER_EMAIL).")
+@click.option("--name", default=None, help="Display name.")
+@click.option("--role", default="owner", show_default=True,
+              type=click.Choice(["owner", "approver", "viewer"]))
+@click.option("--org-name", default=None, help="Create + link an org with this name.")
+@click.pass_context
+def seed_owner(ctx, email, name, role, org_name):
+    """Seed the dashboard owner user so login works on a fresh DB (plan 02 T1.3)."""
+    from commands.seed_owner import run
+    run(email=email, name=name, role=role, org_name=org_name, dry_run=ctx.obj["dry_run"])
+
+
 @cli.command("resume-video-jobs")
 @click.pass_context
 def resume_video_jobs(ctx):
