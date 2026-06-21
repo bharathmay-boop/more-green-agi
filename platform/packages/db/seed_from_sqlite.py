@@ -77,6 +77,18 @@ def _coerce(table: str, col: str, val):
     return val
 
 
+def _build_upsert(table: str, cols: list[str], keys: tuple[str, ...] | list[str]) -> str:
+    """Postgres INSERT ... ON CONFLICT upsert. Updates every non-key column from
+    EXCLUDED; if all columns are keys there is nothing to update → DO NOTHING."""
+    placeholders = ", ".join(["%s"] * len(cols))
+    collist = ", ".join(f'"{c}"' for c in cols)
+    updates = ", ".join(f'"{c}"=EXCLUDED."{c}"' for c in cols if c not in keys)
+    conflict = ", ".join(f'"{k}"' for k in keys)
+    action = f"DO UPDATE SET {updates}" if updates else "DO NOTHING"
+    return (f'INSERT INTO "{table}" ({collist}) VALUES ({placeholders}) '
+            f'ON CONFLICT ({conflict}) {action}')
+
+
 def run(dry_run: bool) -> int:
     src = _open_sqlite()
     if src is None:
@@ -123,13 +135,7 @@ def run(dry_run: bool) -> int:
             for row in rows:
                 cols = [c for c in row.keys() if c in pg_cols]   # drop drifted cols
                 vals = [_coerce(table, c, row[c]) for c in cols]
-                placeholders = ", ".join(["%s"] * len(cols))
-                collist = ", ".join(f'"{c}"' for c in cols)
-                updates = ", ".join(f'"{c}"=EXCLUDED."{c}"' for c in cols if c not in keys)
-                conflict = ", ".join(f'"{k}"' for k in keys)
-                action = f"DO UPDATE SET {updates}" if updates else "DO NOTHING"
-                sql = (f'INSERT INTO "{table}" ({collist}) VALUES ({placeholders}) '
-                       f'ON CONFLICT ({conflict}) {action}')
+                sql = _build_upsert(table, cols, keys)
                 with pg.cursor() as cur:
                     cur.execute(sql, vals)
                     # rowcount is 1 for insert, 1 for update, 0 for do-nothing

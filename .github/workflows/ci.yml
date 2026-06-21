@@ -44,6 +44,8 @@ jobs:
           pip install pytest
       - name: Run pytest
         run: pytest -q
+      - name: seed_from_sqlite unit tests (packages/db)
+        run: python -m pytest ../platform/packages/db/test_seed_from_sqlite.py -q
 
   pg-smoke:
     name: postgres smoke (shim)
