@@ -26,8 +26,12 @@ else is mine.
 ## Task 1.2 — Wire web env on Vercel
 - Set Vercel env vars: `DATABASE_URL` (Neon), `SESSION_SECRET`, `ADMIN_PASSWORD`.
   (No `REDIS_URL` — removed in Phase 0.)
-- Confirm `apps/web` build script runs `prisma migrate deploy && prisma generate
-  && next build` (add `migrate deploy` so the schema applies on first deploy).
+- ~~Confirm `apps/web` build runs `prisma migrate deploy && prisma generate &&
+  next build`~~ **DONE** — `apps/web/vercel.json` sets that `buildCommand` (so the
+  schema applies on first deploy). CI's `npm run build` stays migration-free, so
+  it never needs a live DB. Caveat: every Vercel build (incl. preview) needs a
+  reachable `DATABASE_URL`, or `migrate deploy` fails the build — set it for all
+  environments, or scope previews to a Neon branch.
 - **Acceptance:** Vercel build green; `https://<app>.vercel.app/api/health`
   returns `{ok:true, db:true}` (redis check removed/ignored).
 
