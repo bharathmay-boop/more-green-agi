@@ -1,7 +1,6 @@
 // /api/creatives/[id] — select / reject a variant, or regenerate (E1-T8).
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { enqueueJob } from "@/lib/queue";
 import { requireRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -26,17 +25,17 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
 }
 
-// POST — enqueue a regeneration job for this creative's post.
-export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+// POST — on-demand regeneration. Deferred in Path A: there is no always-on
+// worker, so regeneration happens on the scheduled `generate` run. On-demand
+// regenerate returns with the job queue in Phase 3/4 (plans/01 D1).
+export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const gate = await requireRole("approver");
   if (gate instanceof Response) return gate;
   const { id } = await params;
-  try {
-    const creative = await prisma.creative.findUnique({ where: { id: Number(id) } });
-    if (!creative) return NextResponse.json({ error: "not found" }, { status: 404 });
-    const job = await enqueueJob("generate", { postId: creative.postId, regenerate: true });
-    return NextResponse.json({ enqueued: job.id });
-  } catch (err) {
-    return NextResponse.json({ error: `queue unavailable: ${err}` }, { status: 503 });
-  }
+  const creative = await prisma.creative.findUnique({ where: { id: Number(id) } }).catch(() => null);
+  if (!creative) return NextResponse.json({ error: "not found" }, { status: 404 });
+  return NextResponse.json(
+    { error: "on-demand regenerate is deferred; the scheduled generate run refreshes creatives" },
+    { status: 501 },
+  );
 }

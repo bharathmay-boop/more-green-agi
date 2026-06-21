@@ -23,6 +23,10 @@ jobs:
   pytest:
     name: pytest (automation)
     runs-on: ubuntu-latest
+    # The pipeline tests run on SQLite. Override the offline PG placeholder so
+    # utils.db takes the SQLite path (and the opt-in PG smoke stays skipped).
+    env:
+      DATABASE_URL: ""
     defaults:
       run:
         working-directory: automation

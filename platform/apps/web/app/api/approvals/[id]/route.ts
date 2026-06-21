@@ -1,13 +1,12 @@
 // /api/approvals/[id] — approve / reject / apply a proposal (E3-T4).
 //
 // MONEY-SAFETY (doc 04): this route NEVER calls Meta. "approve"/"reject" are
-// pure status transitions; "apply" only ENQUEUES the apply_approved worker job,
-// which is the single code path allowed to raise spend — and only after the row
-// is in `approved` state. Illegal transitions are rejected here, mirroring the
-// Python state machine in automation/utils/approvals.py.
+// pure status transitions; "apply" only marks an already-approved row as ready —
+// the scheduled `apply-approved` job (automation/commands/apply_approved.py) is
+// the single code path allowed to raise spend, after a cap re-check. Illegal
+// transitions are rejected here, mirroring automation/utils/approvals.py.
 import { NextResponse } from "next/server";
 import { prisma, writeAudit } from "@/lib/db";
-import { enqueueJob } from "@/lib/queue";
 import { requireRole } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -56,19 +55,20 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return NextResponse.json({ item: updated });
   }
 
-  // action === "apply": only valid from approved; enqueue the gated worker.
+  // action === "apply": valid only from approved. Path A has no always-on
+  // worker — the scheduled apply-approved run applies every approved row after a
+  // cap re-check. So "apply" records intent; the spend still happens only in
+  // Python. (On-demand apply returns with the job queue in Phase 3/4 — plans/01.)
   if (row.status !== "approved") {
     return NextResponse.json(
       { error: `cannot apply: row is '${row.status}', expected 'approved'` }, { status: 409 });
   }
-  try {
-    const job = await enqueueJob("apply_approved", { approvalId: pid });
-    await writeAudit({
-      actor, action: "apply", entity: "approval_queue", entityId: pid,
-      before: { status: "approved" }, after: { status: "applying", jobId: job.id },
-    });
-    return NextResponse.json({ enqueued: job.id, note: "apply_approved worker will apply after cap re-check" });
-  } catch (err) {
-    return NextResponse.json({ error: `queue unavailable: ${err}` }, { status: 503 });
-  }
+  await writeAudit({
+    actor, action: "apply", entity: "approval_queue", entityId: pid,
+    before: { status: "approved" }, after: { status: "approved", note: "queued for scheduled apply-approved" },
+  });
+  return NextResponse.json({
+    ok: true,
+    note: "approved — the scheduled apply-approved run will apply this after a cap re-check",
+  });
 }

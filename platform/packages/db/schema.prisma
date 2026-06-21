@@ -66,6 +66,7 @@ model AdCampaign {
   adId           String?  @map("ad_id")
   status         String?
   dailyBudgetInr Float?   @map("daily_budget_inr")
+  postId         String?  @map("post_id")
   createdAt      DateTime @default(now()) @map("created_at")
 
   @@index([sku, status])
