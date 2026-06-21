@@ -36,8 +36,9 @@ else is mine.
   returns `{ok:true, db:true}` (redis check removed/ignored).
 
 ## Task 1.3 — Seed owner user + initial data
-- Create the owner row in Neon (one SQL insert, or a `main.py seed-owner`
-  helper) so login works.
+- ~~Create the owner row in Neon~~ **DONE** — `python main.py seed-owner
+  --email <you> [--org-name "More Green"]` (idempotent; runs against Neon when
+  `DATABASE_URL` is set). Login still needs `ADMIN_PASSWORD` set on the web tier.
 - One-time backfill of existing SQLite data → Neon via `seed_from_sqlite.py`
   pointed at `DATABASE_URL` (it already upserts). After this, SQLite is retired.
 - **Acceptance:** login via `/api/auth/login` succeeds; dashboard shows real
