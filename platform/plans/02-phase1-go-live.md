@@ -51,9 +51,8 @@ else is mine.
   - `sync_orders` (daily),
   - `apply-approved` (every ~10 min — applies approved proposals after a cap
     re-check; replaces the deferred job queue).
-  - (TTL expiry of stale pending proposals: `utils/approvals.expire_stale`
-    exists but has no CLI command yet — harmless to defer; pending rows never
-    auto-apply. Add an `expire-approvals` command if the queue grows noisy.)
+  - `expire-approvals` (hourly — TTL per `APPROVAL_TTL_HOURS`). **DONE**: CLI
+    wraps `utils/approvals.expire_stale`; wired into `pipeline.yml`.
 - All jobs: `pip install -r automation/requirements.txt`, export secrets from
   **GitHub Actions secrets**, `cd automation && python main.py <cmd>`.
 - Keep `AUTONOMY_MODE=propose` so nothing applies without an approved row.
