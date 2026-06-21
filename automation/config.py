@@ -1,7 +1,15 @@
+import os
 import yaml
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # read a local .env if present; no-op in prod where envs are set
 
 PROJECT_ROOT = Path(__file__).parent.resolve()
+
+# Single switch between Postgres (prod/Neon) and SQLite (local/CI). utils.db
+# reads this; unset → SQLite at DB_PATH below.
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 
 def _load(filename: str) -> dict:

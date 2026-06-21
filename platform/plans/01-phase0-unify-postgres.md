@@ -12,6 +12,46 @@ flagged by `DATABASE_URL`.
 
 ---
 
+## REVISED scope (2026-06-21, post-grill) — read this first
+
+Grilled against the real code. Decisions that override the tasks below:
+
+- **D1 — Defer the queue (Task 0.4).** The scheduled pipeline calls
+  `python main.py <stage>` directly (see `crontab.example`); the Redis queue is
+  used by only **two on-demand dashboard buttons** (approvals→`apply_approved`,
+  creatives→`generate`) + `/api/health`. In Path A there's no always-on worker.
+  So Phase 0 **deletes** `lib/queue.ts` + ioredis + `workers/*`, and rewires:
+  approve→apply via the existing `approval_queue` row drained by a `*/10`
+  GitHub Action running `apply-approved`; regenerate-creative deferred. A real
+  job queue returns in **Phase 3/4** when multi-tenant async dispatch needs it.
+- **D2 — Shim, with a cached rewrite.** Thin wrapper in `utils/db.py`;
+  `?`→`%s` and `datetime('now')`→`now()` rewritten once per SQL string via
+  `lru_cache`. Regex skips `?` inside quoted literals (unit-tested).
+- **D3 — `with db:` = transaction CM.** Wrapper `__enter__/__exit__` commits on
+  success / rolls back on exception. **Never** psycopg3 native `with conn`
+  (closes the connection). PG conn `autocommit=False`. ~20 `with db:` untouched.
+- **D4 — `lastrowid` → `RETURNING id`.** Only leak is `approvals.py:99`
+  (money path). `RETURNING id` is valid on SQLite 3.35+ *and* PG. One explicit
+  edit; `test_money_safety.py` is the gate.
+- **D5 — Prisma owns the schema on PG.** On Postgres `get_db()` skips
+  `_ensure_schema`; shim no-ops `CREATE TABLE/INDEX`/`PRAGMA`. All inline-created
+  tables already exist in Prisma (verified). Add missing `ad_campaigns.post_id`
+  + migration.
+- **D6 — Exception leaks.** `utils/db.py` exports `IntegrityError` /
+  `OperationalError` bound to the live driver; the 2 `except sqlite3.X` sites
+  (`approvals.py:104`, `export_report.py:47`) switch to `db.X`. `sqlite3.Row`/
+  `Connection` type *hints* left as-is (runtime-harmless).
+- **D7 — Drop the `strftime` fix** from Task 0.2: `approvals.py:43` &
+  `update_tracker.py:214` are Python `datetime.strftime`, not SQL. No-op.
+- **D8 — Testing.** Unit/CI through the shim on **SQLite** (placeholder edge
+  cases + money-safety); one opt-in integration smoke vs the `docker-compose`
+  Postgres, skipped when `DATABASE_URL` unset.
+
+Deferred out of Phase 0: queue (D1)→P3/4, `orgId` scoping→P3,
+`GOOGLE_SERVICE_ACCOUNT_B64`→P1 (go-live secrets).
+
+---
+
 ## Task 0.1 — DB driver switch in `automation/utils/db.py`
 - Add `psycopg[binary]` to `automation/requirements.txt`.
 - In `get_db()`: if `os.getenv("DATABASE_URL")` → connect via `psycopg`

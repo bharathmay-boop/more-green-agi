@@ -1,10 +1,9 @@
 import logging
-import sqlite3
 from datetime import datetime, timedelta
 
 from tabulate import tabulate
 
-from utils.db import get_db
+from utils.db import get_db, OperationalError
 
 log = logging.getLogger(__name__)
 
@@ -44,7 +43,7 @@ def _blended_roas_rows(db):
             """,
             (cutoff_30,),
         ).fetchall()
-    except sqlite3.OperationalError:
+    except OperationalError:
         return None
 
     agg: dict[str, dict] = {}

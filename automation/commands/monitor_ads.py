@@ -61,10 +61,14 @@ def run() -> None:
         with db:
             db.execute(
                 """
-                INSERT OR REPLACE INTO insights_cache
+                INSERT INTO insights_cache
                     (ad_id, fetched_date, impressions, clicks, ctr,
                      spend_inr, frequency, roas)
                 VALUES (?,?,?,?,?,?,?,?)
+                ON CONFLICT(ad_id, fetched_date) DO UPDATE SET
+                    impressions=excluded.impressions, clicks=excluded.clicks,
+                    ctr=excluded.ctr, spend_inr=excluded.spend_inr,
+                    frequency=excluded.frequency, roas=excluded.roas
                 """,
                 (
                     c["ad_id"], today,

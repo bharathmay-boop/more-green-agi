@@ -17,7 +17,7 @@ import json
 import sqlite3
 from typing import Any, Optional
 
-from utils.db import get_db
+from utils.db import get_db, IntegrityError
 
 VALID_ACTIONS = {
     "activate_ad", "scale_budget", "reallocate", "price_test",
@@ -92,16 +92,16 @@ def propose(action_type: str, entity_ref: str, payload: dict | None = None,
                 "INSERT INTO approval_queue"
                 "(action_type,entity_ref,payload_json,expected_impact_json,"
                 " status,requested_by,requested_at,expires_at) "
-                "VALUES(?,?,?,?, 'pending', ?, ?, ?)",
+                "VALUES(?,?,?,?, 'pending', ?, ?, ?) RETURNING id",
                 (action_type, entity_ref, payload_json, _dumps(expected_impact),
                  requested_by, _now(), expires_at),
             )
-            new_id = cur.lastrowid
+            new_id = cur.fetchone()[0]  # RETURNING: valid on SQLite 3.35+ and PG
             _audit(db, requested_by, "propose", new_id, None,
                    {"action_type": action_type, "entity_ref": entity_ref,
                     "payload": payload})
         return new_id
-    except sqlite3.IntegrityError:
+    except IntegrityError:
         # lost a race against the unique pending index — return the winner
         row = db.execute(
             "SELECT id FROM approval_queue WHERE status='pending' AND action_type=? "
