@@ -45,6 +45,53 @@ jobs:
       - name: Run pytest
         run: pytest -q
 
+  pg-smoke:
+    name: postgres smoke (shim)
+    runs-on: ubuntu-latest
+    # Validates the psycopg shim against a REAL Postgres: row factory (named +
+    # positional), `with db:` transaction rollback, RETURNING, the
+    # INSERT OR IGNORE rewrite, and that the Prisma migrations apply cleanly.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: moregreen
+          POSTGRES_PASSWORD: moregreen
+          POSTGRES_DB: moregreen
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U moregreen -d moregreen"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      DATABASE_URL: postgresql://moregreen:moregreen@localhost:5432/moregreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: platform/packages/db/package-lock.json
+      - name: Apply Prisma migrations
+        working-directory: platform/packages/db
+        run: |
+          npm install
+          npx prisma migrate deploy
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: automation/requirements.txt
+      - name: Install python deps
+        working-directory: automation
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+      - name: Run Postgres smoke
+        working-directory: automation
+        run: pytest tests/test_db_pg_integration.py -q
+
   prisma-validate:
     name: prisma validate (packages/db)
     runs-on: ubuntu-latest
