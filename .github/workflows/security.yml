@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: anthropics/claude-code-security-review@main
         with:
-          claude-api-key: ${{ secrets.CLAUDE_API_KEY }}
+          claude-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
