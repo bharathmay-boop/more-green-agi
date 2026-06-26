@@ -83,6 +83,26 @@ export function hasRole(user: CurrentUser, min: Role): boolean {
 }
 
 /**
+ * Guard for read-only route handlers. Returns 401 when no valid session cookie
+ * is present (unauthenticated callers). Usage:
+ *
+ *   const gate = await requireSession();
+ *   if (gate instanceof Response) return gate;
+ */
+export async function requireSession(): Promise<CurrentUser | Response> {
+  const jar = await cookies();
+  const email = verifySession(jar.get("mg_session")?.value);
+  const hasDevBypass = process.env.NODE_ENV !== "production" && !!process.env.DEV_ROLE;
+  if (!email && !hasDevBypass) {
+    return new Response(
+      JSON.stringify({ error: "authentication required" }),
+      { status: 401, headers: { "content-type": "application/json" } },
+    );
+  }
+  return getCurrentUser();
+}
+
+/**
  * Guard for route handlers. Returns the user when authorised, or a 403 Response
  * to return directly when not. Usage:
  *

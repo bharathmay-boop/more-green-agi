@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "test": "vitest run"
   },
   "prisma": {
     "schema": "../../packages/db/schema.prisma"
@@ -24,6 +25,7 @@
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
     "prisma": "^6.2.1",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.9"
   }
 }

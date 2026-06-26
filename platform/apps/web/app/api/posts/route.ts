@@ -1,11 +1,13 @@
 // /api/posts — list + create content posts (E1-T7).
 import { NextResponse } from "next/server";
 import { prisma, safeQuery } from "@/lib/db";
-import { requireRole } from "@/lib/auth";
+import { requireRole, requireSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const gate = await requireSession();
+  if (gate instanceof Response) return gate;
   const posts = await safeQuery(
     () => prisma.post.findMany({ orderBy: { scheduledAt: "asc" }, take: 200 }),
     [],

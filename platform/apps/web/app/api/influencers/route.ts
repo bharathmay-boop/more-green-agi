@@ -1,10 +1,13 @@
 // /api/influencers — list influencers with conversation counts (E8-T1).
 import { NextResponse } from "next/server";
 import { prisma, safeQuery } from "@/lib/db";
+import { requireSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
+  const gate = await requireSession();
+  if (gate instanceof Response) return gate;
   const status = new URL(req.url).searchParams.get("status") || undefined;
   const influencers = await safeQuery(
     () => prisma.influencer.findMany({
