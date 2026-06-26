@@ -5,6 +5,9 @@
 # Post due content Mon/Wed/Fri at 9am
 0 9 * * 1,3,5 cd /home/user/automation && python main.py post-organic --platform both >> logs/cron.log 2>&1
 
+# Auto cross-post approved Reels to YouTube Shorts 10 min after the organic run (E8-T2)
+10 9 * * 1,3,5 cd /home/user/automation && python main.py post-youtube >> logs/cron.log 2>&1
+
 # Fetch ad insights daily at 6pm
 0 18 * * * cd /home/user/automation && python main.py monitor-ads >> logs/cron.log 2>&1
 

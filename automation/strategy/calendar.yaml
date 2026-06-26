@@ -1,0 +1,468 @@
+# automation/strategy/calendar.yaml
+# Sprint: Monsoon — Jun 10 to Jul 9, 2026
+# Run: python main.py seed-calendar [--include-sundays] [--dry-run]
+
+meta:
+  sprint: "2026-06-10"
+  label: "Monsoon Sprint — June / July 2026"
+  season: monsoon_immunity
+  sku_split:
+    sunflower: 0.37
+    blueberry: 0.30
+    brand: 0.33
+
+posts:
+  # ── WEEK 1: Monsoon Reset ─────────────────────────────────────────────────
+  - post_id: "2026-06-10_01"
+    scheduled_date: "2026-06-10"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: product
+    sku: sunflower
+    topic: "Monsoon is the hardest season on your gut. Sunflower microgreens: 40x more Vitamin E than mature seeds."
+    theme: monsoon_reset
+    tone: bold_direct
+    cultural_moment: monsoon_immunity
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Open with gut health + monsoon hook. Lead stat in first line."
+
+  - post_id: "2026-06-11_01"
+    scheduled_date: "2026-06-11"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: carousel
+    content_pillar: educational
+    sku: blueberry
+    topic: "4 reasons blueberry microgreens powder beats dried blueberry for monsoon immunity"
+    theme: monsoon_reset
+    tone: scientific_warm
+    cultural_moment: monsoon_immunity
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Carousel: one reason per slide. Slide 4 = soft CTA, no link."
+
+  - post_id: "2026-06-12_01"
+    scheduled_date: "2026-06-12"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: reels
+    content_pillar: founder_bts
+    sku: brand
+    topic: "Started in a small polyhouse in Bangalore. Still growing everything here. This is More Green."
+    theme: monsoon_reset
+    tone: transparent_founder
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Founder voice. Show farm origin. No product push — pure story."
+
+  - post_id: "2026-06-13_01"
+    scheduled_date: "2026-06-13"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: social_proof
+    sku: sunflower
+    topic: "Pune customer: how sunflower microgreens changed her monsoon routine"
+    theme: monsoon_reset
+    tone: warm_authentic
+    cultural_moment: monsoon_immunity
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Customer quote format. Real city name. Soft CTA with link."
+
+  - post_id: "2026-06-14_01"
+    scheduled_date: "2026-06-14"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: story
+    content_pillar: product
+    sku: brand
+    topic: "Why we test every batch for heavy metals, microbes, and nutrients. Every single one."
+    theme: monsoon_reset
+    tone: transparent_expert
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Story format — one strong claim, lab cert visual. Sunday optional post."
+
+  - post_id: "2026-06-15_01"
+    scheduled_date: "2026-06-15"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: product
+    sku: blueberry
+    topic: "Anthocyanins in monsoon: what the purple pigment in blueberry microgreens does for immunity"
+    theme: monsoon_reset
+    tone: scientific_warm
+    cultural_moment: monsoon_immunity
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Anthocyanin mechanism → gut lining protection → monsoon relevance."
+
+  - post_id: "2026-06-16_01"
+    scheduled_date: "2026-06-16"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: educational
+    sku: brand
+    topic: "Microgreens vs. mature plants: why harvesting at day 7 changes everything about nutrition"
+    theme: monsoon_reset
+    tone: scientific_warm
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Explain the day-7 peak nutrient window. No specific SKU — brand-wide claim."
+
+  # ── WEEK 2: The Science of Green ─────────────────────────────────────────
+  - post_id: "2026-06-17_01"
+    scheduled_date: "2026-06-17"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: carousel
+    content_pillar: educational
+    sku: sunflower
+    topic: "40x more Vitamin E than mature sunflower seeds. The peer-reviewed data."
+    theme: science_of_green
+    tone: scientific_warm
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Carousel: slide 1 = claim, slide 2 = study citation, slide 3 = what it means for you."
+
+  - post_id: "2026-06-18_01"
+    scheduled_date: "2026-06-18"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: educational
+    sku: blueberry
+    topic: "Pterostilbene: the cognitive compound in blueberry microgreens that dried fruit doesn't have"
+    theme: science_of_green
+    tone: scientific_warm
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Name the compound. Explain why microgreens stage = higher pterostilbene than ripe fruit."
+
+  - post_id: "2026-06-19_01"
+    scheduled_date: "2026-06-19"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: product
+    sku: brand
+    topic: "FSSAI-approved, NABL-accredited. Every batch — not just the first one."
+    theme: science_of_green
+    tone: bold_transparent
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Credibility post. Lead with the certifications. Show what they actually test for."
+
+  - post_id: "2026-06-20_01"
+    scheduled_date: "2026-06-20"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: reels
+    content_pillar: product
+    sku: sunflower
+    topic: "Cold-pressed, no heat treatment. What happens to nutrients when processing cuts corners."
+    theme: science_of_green
+    tone: bold_direct
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Contrast: competitor heat processing destroys Vitamin E. Our cold-press preserves it."
+
+  - post_id: "2026-06-21_01"
+    scheduled_date: "2026-06-21"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: story
+    content_pillar: founder_bts
+    sku: brand
+    topic: "Sunday in the Bangalore polyhouse. This is where More Green starts."
+    theme: science_of_green
+    tone: transparent_founder
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Behind-the-scenes story. Show growing trays, not product. Sunday optional post."
+
+  - post_id: "2026-06-22_01"
+    scheduled_date: "2026-06-22"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: educational
+    sku: blueberry
+    topic: "4-6x more anthocyanins than ripe blueberries. Why the microgreens stage matters."
+    theme: science_of_green
+    tone: scientific_warm
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Comparison angle. State the number early. Explain the anthocyanin production curve."
+
+  - post_id: "2026-06-23_01"
+    scheduled_date: "2026-06-23"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: carousel
+    content_pillar: educational
+    sku: brand
+    topic: "What 'pure nutrition' actually means: how we source, grow, process, and test every SKU"
+    theme: science_of_green
+    tone: transparent_expert
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "4-slide carousel: Source → Grow → Process → Test. No product names — brand positioning."
+
+  # ── WEEK 3: Mix It, Make It ───────────────────────────────────────────────
+  - post_id: "2026-06-24_01"
+    scheduled_date: "2026-06-24"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: reels
+    content_pillar: recipe
+    sku: sunflower
+    topic: "Sunflower microgreens post-workout shake: the ₹13-per-serving recovery drink"
+    theme: mix_it_make_it
+    tone: energetic_practical
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Show the shake being made. Cost per serving = hook. Zinc + Vitamin E = recovery angle."
+
+  - post_id: "2026-06-25_01"
+    scheduled_date: "2026-06-25"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: reels
+    content_pillar: recipe
+    sku: blueberry
+    topic: "Blueberry microgreens smoothie bowl: 3 ingredients, 2 minutes"
+    theme: mix_it_make_it
+    tone: warm_inspirational
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Keep it visually clean. Name the 3 ingredients in caption. No fluff."
+
+  - post_id: "2026-06-26_01"
+    scheduled_date: "2026-06-26"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: product
+    sku: brand
+    topic: "Single-sourced. India-grown. No additives. What you see on the label is all that's in the pouch."
+    theme: mix_it_make_it
+    tone: bold_transparent
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Ingredient transparency post. Show the label closeup. Let the simplicity speak."
+
+  - post_id: "2026-06-27_01"
+    scheduled_date: "2026-06-27"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: recipe
+    sku: sunflower
+    topic: "Zinc + Vitamin E in one teaspoon: the sunflower microgreens curd rice recipe"
+    theme: mix_it_make_it
+    tone: warm_practical
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Indian food integration. Curd rice is familiar. Make the recipe truly 1-step simple."
+
+  - post_id: "2026-06-28_01"
+    scheduled_date: "2026-06-28"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: story
+    content_pillar: founder_bts
+    sku: brand
+    topic: "Why we chose microgreens over dried ingredients: the decision that defined More Green"
+    theme: mix_it_make_it
+    tone: transparent_founder
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Founding story slide. One key decision, explained honestly. Sunday optional post."
+
+  - post_id: "2026-06-29_01"
+    scheduled_date: "2026-06-29"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: carousel
+    content_pillar: recipe
+    sku: blueberry
+    topic: "5 ways to add blueberry microgreens powder to food your family already eats"
+    theme: mix_it_make_it
+    tone: warm_practical
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "5 slides, 5 Indian foods. Dahi, smoothie, roti dough, oats, lemon water."
+
+  - post_id: "2026-06-30_01"
+    scheduled_date: "2026-06-30"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: educational
+    sku: sunflower
+    topic: "1 tsp = 15% daily zinc. Why sunflower microgreens powder outperforms a zinc supplement"
+    theme: mix_it_make_it
+    tone: scientific_warm
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Food-form zinc vs. supplement zinc bioavailability. Cite the 15% DRV number."
+
+  # ── WEEK 4: Real People, Real Green ──────────────────────────────────────
+  - post_id: "2026-07-01_01"
+    scheduled_date: "2026-07-01"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: social_proof
+    sku: brand
+    topic: "₹390. NABL lab-tested. Grown in India. What customers in 3 cities are saying."
+    theme: real_people_real_green
+    tone: warm_authentic
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Lead with value + credibility. Use real city names: Bengaluru, Pune, Mumbai."
+
+  - post_id: "2026-07-02_01"
+    scheduled_date: "2026-07-02"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: carousel
+    content_pillar: social_proof
+    sku: blueberry
+    topic: "Parent in Delhi: how she gets blueberry microgreens into her kids' food every day"
+    theme: real_people_real_green
+    tone: warm_relatable
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Parent pain point: kids won't eat greens. Show 3 kid-friendly food integrations."
+
+  - post_id: "2026-07-03_01"
+    scheduled_date: "2026-07-03"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: social_proof
+    sku: sunflower
+    topic: "Pune customer: 'I stopped needing a Vitamin E supplement after switching to this'"
+    theme: real_people_real_green
+    tone: warm_authentic
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Quote-style post. Real outcome, specific claim. Soft CTA with link."
+
+  - post_id: "2026-07-04_01"
+    scheduled_date: "2026-07-04"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: reels
+    content_pillar: social_proof
+    sku: brand
+    topic: "3 cities. 200+ orders. Real reviews from people who wanted honest nutrition."
+    theme: real_people_real_green
+    tone: warm_authentic
+    cultural_moment: none
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Review compilation reel. Show review screenshots, not staged testimonials."
+
+  - post_id: "2026-07-05_01"
+    scheduled_date: "2026-07-05"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: story
+    content_pillar: product
+    sku: blueberry
+    topic: "Blueberry microgreens vs. dried blueberry powder — one slide, no jargon."
+    theme: real_people_real_green
+    tone: bold_direct
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Side-by-side comparison story. Two columns. Anthocyanin numbers only. Sunday optional post."
+
+  - post_id: "2026-07-06_01"
+    scheduled_date: "2026-07-06"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: product
+    sku: sunflower
+    topic: "Every pack harvested at exactly day 7. Not day 6. Not day 8. Here is why that matters."
+    theme: real_people_real_green
+    tone: transparent_expert
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Precision = trust. Explain the nutrient curve: peaks at day 7, falls after. Hard CTA."
+
+  - post_id: "2026-07-07_01"
+    scheduled_date: "2026-07-07"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: reels
+    content_pillar: social_proof
+    sku: sunflower
+    topic: "Mumbai customer switched from a ₹400/month multivitamin to sunflower microgreens powder."
+    theme: real_people_real_green
+    tone: warm_authentic
+    cultural_moment: none
+    source_product_image: "Files/sunflower/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Cost comparison angle. ₹400 multivitamin vs. ₹499 for whole-food microgreens."
+
+  # ── WEEK 5: Your Green, Your Way ─────────────────────────────────────────
+  - post_id: "2026-07-08_01"
+    scheduled_date: "2026-07-08"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: carousel
+    content_pillar: product
+    sku: blueberry
+    topic: "Sunflower or blueberry? Which More Green powder fits your goal — an honest guide"
+    theme: your_green_your_way
+    tone: consultative_direct
+    cultural_moment: none
+    source_product_image: "Files/blueberry/product_front.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Decision-helper carousel. Slide 1: immunity → blueberry. Slide 2: energy/zinc → sunflower. Slide 3: CTA."
+
+  - post_id: "2026-07-09_01"
+    scheduled_date: "2026-07-09"
+    scheduled_time: "09:00"
+    platform: both
+    post_type: feed_image
+    content_pillar: product
+    sku: brand
+    topic: "30 days of More Green. What customers who started in June are saying now."
+    theme: your_green_your_way
+    tone: warm_authentic
+    cultural_moment: monsoon_immunity
+    source_product_image: "Files/brand/brand_lifestyle.jpg"
+    source_lifestyle_image: ""
+    reference_notes: "Sprint close post. Summarise the month. Strong CTA with link."

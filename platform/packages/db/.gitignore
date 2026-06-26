@@ -1,0 +1,6 @@
+/node_modules
+/generated
+npm-install.log
+validate.log
+*.tsbuildinfo
+.env

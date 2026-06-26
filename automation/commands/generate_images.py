@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 @require_approval("prompts_approved", "prompts")
-def run(week: str = None, post_id: str = None, dry_run: bool = False) -> None:
+def run(week: str = None, post_id: str = None, dry_run: bool = False, strength: float = 0.75, aspect_ratio: str = "3:4") -> None:
     db = get_db()
     posts = _fetch_posts(db, week, post_id)
 
@@ -26,7 +26,7 @@ def run(week: str = None, post_id: str = None, dry_run: bool = False) -> None:
         return
 
     for post in posts:
-        _process_post(db, post, dry_run)
+        _process_post(db, post, dry_run, strength, aspect_ratio)
 
 
 def _fetch_posts(db, week, post_id):
@@ -41,7 +41,7 @@ def _fetch_posts(db, week, post_id):
     return db.execute(query, params).fetchall()
 
 
-def _process_post(db, post, dry_run: bool) -> None:
+def _process_post(db, post, dry_run: bool, strength: float = 0.75, aspect_ratio: str = "3:4") -> None:
     pid = post["post_id"]
     source = PROJECT_ROOT / post["source_product_image"]
 
@@ -59,10 +59,10 @@ def _process_post(db, post, dry_run: bool) -> None:
     source_url = upload_single(str(source), f"source_{pid}")
 
     if dry_run:
-        log.info("[DRY RUN] Would call FLUX Kontext for %s (source: %s)", pid, source_url)
+        log.info("[DRY RUN] Would call FLUX Kontext for %s (source: %s, strength=%.2f, aspect=%s)", pid, source_url, strength, aspect_ratio)
         return
 
-    log.info("Generating %d images for %s...", IMAGE_VARIANTS_PER_POST, pid)
+    log.info("Generating %d images for %s (strength=%.2f, aspect=%s)...", IMAGE_VARIANTS_PER_POST, pid, strength, aspect_ratio)
     with db:
         db.execute("UPDATE posts SET pipeline_status='creative_generating' WHERE post_id=?", (pid,))
 
@@ -73,8 +73,9 @@ def _process_post(db, post, dry_run: bool) -> None:
                 "prompt": post["image_prompt"],
                 "image_url": source_url,
                 "num_images": IMAGE_VARIANTS_PER_POST,
-                "aspect_ratio": "1:1",
+                "aspect_ratio": aspect_ratio,
                 "safety_tolerance": "2",
+                "strength": strength,
             },
         )
 
@@ -82,13 +83,22 @@ def _process_post(db, post, dry_run: bool) -> None:
         out_dir.mkdir(parents=True, exist_ok=True)
         saved_paths = []
 
+        cost_each = 0.04
         for i, img in enumerate(result["images"]):
             out_path = out_dir / f"{pid}_{i}.jpg"
             out_path.write_bytes(requests.get(img["url"], timeout=30).content)
-            saved_paths.append(str(out_path.relative_to(PROJECT_ROOT)))
+            rel = str(out_path.relative_to(PROJECT_ROOT))
+            saved_paths.append(rel)
             log.info("  ✓ Saved %s (%dKB)", out_path.name, out_path.stat().st_size // 1024)
+            # E5-T1: one creatives row per variant so score_creatives can rank them.
+            with db:
+                db.execute(
+                    """INSERT INTO creatives (post_id, kind, variant_index, local_path, status, cost_usd)
+                       VALUES (?, 'image', ?, ?, 'ready', ?)""",
+                    (pid, i, rel, cost_each),
+                )
 
-        log.info("COST fal.ai flux_kontext post=%s variants=%d $%.2f", pid, IMAGE_VARIANTS_PER_POST, IMAGE_VARIANTS_PER_POST * 0.04)
+        log.info("COST fal.ai flux_kontext post=%s variants=%d $%.2f", pid, IMAGE_VARIANTS_PER_POST, IMAGE_VARIANTS_PER_POST * cost_each)
 
         with db:
             db.execute(

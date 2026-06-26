@@ -1,0 +1,478 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_UgtLUT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "text_Jt48Ab": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Not happy with your first order? We'll make it right. No questions.</strong>",
+            "text_style": "body"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "custom_liquid_PXmkFN": {
+          "type": "custom_liquid",
+          "name": "Urgency",
+          "settings": {
+            "custom_liquid": "<!-- \nURGENCY BADGE SECTION\n\nThis creates a small badge under your Add To Cart button to create urgency.\nExample text: \"Selling Fast - Limited Units Available\"\n\nYou can change:\n1. The text message\n2. The icon\n3. The colors\n-->\n\n<div class=\"ds-urgency-line\">\n\n  <!-- ICON BEFORE TEXT -->\n  <!-- Change this symbol if you want a different icon (⏰ ⏳ ◔ 🕒 etc.) -->\n  <span class=\"ds-clock\">◔</span>\n\n  <!-- URGENCY MESSAGE -->\n  <!-- Edit this text to say whatever urgency message you want -->\n  <span class=\"ds-urgency-text\">\n    <strong>Selling Fast</strong> - Limited Units Available\n  </span>\n\n</div>\n\n<style>\n\n/* \nCOLOR GUIDE\n\nTo change the colors update these values:\n\nBackground color → background:\nBorder color → border:\nText color → color:\n\nExample colors:\nLavender → #B497D6\nPink → #F4A6B5\nBlue → #4A90E2\nGreen → #3CB371\n*/\n\n.ds-urgency-line {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.45rem;\n  margin-top: 0.75rem;\n  padding: 0.55rem 0.8rem;\n  font-size: 12px;\n  text-align: center;\n\n  /* Border color */\n  border: 1px solid #7c1b2f;\n\n  border-radius: 12px;\n\n  /* Background color */\n  background: #f6e3e7;\n\n  /* Text color */\n  color: #7c1b2f;\n\n  line-height: 1.2;\n}\n\n/* Icon styling */\n.ds-clock {\n  font-size: 14px;\n  line-height: 1;\n  color: #7c1b2f;\n}\n\n/* Makes \"Selling Fast\" slightly bolder */\n.ds-urgency-text strong {\n  font-weight: 600;\n}\n\n</style>"
+          }
+        },
+        "custom_liquid_fwgVWj": {
+          "type": "custom_liquid",
+          "name": "Social Proof",
+          "settings": {
+            "custom_liquid": "<!-- ⭐ Customer Review Box Starts -->\n<div style=\"display: flex; align-items: center; background: #fafafa; border-radius: 2px; padding: 5px; font-size: 12px; color: #333; max-width: 600px; margin: 12px auto; border: 1px dashed #e0e0e0; font-family: inherit;\">\n  \n  <!-- 🖼️ CHANGE PROFILE IMAGE HERE -->\n  <img src=\"https://cdn.shopify.com/s/files/1/0701/5091/4242/files/Shashank.jpg?v=1778083103\" alt=\"Profile Image\" style=\"width: 50px; height: 50px; border-radius: 50px; object-fit: cover; margin-right: 16px; border: 1px solid #e0e0e0;\">\n\n  <div style=\"flex: 1;\">\n    \n    <!-- 👤 CHANGE CUSTOMER NAME + VERIFIED + STARS -->\n    <div style=\"font-weight: bold; display: flex; align-items: center; margin-bottom: 4px;\">\n      Dr. Shashank Madhusudan, Dentist & Maxillofacial Surgeon, Manipal Hospitals \n      <span style=\"color: #FFD700; font-size: 12px; margin-left: 6px;\">★★★★★</span>\n    </div>\n\n    <!-- 💬 CHANGE REVIEW TEXT HERE -->\n    <div style=\"color: #555;\">\n      \"Sunflower Microgreen Powder is one of the most complete plant-based nutrition sources I have reviewed. The pure plant protein density combined with the full B-complex and mineral profile makes it genuinely useful as a daily kitchen staple. The NABL certification gives me the confidence to recommend it.”\n    </div>\n    \n  </div>\n</div>\n<!-- ⭐ Customer Review Box Ends -->\n\n<!-- 🔤 Font for Verified Badge -->\n<style>\n  @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');\n</style>"
+          }
+        },
+        "collapsible_tab_PGVm8w": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "How to Use",
+            "icon": "none",
+            "content": "<p>Serving: 5-10g (1-2 tsp) per day. Safe for continuous daily use.<br/>Store cool and dry. No refrigeration needed.</p><p>Dal / Sabzi: Stir 1 tbsp after cooking. Colour blends in. Taste is subtly nutty.<br/>Smoothie: 1-2 tsp blended into any shake or smoothie.<br/>Roti / Chapati: Mix 1-2 tsp into atta dough per 2 rotis. Undetectable.<br/>Rice / Khichdi: Stir in while cooking or after. Hot or cold.<br/>Curd bowl: Mix into plain curd with fruit and honey. Breakfast done.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_96AppR": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Lab Report",
+            "icon": "none",
+            "content": "<p><a href=\"https://cdn.shopify.com/s/files/1/0701/5091/4242/files/SMP_Nutritional_Report_-_Website.pdf?v=1778839894\" target=\"_blank\" title=\"More Green SMP Nutritional Report \">Nutritional report by NABL Accredited Lab.</a></p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "judge_me_reviews_preview_badge_UgtLUT",
+        "description",
+        "text_Jt48Ab",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "custom_liquid_PXmkFN",
+        "custom_liquid_fwgVWj",
+        "collapsible_tab_PGVm8w",
+        "collapsible_tab_96AppR"
+      ],
+      "custom_css": [
+        ".product__title h1 {font-size: 26px;}"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_chmfmG": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_RPapCr": {
+          "type": "heading",
+          "settings": {
+            "heading": "India's First Sunflower Microgreen Powder. In Your Kitchen. Today.",
+            "heading_size": "h2"
+          }
+        },
+        "text_Mk3dCN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Peer-reviewed research published in Food Chemistry (Elsevier) confirms sunflower microgreen powder significantly increases protein, mineral, and antioxidant content in everyday food.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_RPapCr",
+        "text_Mk3dCN"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 32
+      }
+    },
+    "custom_liquid_aNnTky": {
+      "type": "custom-liquid",
+      "name": "Videos",
+      "settings": {
+        "custom_liquid": "<style>\n  /* =================================\n     MAIN SLIDER WRAPPER\n     Horizontal scroll container\n  ================================= */\n  .slider-containerv8 {\n    position: relative;\n    width: 100%;\n    overflow-x: auto;\n    display: flex;\n    align-items: center;\n    scroll-snap-type: x mandatory;\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 10px;\n    -ms-overflow-style: none;\n    scrollbar-width: none;\n  }\n\n  .slider-containerv8::-webkit-scrollbar {\n    display: none;\n  }\n\n  /* =================================\n     INNER TRACK\n     Holds all video cards in one row\n  ================================= */\n  .sliderv8 {\n    display: flex;\n    gap: 10px;\n    width: max-content;\n  }\n\n  /* =================================\n     EACH VIDEO CARD\n     Mobile first sizing\n  ================================= */\n  .slidev8 {\n    flex: 0 0 68%;\n    max-width: 260px;\n    scroll-snap-align: center;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n  }\n\n  /* =================================\n     DESKTOP CARD WIDTH\n  ================================= */\n  @media screen and (min-width: 769px) {\n    .slidev8 {\n      flex: 0 0 260px;\n      max-width: 260px;\n    }\n  }\n\n  /* =================================\n     OUTER VIDEO FRAME\n     Uses one solid border color only\n  ================================= */\n  .with-borderv8 {\n    padding: 2px;\n    border-radius: 14px;\n    background: #560000;\n    width: 100%;\n  }\n\n  /* =================================\n     VIDEO STYLING\n  ================================= */\n  .tiktok-videov8 {\n    width: 100%;\n    height: auto;\n    aspect-ratio: 9 / 16;\n    border-radius: 12px;\n    display: block;\n    background: #000;\n    object-fit: cover;\n  }\n\n  /* =================================\n     PLAY / PAUSE BUTTONS\n  ================================= */\n  .play-buttonv8,\n  .pause-buttonv8 {\n    position: absolute;\n    width: 42px;\n    height: 42px;\n    border: none;\n    background: rgba(17, 17, 17, 0.72);\n    color: #ffffff;\n    border-radius: 50%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    font-size: 17px;\n    cursor: pointer;\n    z-index: 10;\n    backdrop-filter: blur(4px);\n    -webkit-backdrop-filter: blur(4px);\n    transition: transform 0.2s ease, opacity 0.3s ease;\n  }\n\n  .play-buttonv8:hover,\n  .pause-buttonv8:hover {\n    transform: scale(1.05);\n  }\n\n  .play-buttonv8 {\n    display: flex;\n  }\n\n  .pause-buttonv8 {\n    display: none;\n    opacity: 1;\n  }\n\n  .pause-buttonv8.hiddenv8 {\n    opacity: 0;\n  }\n\n  /* =================================\n     OPTIONAL SECTION SPACING\n  ================================= */\n  .video-slider-sectionv8 {\n    width: 100%;\n  }\n</style>\n\n<div class=\"video-slider-sectionv8\">\n  <div class=\"slider-containerv8\">\n    <div class=\"sliderv8\">\n\n      <div class=\"slidev8\">\n        <div class=\"with-borderv8\">\n          <video class=\"tiktok-videov8\" playsinline preload=\"metadata\">\n            <source src=\"https://cdn.shopify.com/videos/c/o/v/6d62070d4ee74e019406e641a0611c72.mp4#t=0.001\" type=\"video/mp4\">\n          </video>\n        </div>\n        <button class=\"pause-buttonv8 hiddenv8\" aria-label=\"Pause video\">❚❚</button>\n        <button class=\"play-buttonv8\" aria-label=\"Play video\">▶</button>\n      </div>\n\n      <div class=\"slidev8\">\n        <div class=\"with-borderv8\">\n          <video class=\"tiktok-videov8\" playsinline preload=\"metadata\">\n            <source src=\"https://cdn.shopify.com/videos/c/o/v/cbecbb5a514748fa91dfb97aad6c84a2.mp4#t=0.001\" type=\"video/mp4\">\n          </video>\n        </div>\n        <button class=\"pause-buttonv8 hiddenv8\" aria-label=\"Pause video\">❚❚</button>\n        <button class=\"play-buttonv8\" aria-label=\"Play video\">▶</button>\n      </div>\n\n      <div class=\"slidev8\">\n        <div class=\"with-borderv8\">\n          <video class=\"tiktok-videov8\" playsinline preload=\"metadata\">\n            <source src=\"https://cdn.shopify.com/videos/c/o/v/af68ec106d0b4bd9b8ab61e5019515e7.mp4#t=0.001\" type=\"video/mp4\">\n          </video>\n        </div>\n        <button class=\"pause-buttonv8 hiddenv8\" aria-label=\"Pause video\">❚❚</button>\n        <button class=\"play-buttonv8\" aria-label=\"Play video\">▶</button>\n      </div>\n\n      <div class=\"slidev8\">\n        <div class=\"with-borderv8\">\n          <video class=\"tiktok-videov8\" playsinline preload=\"metadata\">\n            <source src=\"https://cdn.shopify.com/videos/c/o/v/606336a027544b4ca4424d403d79c809.mp4#t=0.001\" type=\"video/mp4\">\n          </video>\n        </div>\n        <button class=\"pause-buttonv8 hiddenv8\" aria-label=\"Pause video\">❚❚</button>\n        <button class=\"play-buttonv8\" aria-label=\"Play video\">▶</button>\n      </div>\n\n      <div class=\"slidev8\">\n        <div class=\"with-borderv8\">\n          <video class=\"tiktok-videov8\" playsinline preload=\"metadata\">\n            <source src=\"https://cdn.shopify.com/videos/c/o/v/de8e751ab44d4537ab0afdf798b80b39.mp4#t=0.001\" type=\"video/mp4\">\n          </video>\n        </div>\n        <button class=\"pause-buttonv8 hiddenv8\" aria-label=\"Pause video\">❚❚</button>\n        <button class=\"play-buttonv8\" aria-label=\"Play video\">▶</button>\n      </div>\n\n    </div>\n  </div>\n</div>\n\n<script>\n  document.addEventListener(\"DOMContentLoaded\", () => {\n    const slides = document.querySelectorAll(\".slidev8\");\n\n    /* --- Force first-frame thumbnail on all browsers (iOS Safari fallback) --- */\n    document.querySelectorAll(\".tiktok-videov8\").forEach(video => {\n      video.currentTime = 0.001;\n    });\n\n    function pauseAllVideos(exceptVideo = null) {\n      document.querySelectorAll(\".tiktok-videov8\").forEach(video => {\n        if (video !== exceptVideo) {\n          video.pause();\n          const slide = video.closest(\".slidev8\");\n          if (slide) {\n            const playButton = slide.querySelector(\".play-buttonv8\");\n            const pauseButton = slide.querySelector(\".pause-buttonv8\");\n            playButton.style.display = \"flex\";\n            pauseButton.style.display = \"none\";\n            pauseButton.classList.add(\"hiddenv8\");\n          }\n        }\n      });\n    }\n\n    slides.forEach(slide => {\n      const playButton = slide.querySelector(\".play-buttonv8\");\n      const pauseButton = slide.querySelector(\".pause-buttonv8\");\n      const video = slide.querySelector(\".tiktok-videov8\");\n      let hidePauseButtonTimeout;\n\n      function showPauseButton() {\n        pauseButton.classList.remove(\"hiddenv8\");\n        clearTimeout(hidePauseButtonTimeout);\n        hidePauseButtonTimeout = setTimeout(() => {\n          if (!video.paused) {\n            pauseButton.classList.add(\"hiddenv8\");\n          }\n        }, 1200);\n      }\n\n      playButton.addEventListener(\"click\", () => {\n        pauseAllVideos(video);\n        video.play();\n      });\n\n      pauseButton.addEventListener(\"click\", () => {\n        video.pause();\n      });\n\n      video.addEventListener(\"play\", () => {\n        pauseAllVideos(video);\n        playButton.style.display = \"none\";\n        pauseButton.style.display = \"flex\";\n        showPauseButton();\n      });\n\n      video.addEventListener(\"pause\", () => {\n        playButton.style.display = \"flex\";\n        pauseButton.style.display = \"none\";\n        pauseButton.classList.add(\"hiddenv8\");\n      });\n\n      video.addEventListener(\"click\", () => {\n        if (video.paused) {\n          pauseAllVideos(video);\n          video.play();\n        } else {\n          showPauseButton();\n        }\n      });\n\n      video.addEventListener(\"mousemove\", showPauseButton);\n      video.addEventListener(\"touchstart\", showPauseButton, { passive: true });\n    });\n\n    /* --- Auto-pause when scrolled out of view --- */\n    const observer = new IntersectionObserver((entries) => {\n      entries.forEach(entry => {\n        const video = entry.target;\n        if (!entry.isIntersecting && !video.paused) {\n          video.pause();\n        }\n      });\n    }, { threshold: 0.35 });\n\n    document.querySelectorAll(\".tiktok-videov8\").forEach(video => {\n      observer.observe(video);\n    });\n  });\n</script>",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "collapsible_content_ibnG9P": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_jBdmT9": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Energy and Reduced Fatigue",
+            "icon": "none",
+            "row_content": "<p>More Green provides Vitamin B1, B3, and B5, which play a key role in converting food into usable energy for the body. By supporting efficient energy metabolism, they help reduce fatigue and promote sustained energy levels throughout the day. </p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_cJ8rQQ": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Immunity and Recovery",
+            "icon": "none",
+            "row_content": "<p>More Green delivers Vitamin B6 and B9, which play an important role in supporting the body’s immune function and cellular repair processes. These nutrients contribute to the production and maintenance of cells, helping the body recover efficiently and maintain overall resilience.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_FzwX9Y": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Skin and Hair Wellness",
+            "icon": "none",
+            "row_content": "<p>With Vitamin B7 (Biotin), More Green supports the maintenance of healthy skin and hair by nourishing the body at a cellular level. It helps convert nutrients into usable forms that contribute to stronger hair and healthier-looking skin.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_pzCmgz": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Cellular Protection",
+            "icon": "none",
+            "row_content": "<p>More Green contains Vitamin E and Vitamin B2, which act as antioxidants to help protect cells from oxidative stress caused by everyday environmental factors. By neutralizing harmful compounds, they support overall cellular health and long-term well-being.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_7ww9CL": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Heart Health",
+            "icon": "none",
+            "row_content": "<p>Iron, Potassium, and Magnesium in Moregreen support essential body functions, including oxygen transport, heart rhythm, and muscle activity. These minerals work together to maintain physiological balance and support overall body function.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_jBdmT9",
+        "collapsible_row_cJ8rQQ",
+        "collapsible_row_FzwX9Y",
+        "collapsible_row_pzCmgz",
+        "collapsible_row_7ww9CL"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "SMP Benefits",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_nQEXpL": {
+      "type": "multirow",
+      "blocks": {
+        "row_bWq3YA": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/conv_cb927c91-75f0-4f42-afc9-9e3e02fd0cb3.png",
+            "caption": "",
+            "heading": "What are Microgreens?",
+            "text": "<p>Microgreens are young, nutrient-dense shoots of sunflower seeds, harvested within 7-10 days of germination, well before they become adult plants. They are considered a \"superfood\" because they are packed with higher (4 to 40x) concentrations of nutrients compared to fully grown greens. Loaded with protein, vitamins, minerals and antioxidants, they’re the perfect way to boost your energy and cover nutrition bases.</p><p>SMP is made from these fresh sunflower microgreens, dried and ground for easy use.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_VMefbQ": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Man_in_office_typing_202605041745.jpg",
+            "caption": "",
+            "heading": "The 3pm wall is not inevitable.",
+            "text": "<p>Mid-afternoon energy crashes typically stem from blood sugar dips, insufficient B-vitamins for mitochondrial energy production, and magnesium depletion. More Green SMP addresses all three through sustained nutrition, not stimulants.<br/><br/>Full B-complex: cellular energy metabolism.<br/>295.95mg Magnesium: neuromuscular function and stress regulation.<br/>Slow-release carbohydrates: no spike, no crash.<br/><br/>One spoonful in your lunch. The difference by 3pm.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_86HTmy": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Sunflower_microgreens_and_lab_re__202605061736_30e46622-28b5-410f-84ba-e7efa75ebffe.jpg",
+            "caption": "",
+            "heading": "Grown here, Tested here. Certified before it reaches you.",
+            "text": "<p>FSSAI License: Confirms they meet India's legal food safety standards.</p><p>NABL Accredited: This means the lab that tested the food is world-class and follows strict, internationally recognized protocols for accuracy.</p><p><strong>Full lab reports are available </strong><a href=\"https://drive.google.com/drive/folders/1EKRuYsfRqEC8UdV7nnChT6RHc18xxXls?usp=sharing\" target=\"_blank\" title=\"More Green's Sunflower Microgreen Powder Lab Reports\"><span style=\"text-decoration:underline\"><strong>here</strong></span></a><strong>.</strong></p><p>The plants are grown in high-tech polyhouses that ensure consistent quality and purity.</p><p>Nature made it nutritious; our technology keeps it pure. By growing our produce in controlled vertical trays rather than open soil, we eliminate threats like heavy metals and pests. Advanced climate automation ensures the perfect temperature and humidity, preventing mold and fungus naturally without harsh chemicals.</p><p>To prove our promise, every package is backed by an independent lab test of that exact harvest. True transparency, from our farm to your fork.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_bWq3YA",
+        "row_VMefbQ",
+        "row_86HTmy"
+      ],
+      "name": "t:sections.multirow.presets.name",
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "medium",
+        "image_layout": "alternate-left",
+        "heading_size": "h2",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "row_color_scheme": "",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "custom_liquid_aKCGiF": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Survey Stats Circles</title>\n\n  <style>\n    /* =================================\n       MAIN WRAPPER\n       This holds the whole stats section\n    ================================= */\n    .stats-container {\n      display: flex;\n      flex-direction: column;\n      gap: 10px;\n      justify-content: center;\n      align-items: center;\n      max-width: 600px;\n      margin: auto;\n    }\n\n    /* =================================\n       MAIN HEADING\n       Edit this if you want spacing under title\n    ================================= */\n    .stats-container h2 {\n      font-weight: 600;\n      margin-bottom: 10px;\n    }\n\n    /* =================================\n       EACH ROW\n       One circle + one sentence\n    ================================= */\n    .satisfaction-container {\n      width: 100%;\n      display: flex;\n      align-items: center;\n      gap: 15px;\n      flex-wrap: nowrap;\n      justify-content: flex-start;\n      border-bottom: 1px solid #dddddd;\n      padding: 0 0 10px 0;\n    }\n\n    /* =================================\n       FIRST ROW ONLY\n       Adds a top border to the first item\n    ================================= */\n    .satisfaction-container:nth-child(2) {\n      border-top: 1px solid #dddddd;\n      padding-top: 10px;\n    }\n\n    /* =================================\n       CIRCLE CHART\n       This creates the circular progress ring\n       \n       --percentage controls how full the circle is\n       #560000 is your filled color\n       #d9d9d9 is the empty remainder\n    ================================= */\n    .circular-chart {\n      position: relative;\n      width: 80px;\n      height: 80px;\n      min-width: 80px;\n      min-height: 80px;\n      border-radius: 50%;\n      background: conic-gradient(\n        #08A045 0% var(--percentage),\n        #d9d9d9 var(--percentage) 100%\n      );\n      flex-shrink: 0;\n    }\n\n    /* =================================\n       WHITE CENTER CIRCLE\n       This creates the donut effect\n    ================================= */\n    .circular-chart::after {\n      content: \"\";\n      position: absolute;\n      top: 11%;\n      left: 11%;\n      width: 78%;\n      height: 78%;\n      background: white;\n      border-radius: 50%;\n    }\n\n    /* =================================\n       PERCENTAGE TEXT INSIDE CIRCLE\n       Example: 90%\n    ================================= */\n    .percentage {\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      font-size: 18px;\n      font-weight: bold;\n      z-index: 1;\n      color: #111111;\n    }\n\n    /* =================================\n       TEXT TO THE RIGHT OF EACH CIRCLE\n    ================================= */\n    .satisfaction-text {\n      font-size: 15px;\n      font-weight: 500;\n      flex-grow: 1;\n      white-space: normal;\n      color: #111111;\n      line-height: 1.4;\n    }\n\n    /* =================================\n       MOBILE STYLES\n       Makes the circles slightly smaller on phones\n    ================================= */\n    @media (max-width: 600px) {\n      .satisfaction-container {\n        gap: 12px;\n        padding: 0 10px 10px 10px;\n      }\n\n      .satisfaction-container:nth-child(2) {\n        padding-top: 10px;\n      }\n\n      .circular-chart {\n        width: 65px;\n        height: 65px;\n        min-width: 65px;\n        min-height: 65px;\n      }\n\n      .percentage {\n        font-size: 16px;\n      }\n\n      .satisfaction-text {\n        font-size: 14px;\n      }\n    }\n  </style>\n</head>\n\n<body>\n  <div class=\"stats-container\">\n\n    <!-- ================================\n         MAIN HEADING\n         Change this text to your heading\n    ================================= -->\n    <h2>Why Customers Love It</h2>\n\n    <!-- ================================\n         STAT ROW 1\n         data-target=\"90\" means it fills to 90%\n    ================================= -->\n    <div class=\"satisfaction-container\">\n      <div class=\"circular-chart\" data-target=\"92\" style=\"--percentage: 0%;\">\n        <div class=\"percentage\">0%</div>\n      </div>\n      <div class=\"satisfaction-text\">\n        of customers said they felt more energetic and sustained through the afternoon after 2+ weeks of consistent daily use\n      </div>\n    </div>\n\n    <!-- ================================\n         STAT ROW 2\n    ================================= -->\n    <div class=\"satisfaction-container\">\n      <div class=\"circular-chart\" data-target=\"87\" style=\"--percentage: 0%;\">\n        <div class=\"percentage\">0%</div>\n      </div>\n      <div class=\"satisfaction-text\">\n        reported reduced reliance on afternoon caffeine within 3 weeks of consistent daily use\n      </div>\n    </div>\n\n    <!-- ================================\n         STAT ROW 3\n    ================================= -->\n    <div class=\"satisfaction-container\">\n      <div class=\"circular-chart\" data-target=\"94\" style=\"--percentage: 0%;\">\n        <div class=\"percentage\">0%</div>\n      </div>\n      <div class=\"satisfaction-text\">\n        would recommend More Green Sunflower Microgreen Powder to a friend or family member looking to add daily plant nutrition without changing how they cook\n      </div>\n    </div>\n\n  </div>\n\n  <script>\n    /* =================================\n       ANIMATE ONE CIRCLE\n       This counts from 0% up to the target number\n    ================================= */\n    function animatePercentage(chart) {\n      let percentageText = chart.querySelector('.percentage');\n      let targetValue = parseInt(chart.getAttribute('data-target'));\n      let currentPercentage = 0;\n\n      function updateChart() {\n        if (currentPercentage <= targetValue) {\n          chart.style.setProperty('--percentage', currentPercentage + '%');\n          percentageText.innerText = currentPercentage + '%';\n          currentPercentage++;\n          requestAnimationFrame(updateChart);\n        }\n      }\n\n      updateChart();\n    }\n\n    /* =================================\n       START ANIMATION WHEN USER SCROLLS\n       This makes the circles animate only\n       when they come into view\n    ================================= */\n    function handleScroll() {\n      const charts = document.querySelectorAll('.circular-chart');\n      const windowHeight = window.innerHeight;\n\n      charts.forEach((chart) => {\n        const chartPosition = chart.getBoundingClientRect().top;\n\n        if (chartPosition < windowHeight - 100 && !chart.classList.contains('animated')) {\n          animatePercentage(chart);\n          chart.classList.add('animated');\n        }\n      });\n    }\n\n    /* =================================\n       RUN ON PAGE LOAD + SCROLL\n    ================================= */\n    window.addEventListener('scroll', handleScroll);\n    document.addEventListener('DOMContentLoaded', handleScroll);\n  </script>\n</body>\n</html>",
+        "color_scheme": "",
+        "padding_top": 16,
+        "padding_bottom": 52
+      }
+    },
+    "image_banner_9W36Uy": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_gkekYF": {
+          "type": "heading",
+          "settings": {
+            "heading": "Perform at Your Peak Everyday",
+            "heading_size": "h2"
+          }
+        },
+        "text_AC983r": {
+          "type": "text",
+          "settings": {
+            "text": "Use code 10MORE for 10% off on your first order.",
+            "text_style": "body"
+          }
+        },
+        "buttons_EmQxCR": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_label_1": "Button label",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "Button label",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_gkekYF",
+        "text_AC983r",
+        "buttons_EmQxCR"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Dream2.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "collapsible_content_GtfYpM": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_abqQ6z": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "I already eat somewhat healthily. Why do I need this?",
+            "icon": "none",
+            "row_content": "<p>Most Indian home meals like rice, dal, roti, sabzi are strong on carbohydrates and light on complete protein, B-vitamins, and specific minerals like magnesium and iodine. The National Nutrition Monitoring Bureau consistently flags these gaps in urban Indian diets.<br/><br/>More Green SMP is not a replacement for a healthy diet. It is one spoonful added to the food you already cook, closing nutritional gaps without adding a new habit. If your protein, B-vitamin, potassium, and magnesium intake are already optimal every day then you probably do not need it. For most people, they are not.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_wRYLDi": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is this safe for daily use? What about children and pregnant women?",
+            "icon": "none",
+            "row_content": "<p>More Green SFMGP contains one ingredient: sunflower microgreen powder. No additives, preservatives, or synthetic compounds.<br/><br/>For healthy adults: safe for daily use at 5-10g per day.<br/>For children (3+): safe in smaller amounts (2-3g) mixed into food.<br/>For pregnant or breastfeeding women: sunflower microgreen is a whole food. That said, always consult your doctor before adding any supplement during pregnancy.<br/>For people on blood-thinning medication: the product contains Vitamin K. Speak to your physician if you are on anticoagulants.<br/><br/>FSSAI Licensed. NABL tested. No synthetic inputs.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_FbCGgM": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How do I know the product is what it says it is?",
+            "icon": "none",
+            "row_content": "<p>The supplement market in India has a trust problem with unverified claims, unlicensed products, labels that do not reflect what is in the pouch.<br/><br/>More Green was built to be the opposite:<br/>→ FSSAI Licensed (No. 21225195001665) - regulated as a food product from Day 1<br/>→ Single ingredient: Sunflower Microgreen Powder. The label is the truth.<br/>→ NABL-accredited independent lab testing at Equinox Labs, Navi Mumbai<br/>→ Full lab reports available on request: founders@moregreen.in<br/>→ Grown in our own polyhouse in Bengaluru. Not outsourced, not opaque<br/><br/>We are a small brand with our names on every pouch. We have every incentive to be accurate and no incentive not to be.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_tnDMk3": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "There are other green powders. Why this one?",
+            "icon": "none",
+            "row_content": "<p>Three reasons.<br/><br/>1. Category: SMP is not spirulina, moringa, or wheatgrass. Sunflower microgreen powder is a different ingredient with a different nutritional profile. Notably 51.85g of protein, which no other green powder in this category matches.<br/><br/>2. Whole food vs extract: Most competitors use heat-processed extracts. More Green is naturally dehydrated whole microgreen. The co-factor nutrition survives.<br/><br/>3. Verified: NABL-accredited independent lab testing on the actual product. Not a database value. Not a supplier claim. The specific batch you are buying, tested.<br/><br/>One more: there is no other commercially available Sunflower Microgreen Powder in India. You are not choosing between competitors. You are choosing whether to try a new category.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_KXbR9Q": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How soon will I feel results?",
+            "icon": "none",
+            "row_content": "<p>Many people start noticing improvements in energy and overall well-being within a few days to a couple of weeks. Consistency is key to getting the best results. This is \"An apple a day...\" case.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_abqQ6z",
+        "collapsible_row_wRYLDi",
+        "collapsible_row_FbCGgM",
+        "collapsible_row_tnDMk3",
+        "collapsible_row_KXbR9Q"
+      ],
+      "name": "FAQs",
+      "settings": {
+        "caption": "Frequently Asked Questions",
+        "heading": "Still thinking?",
+        "heading_size": "h2",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "background-1",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 4,
+        "padding_bottom": 12
+      }
+    },
+    "17609301503572b6af": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_jQ39MX": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_jQ39MX"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "rich_text_chmfmG",
+    "custom_liquid_aNnTky",
+    "collapsible_content_ibnG9P",
+    "multirow_nQEXpL",
+    "custom_liquid_aKCGiF",
+    "image_banner_9W36Uy",
+    "collapsible_content_GtfYpM",
+    "17609301503572b6af"
+  ]
+}

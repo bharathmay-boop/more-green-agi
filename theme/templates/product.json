@@ -1,0 +1,193 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_UgtLUT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "icon_with_text_DkRLKW": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "heart",
+            "image_1": "shopify://shop_images/icon-park_heart.svg",
+            "heading_1": "Balanced Heart",
+            "icon_2": "return",
+            "image_2": "shopify://shop_images/noun-hair-follicle-8086004_1.svg",
+            "heading_2": "Skin and Hair Wellness",
+            "icon_3": "truck",
+            "image_3": "shopify://shop_images/mingcute_shield-line.svg",
+            "heading_3": "Immunity Support"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "collapsible_tab_KdUweB": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Why you'll love it!",
+            "icon": "heart",
+            "content": "<p>❤️ <strong>Supports Heart Wellness</strong> – Naturally rich in potassium and antioxidants that help balance sodium and maintain blood pressure.<br/></p><p>💪 <strong>Everyday Vitality</strong> – Supports energy, muscle function, and recovery.<br/></p><p>🌱 <strong>Microgreen Goodness</strong> – Harness the concentrated nutrition of sunflower microgreens in an even more concentrated powder form.<br/></p><p>🍴 <strong>Easy to Use</strong> – Mix into smoothies, soups, curries, raitas, or even your morning dal for an instant nutrition boost.<br/></p><p>🌿 <strong>Clean & Pure</strong> – 100% natural, plant-based, vegan, and additive-free.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_PGVm8w": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "How to Use",
+            "icon": "none",
+            "content": "<ul><li>Serving Size: <strong>2 g (approx. 2 spoons of the tad spoon provided)</strong></li><li>Add to: smoothies, soups, curries, salads, sandwiches, raitas, or any daily dish.</li><li>Suggested Use: <strong>1-2 servings per day</strong> for adults.</li></ul>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_96AppR": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Nutritional Information",
+            "icon": "none",
+            "content": "<h5><strong>Per 2 g serving</strong></h5><ul><li>Energy 8.8 kcal</li><li>Protein 1 g</li><li>Carbohydrates 0.5 g</li><li>Total Sugar 0 g</li><li>Added Sugar 0 g</li><li>Total Fat 0.3 g</li><li>Saturated Fat 0.04 g</li><li>Trans 0 g</li><li>Cholesterol 0 mg</li></ul><p><em>(This is dietary supplement only. Not for medicinal use. Individual nutritional needs may vary.)</em></p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_hCBUA3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More Green Difference",
+            "icon": "none",
+            "content": "<p>🌱 Single-ingredient superfood</p><p>🥦 Harnesses the natural power of microgreens (up to 40x more nutrient-dense than mature plants)</p><p>🚫 No additives, preservatives, or fillers</p><p>🌍 Plant-based and vegan</p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_G8gipH": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Frequently Asked Questions",
+            "icon": "none",
+            "content": "<p><strong>Q: What does sunflower microgreen powder taste like?</strong><br/>A: It has a mild, earthy, nutty flavor that blends easily into food without overpowering taste.</p><p><strong>Q: Can kids consume this?</strong><br/>A: Yes, it’s safe and beneficial for all ages. Just stick to recommended serving sizes.</p><p><strong>Q: Is it a supplement or a food?</strong><br/>A: It’s a nutrient-rich plant powder — think of it as a superfood to add to your meals, not a replacement for them.</p><p><strong>Q: How is it different from sunflower seeds?</strong><br/>A: Microgreens are harvested at the peak of nutrient density, making this powder richer in certain plant compounds compared to seeds.</p>",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "judge_me_reviews_preview_badge_UgtLUT",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "icon_with_text_DkRLKW",
+        "description",
+        "collapsible_tab_KdUweB",
+        "collapsible_tab_PGVm8w",
+        "collapsible_tab_96AppR",
+        "collapsible_tab_hCBUA3",
+        "collapsible_tab_G8gipH",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "17609301503572b6af": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_jQ39MX": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_jQ39MX"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "17609301503572b6af"
+  ]
+}

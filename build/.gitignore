@@ -1,0 +1,6 @@
+# Build Engine runtime artifacts — keep code + plan, drop transient state
+logs/
+!logs/.gitkeep
+.lock/
+.resume.lock/
+cron.log
