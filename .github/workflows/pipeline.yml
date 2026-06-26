@@ -80,10 +80,11 @@ jobs:
       # Serverless has no file path for the Google service account — decode the
       # base64 secret to a temp file and point the file-path env var at it.
       - name: Materialise Google service account
-        if: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_B64 != '' }}
         run: |
-          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_B64 }}" | base64 -d > "$RUNNER_TEMP/gsa.json"
-          echo "GOOGLE_SERVICE_ACCOUNT_FILE=$RUNNER_TEMP/gsa.json" >> "$GITHUB_ENV"
+          if [ -n "${{ secrets.GOOGLE_SERVICE_ACCOUNT_B64 }}" ]; then
+            echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_B64 }}" | base64 -d > "$RUNNER_TEMP/gsa.json"
+            echo "GOOGLE_SERVICE_ACCOUNT_FILE=$RUNNER_TEMP/gsa.json" >> "$GITHUB_ENV"
+          fi
 
       - name: Run stage
         run: |
