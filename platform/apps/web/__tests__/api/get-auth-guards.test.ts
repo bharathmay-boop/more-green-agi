@@ -1,4 +1,3 @@
-// RED: these tests will fail until requireSession() is wired into every GET handler.
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("next/server", () => ({
