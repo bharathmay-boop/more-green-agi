@@ -62,3 +62,35 @@ export function Empty({ children }: { children: ReactNode }) {
 
 export const td: React.CSSProperties = { padding: "10px 12px", borderBottom: "1px solid var(--mg-border)", fontSize: 14, textAlign: "left", verticalAlign: "top" };
 export const th: React.CSSProperties = { ...td, color: "var(--mg-muted)", fontWeight: 600, fontSize: 12, textTransform: "uppercase", letterSpacing: 0.4 };
+
+export function Stat({ label, value, tone, secondary }: {
+  label: string; value: string | number; tone?: keyof typeof BADGE_TONES; secondary?: string;
+}) {
+  const t = tone ? BADGE_TONES[tone] : BADGE_TONES.gray;
+  return (
+    <div>
+      <p style={{ fontSize: 14, color: "var(--mg-muted)", margin: "0 0 4px" }}>{label}</p>
+      <p style={{ fontSize: 22, fontWeight: 600, margin: "0 0 8px" }}>{value}</p>
+      {secondary && <p style={{ fontSize: 12, color: t.fg, background: t.bg, padding: "2px 8px", borderRadius: 100, width: "fit-content" }}>{secondary}</p>}
+    </div>
+  );
+}
+
+export function SectionCard({ title, children }: { title: ReactNode; children: ReactNode }) {
+  return (
+    <Card>
+      <h2 style={{ fontSize: 16, fontWeight: 600, margin: "0 0 16px" }}>{title}</h2>
+      {children}
+    </Card>
+  );
+}
+
+export function ImageThumb({ src, alt, size = 64 }: { src: string; alt: string; size?: number }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      style={{ width: size, height: size, borderRadius: 6, objectFit: "cover" }}
+    />
+  );
+}
