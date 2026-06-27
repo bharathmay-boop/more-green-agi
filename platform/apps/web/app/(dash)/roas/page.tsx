@@ -33,12 +33,12 @@ export default async function RoasPage() {
     <section>
       <PageHeader
         title="ROAS"
-        subtitle={`Blended ROAS by SKU, last 30 days. Below the ${ROAS_FLOOR}× scale floor is flagged. Source: /api/attribution.`}
+        subtitle={`Paid ROAS by SKU, last 30 days. Below the ${ROAS_FLOOR}× scale floor is flagged. Source: /api/attribution.`}
       />
       <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
         <Card style={{ flex: 1 }}><div style={{ color: "var(--mg-muted)", fontSize: 12 }}>Spend (30d)</div><div style={{ fontSize: 22, fontWeight: 600 }}>₹{totalSpend.toLocaleString("en-IN")}</div></Card>
         <Card style={{ flex: 1 }}><div style={{ color: "var(--mg-muted)", fontSize: 12 }}>Revenue (30d)</div><div style={{ fontSize: 22, fontWeight: 600 }}>₹{totalRev.toLocaleString("en-IN")}</div></Card>
-        <Card style={{ flex: 1 }}><div style={{ color: "var(--mg-muted)", fontSize: 12 }}>Blended ROAS</div><div style={{ fontSize: 22, fontWeight: 600 }}>{totalSpend ? (totalRev / totalSpend).toFixed(2) + "×" : "—"}</div></Card>
+        <Card style={{ flex: 1 }}><div style={{ color: "var(--mg-muted)", fontSize: 12 }}>Paid ROAS</div><div style={{ fontSize: 22, fontWeight: 600 }}>{totalSpend ? (totalRev / totalSpend).toFixed(2) + "×" : "—"}</div></Card>
       </div>
       {skus.length === 0 ? (
         <Empty>No attribution yet. Run sync-orders + monitor-ads + compute-attribution.</Empty>
@@ -46,7 +46,7 @@ export default async function RoasPage() {
         <Card>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr><th style={th}>SKU</th><th style={th}>Spend ₹</th><th style={th}>Revenue ₹</th><th style={th}>Blended ROAS</th><th style={th}>Health</th></tr>
+              <tr><th style={th}>SKU</th><th style={th}>Spend ₹</th><th style={th}>Revenue ₹</th><th style={th}>Paid ROAS</th><th style={th}>Health</th></tr>
             </thead>
             <tbody>
               {skus.map((s) => (

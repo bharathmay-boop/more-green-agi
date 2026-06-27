@@ -27,6 +27,16 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SQLITE_PATH = REPO_ROOT / "automation" / "db" / "pipeline.db"
 
+# load .env from this directory if present (won't override already-set env vars)
+_env_file = Path(__file__).parent / ".env"
+if _env_file.exists():
+    for _line in _env_file.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _k, _, _v = _line.partition("=")
+            if _k.strip() not in os.environ:
+                os.environ[_k.strip()] = _v.strip()
+
 # table -> (natural-key columns for ON CONFLICT). Order respects FK dependencies
 # (parents before children) so a real run never violates a foreign key.
 TABLES: list[tuple[str, tuple[str, ...]]] = [
@@ -89,6 +99,25 @@ def _build_upsert(table: str, cols: list[str], keys: tuple[str, ...] | list[str]
             f'ON CONFLICT ({conflict}) {action}')
 
 
+_SEQ_TABLES = [
+    ("creatives", "id"),
+    ("influencers", "id"),
+    ("influencer_conversations", "id"),
+    ("approval_queue", "id"),
+    ("audit_log", "id"),
+]
+
+def _reset_sequences(pg) -> None:
+    with pg.cursor() as cur:
+        for table, col in _SEQ_TABLES:
+            cur.execute(
+                f"SELECT setval(pg_get_serial_sequence(%s, %s), COALESCE(MAX({col}), 1)) FROM {table}",
+                (table, col),
+            )
+    pg.commit()
+    print("  sequences reset")
+
+
 def run(dry_run: bool) -> int:
     src = _open_sqlite()
     if src is None:
@@ -132,19 +161,34 @@ def run(dry_run: bool) -> int:
             if not pg_cols:
                 print(f"  {table}: no such Postgres table — skip")
                 continue
+            skipped = 0
             for row in rows:
+                # skip rows missing any part of the primary key
+                row_keys = row.keys()
+                if any(row[k] is None for k in keys if k in row_keys):
+                    skipped += 1
+                    continue
                 cols = [c for c in row.keys() if c in pg_cols]   # drop drifted cols
                 vals = [_coerce(table, c, row[c]) for c in cols]
                 sql = _build_upsert(table, cols, keys)
-                with pg.cursor() as cur:
-                    cur.execute(sql, vals)
-                    # rowcount is 1 for insert, 1 for update, 0 for do-nothing
-                    if cur.rowcount and cur.statusmessage and "INSERT" in cur.statusmessage:
-                        inserted += 1
-                    else:
-                        updated += 1
-            print(f"  {table}: {len(rows)} rows upserted")
+                try:
+                    with pg.cursor() as cur:
+                        cur.execute("SAVEPOINT sp")
+                        cur.execute(sql, vals)
+                        cur.execute("RELEASE SAVEPOINT sp")
+                        if cur.rowcount and cur.statusmessage and "INSERT" in cur.statusmessage:
+                            inserted += 1
+                        else:
+                            updated += 1
+                except Exception:
+                    with pg.cursor() as cur:
+                        cur.execute("ROLLBACK TO SAVEPOINT sp")
+                    skipped += 1
+                    continue
+            suffix = f" ({skipped} skipped — null/constraint)" if skipped else ""
+            print(f"  {table}: {len(rows) - skipped} rows upserted{suffix}")
         pg.commit()
+        _reset_sequences(pg)
     src.close()
     print(f"seed complete: ~{inserted} inserted, ~{updated} updated (idempotent).")
     return 0

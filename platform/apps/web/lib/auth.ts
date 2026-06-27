@@ -31,7 +31,7 @@ export function signSession(email: string): string {
   return `${email}.${sig}`;
 }
 
-function verifySession(value: string | undefined): string | null {
+export function verifySession(value: string | undefined): string | null {
   const secret = process.env.SESSION_SECRET;
   if (!value || !secret) return null;
   const dot = value.lastIndexOf(".");

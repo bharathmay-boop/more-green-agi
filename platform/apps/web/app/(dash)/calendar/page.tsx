@@ -25,7 +25,7 @@ export default async function CalendarPage() {
         subtitle="Scheduled content across SKUs. Status badges track each post through the pipeline; create posts via POST /api/posts, edit/hold/archive via PATCH /api/posts/[id]."
       />
       {posts.length === 0 ? (
-        <Empty>No posts yet. Seed from SQLite or run the autopilot calendar.</Empty>
+        <Empty>No posts scheduled yet. The agent will populate this after the first pipeline run.</Empty>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {[...groups.entries()].map(([date, items]) => (

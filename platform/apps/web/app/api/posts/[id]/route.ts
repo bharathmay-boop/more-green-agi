@@ -26,8 +26,10 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
     const post = await prisma.post.update({ where: { postId: id }, data });
     return NextResponse.json({ post });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 404 });
+  } catch (err: unknown) {
+    console.error(err);
+    const is404 = typeof err === "object" && err !== null && (err as { code?: string }).code === "P2025";
+    return NextResponse.json({ error: is404 ? "not found" : "could not update" }, { status: is404 ? 404 : 500 });
   }
 }
 
@@ -39,7 +41,9 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   try {
     const post = await prisma.post.update({ where: { postId: id }, data: { onHold: true } });
     return NextResponse.json({ post });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 404 });
+  } catch (err: unknown) {
+    console.error(err);
+    const is404 = typeof err === "object" && err !== null && (err as { code?: string }).code === "P2025";
+    return NextResponse.json({ error: is404 ? "not found" : "could not update" }, { status: is404 ? 404 : 500 });
   }
 }

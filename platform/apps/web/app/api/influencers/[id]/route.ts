@@ -29,7 +29,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       before: { status: before?.status }, after: { status },
     });
     return NextResponse.json({ influencer });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 404 });
+  } catch (err: unknown) {
+    console.error(err);
+    const is404 = typeof err === "object" && err !== null && (err as { code?: string }).code === "P2025";
+    return NextResponse.json({ error: is404 ? "not found" : "could not update" }, { status: is404 ? 404 : 500 });
   }
 }

@@ -25,6 +25,7 @@ export default async function ApprovalsPage() {
   const pending = items.filter((i) => i.status === "pending" || i.status === "approved");
   const history = items.filter((i) => !["pending", "approved"].includes(i.status));
 
+
   return (
     <section>
       <PageHeader

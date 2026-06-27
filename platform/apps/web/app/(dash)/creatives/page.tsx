@@ -20,10 +20,10 @@ export default async function CreativesPage() {
     <section>
       <PageHeader
         title="Creative Review"
-        subtitle="Generated image/video variants per post. Select the winner or reject + regenerate (PATCH/POST /api/creatives/[id]). Scores come from the CTR-fed variant loop."
+        subtitle="AI-generated image and video variants. Select the winner for each post or reject to regenerate."
       />
       {creatives.length === 0 ? (
-        <Empty>No creatives generated yet. Approve post prompts, then run the generate worker.</Empty>
+        <Empty>No creatives yet — the agent generates these after posts are approved for production. Check back after the next pipeline run.</Empty>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           {[...byPost.entries()].map(([postId, items]) => (

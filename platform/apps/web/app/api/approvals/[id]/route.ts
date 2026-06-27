@@ -63,12 +63,19 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     return NextResponse.json(
       { error: `cannot apply: row is '${row.status}', expected 'approved'` }, { status: 409 });
   }
+  if (row.appliedAt) {
+    return NextResponse.json({ error: "already applied" }, { status: 400 });
+  }
+  await prisma.approvalQueue.update({
+    where: { id: pid },
+    data: { status: "queued", appliedAt: new Date() },
+  });
   await writeAudit({
     actor, action: "apply", entity: "approval_queue", entityId: pid,
-    before: { status: "approved" }, after: { status: "approved", note: "queued for scheduled apply-approved" },
+    before: { status: "approved" }, after: { status: "queued" },
   });
   return NextResponse.json({
     ok: true,
-    note: "approved — the scheduled apply-approved run will apply this after a cap re-check",
+    note: "queued — the scheduled apply-approved run will apply this after a cap re-check",
   });
 }

@@ -31,7 +31,7 @@ export default async function InfluencersPage() {
         ))}
       </div>
       {influencers.length === 0 ? (
-        <Empty>No influencers yet. Run `python main.py chrome-find-influencers`.</Empty>
+        <Empty>No influencers discovered yet. The agent discovers these during pipeline runs.</Empty>
       ) : (
         <Card>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
